@@ -1,12 +1,13 @@
-import Button from './components/Button/Button';
+import Navbar from './components/Navbar/Navbar'
 import './App.css';
 
 function App() {
   return (
     <div className="app-container">
-      <Button onClick={() => alert('Bouton cliqué !')}>
-        Mon compte
-      </Button>
+      <div className="Navbar">
+        <Navbar></Navbar>
+       </div>
+
     </div>
   );
 }

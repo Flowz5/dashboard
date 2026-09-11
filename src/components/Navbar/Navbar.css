@@ -1,0 +1,92 @@
+/* Supprimer les marges par défaut de la page et définir un fond global si besoin */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #163244; /* Optionnel : pour harmoniser le fond de la page */
+}
+
+/* Conteneur principal de la navbar */
+.Navbar {
+  background-color: #1b3b50; /* Couleur de fond bleu sombre/canard */
+  width: 100%;               /* S'étale sur toute la largeur */
+  box-sizing: border-box;    /* Inclut le padding dans le calcul de la largeur */
+  padding: 12px 24px;
+  
+  /* Pour la coller en haut de l'écran et la fixer si on scroll (optionnel) */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  
+  /* Si tu veux garder les coins arrondis uniquement en bas, ou les enlever complètement pour une vraie navbar classique : */
+  border-radius: 0 0 12px 12px; /* Arrondis seulement en bas */
+}
+
+/* Structure interne (flexbox pour aligner logo et liens) */
+.Navbar nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Logo */
+.Navbar-logo {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+/* Zone des liens et de la recherche */
+.Navbar-links ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 25px; /* Espace entre les éléments */
+  margin: 0;
+  padding: 0;
+}
+
+/* Lien "Dashboard" */
+.Navbar-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-size: 0.95rem;
+}
+
+.Navbar-links a:hover {
+  text-decoration: underline;
+}
+
+/* Champ de recherche */
+#search-bar {
+  background-color: #d0e5fc;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  color: #333333;
+  width: 300px;
+  outline: none;
+}
+
+#search-bar::placeholder {
+  color: #5a738e;
+}
+
+/* Bouton de recherche */
+#search-button {
+  background-color: #5bc0de;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 15px;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#search-button:hover {
+  background-color: #46b8da;
+}
