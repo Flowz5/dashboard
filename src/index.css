@@ -1,8 +1,15 @@
 :root {
+  /* on cale les couleurs de la palette coolors direct ici pour s'en resservir partout */
+  --color-background: #bee9e8;
+  --color-primary: #62b6cb;
+  --color-dark: #1b4965;
+  --color-light: #cae9ff;
+  --color-secondary: #5fa8d3;
+
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   font: 16px/1.5 var(--sans);
   color: #333;
-  background: #f4f9f9; /* Light background similar to the mockup's empty space */
+  background: var(--color-background);
   box-sizing: border-box;
 }
 
