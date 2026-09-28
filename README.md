@@ -1,16 +1,64 @@
-# React + Vite
+# DevBoard Kanban
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Une application web de type tableau Kanban pour la gestion et le suivi de tickets, conçue pour les équipes de développement.
 
-Currently, two official plugins are available:
+## Description du Projet
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Ce projet est une interface de suivi de tâches développée avec React et Vite. Il permet d'organiser le travail de l'équipe à travers différentes colonnes représentant l'état d'avancement des tickets, de la création jusqu'à la mise en production.
 
-## React Compiler
+## Fonctionnalités Principales
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Interface Kanban fluide avec 5 colonnes par défaut :
+  - To do
+  - Doing
+  - Done
+  - Mis en Dev
+  - A mettre en Prod
+- Création de tickets via une fenêtre modale superposée.
+- Système de design sur mesure basé sur une palette de couleurs centralisée via des variables CSS.
+- Mise en page adaptative s'étirant automatiquement sur toute la hauteur et la largeur de l'écran grâce à Flexbox.
 
-## Expanding the ESLint configuration
+## Technologies Utilisées
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React 19
+- Vite
+- CSS3 (Variables natives pour la gestion du thème global)
+
+## Installation et Utilisation
+
+### Prérequis
+
+Node.js doit être installé sur votre machine.
+
+### Démarrage Rapide
+
+1. Installez les dépendances du projet :
+   ```bash
+   npm install
+   ```
+
+2. Lancez le serveur de développement :
+   ```bash
+   npm run dev
+   ```
+
+L'application sera accessible dans votre navigateur (généralement sur http://localhost:5173).
+
+3. Pour compiler le projet pour la production :
+   ```bash
+   npm run build
+   ```
+
+## Architecture du Code
+
+- `src/App.jsx` : Conteneur principal gérant l'agencement du tableau et préparant l'espace pour la barre de navigation.
+- `src/components/Column/` : Composant réutilisable définissant la structure, le style et l'espacement d'une colonne du tableau.
+- `src/components/TicketModal/` : Fenêtre modale gérant l'interface de création de nouveaux tickets.
+- `src/index.css` : Fichier de styles globaux contenant la palette de couleurs officielle.
+
+## Stratégie de Développement
+
+Le projet utilise une stratégie de branches par fonctionnalité (feature branching) pour faciliter le travail en équipe. 
+Exemples de branches actives :
+- `feature/columns` : Conception de la structure du tableau et des colonnes.
+- `features/navbar` : Construction de la barre de navigation supérieure.
