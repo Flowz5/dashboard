@@ -1,11 +1,25 @@
 import Navbar from './components/Navbar/Navbar'
+import Column from './components/Column/Column';
 import './App.css';
 
 function App() {
   return (
 
-    <div className="Navbar">
-      <Navbar></Navbar>
+
+    <div className="app-container">
+
+      <div className="Navbar">
+        <Navbar></Navbar>
+      </div>
+
+      <div className="board-container">
+        <Column title="To do" />
+        <Column title="Doing" />
+        <Column title="Done" />
+        {/* celles là ont un header plus sombre dans la maquette */}
+        <Column title="Mis en Dev" headerColor="var(--color-dark)" />
+        <Column title="A mettre en Prod" headerColor="var(--color-dark)" />
+      </div>
     </div>
 
   );
