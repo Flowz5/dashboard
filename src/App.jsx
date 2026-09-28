@@ -1,12 +1,15 @@
+import Navbar from './components/Navbar/Navbar'
 import Column from './components/Column/Column';
 import './App.css';
 
 function App() {
   return (
+
+
     <div className="app-container">
-      {/* l'espace de la navbar du collègue en attendant qu'il merge */}
-      <div className="navbar-placeholder">
-        Navbar (Feature in progress)
+
+      <div className="Navbar">
+        <Navbar></Navbar>
       </div>
 
       <div className="board-container">
@@ -18,6 +21,7 @@ function App() {
         <Column title="A mettre en Prod" headerColor="var(--color-dark)" />
       </div>
     </div>
+
   );
 }
 
