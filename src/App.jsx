@@ -3,12 +3,11 @@ import './App.css';
 
 function App() {
   return (
-    <div className="app-container">
-      <div className="Navbar">
-        <Navbar></Navbar>
-       </div>
 
+    <div className="Navbar">
+      <Navbar></Navbar>
     </div>
+
   );
 }
 
