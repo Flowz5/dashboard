@@ -1,5 +1,8 @@
 import './Navbar.css';
 import Button from '../Button/Button';
+import searchIcon from '../../assets/search.png';
+import calendarIcon from '../../assets/calendar.png';
+import notifIcon from '../../assets/notif.png';
 
 const Navbar = () => {
   return (
@@ -13,7 +16,7 @@ const Navbar = () => {
         <input id="search-bar" name="search" type="text" placeholder="Search tasks..." />
         {/* bouton loupe intégré dans la barre de recherche */}
         <button id="search-button">
-          <img src="/src/assets/search.png" alt="Search" />
+          <img src={searchIcon} alt="Search" />
         </button>
       </div>
 
@@ -21,12 +24,12 @@ const Navbar = () => {
         <ul>
           <li>
             <a href="/">
-              <img src="/src/assets/calendar.png" alt="Calendar" />
+              <img src={calendarIcon} alt="Calendar" />
             </a>
           </li>
           <li>
             <a href="/">
-              <img src="/src/assets/notif.png" alt="Notification" />
+              <img src={notifIcon} alt="Notification" />
             </a>
           </li>
           <li>
