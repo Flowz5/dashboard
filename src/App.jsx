@@ -1,4 +1,7 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
 import Navbar from './components/Navbar/Navbar';
 import Column from './components/Column/Column';
 import Login from './pages/Login/Login';
@@ -22,11 +25,40 @@ const Dashboard = () => {
 };
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Firebase écoute si un utilisateur est connecté ou non
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    
+    // Cleanup de l'écouteur quand le composant est démonté
+    return () => unsubscribe();
+  }, []);
+
+  // Pendant que Firebase vérifie la connexion, on affiche rien (ou un petit loader)
+  if (loading) {
+    return <div className="app-container" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>Chargement...</div>;
+  }
+
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Dashboard />} />
+        {/* Si l'utilisateur est déjà connecté, on l'empêche de voir la page de login et on le renvoie au dashboard */}
+        <Route 
+          path="/login" 
+          element={user ? <Navigate to="/" replace /> : <Login />} 
+        />
+        
+        {/* Si l'utilisateur n'est pas connecté, on l'empêche de voir le dashboard et on le renvoie au login */}
+        <Route 
+          path="/" 
+          element={user ? <Dashboard /> : <Navigate to="/login" replace />} 
+        />
+        
         {/* On redirige tout ce qui n'existe pas vers le dashboard */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
