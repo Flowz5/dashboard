@@ -2,18 +2,24 @@
   background-color: var(--color-primary);
   color: #ffffff;
   border: none;
+  /* des boutons avec un léger arrondi, classique et efficace */
   border-radius: 6px;
-  padding: 6px 16px;
+  padding: 8px 16px; /* j'ai mis un poil plus de padding vertical pour que le bouton respire */
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   font-family: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* petite ombre pour faire pro */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .custom-button:hover {
-  background-color: var(--color-secondary);
+  /* on utilise bien la variable de hover qu'on a défini dans index.css */
+  background-color: var(--color-primary-hover);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px); /* petit effet de soulèvement au survol */
 }
