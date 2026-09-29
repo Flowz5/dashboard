@@ -1,87 +1,95 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #163244;
-}
-
-
+/* la navbar est maintenant blanche, fine, avec une ombre légère pour bien détacher du fond */
 .Navbar {
-  background-color: #1b3b50;
+  background-color: var(--color-navbar);
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 24px;
+  padding: 12px 32px;
   position: sticky;
   top: 0;
-  z-index: 100;  
-  border-radius: 0 0 12px 12px;
-}
-
-
-.Navbar nav {
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .Navbar-logo {
-  color: #d0e5fc;
-  font-size: 1.2rem;
-  font-weight: bold;
-  font-family: sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 #logo {
   text-decoration: none;
-  color: #d0e5fc;
+  color: var(--color-navbar-text);
 }
 
 .Navbar-search {
   display: flex;
   align-items: center;
-  gap: 8px;
+  background-color: var(--color-bg); /* input un peu grisé pour contraster avec la navbar blanche */
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  padding: 4px 12px;
+  width: 320px;
+  transition: border-color 0.2s;
 }
 
-.Navbar-search button {
+.Navbar-search:focus-within {
+  border-color: var(--color-primary);
+}
+
+#search-bar {
   background-color: transparent;
+  border: none;
+  padding: 6px 0;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  flex-grow: 1;
+  outline: none;
 }
 
+#search-bar::placeholder {
+  color: #94A3B8;
+}
+
+/* le bouton de recherche est maintenant discret */
+#search-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-left: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#search-button img {
+  height: 16px;
+  opacity: 0.5;
+  filter: grayscale(100%); /* pour calmer les icônes moches si c'est pas des svg */
+}
 
 .Navbar-links ul {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 24px;
   margin: 0;
   padding: 0;
 }
 
-.Navbar-links a {
-  color: #ffffff;
-  text-decoration: none;
-  font-family: sans-serif;
-  font-size: 0.95rem;
+/* on a rétréci les icônes de notifs et calendrier qui étaient énormes */
+.Navbar-links a img {
+  height: 20px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  /* si c'est des png on peut inverser pour qu'ils soient foncés sur fond clair */
+  filter: brightness(0) saturate(100%) opacity(0.7);
 }
 
-.Navbar-links a:hover {
-  text-decoration: underline;
+.Navbar-links a:hover img {
+  opacity: 1;
 }
-
-#search-bar {
-  background-color: #d0e5fc;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 15px;
-  font-size: 0.9rem;
-  color: #333333;
-  width: 300px;
-  outline: none;
-  padding-right: 0;
-}
-
-#search-bar::placeholder {
-  color: #5a738e;
-}
-
-
-

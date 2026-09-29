@@ -1,12 +1,13 @@
 .column-container {
   display: flex;
   flex-direction: column;
-  /* on répartit l'espace également entre les 5 colonnes pas juste alignées à gauche */
   flex: 1;
-  min-width: 200px;
-  background-color: var(--color-light);
-  border-radius: 8px;
-  /* pour éviter que le header carré dépasse des coins arrondis en haut */
+  min-width: 250px;
+  background-color: var(--color-column-bg);
+  /* un bord plus doux et subtil */
+  border-radius: 10px;
+  /* petite ombre très discrète pour décoller la colonne du fond */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
   overflow: hidden;
 }
 
@@ -14,20 +15,41 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  color: #ffffff;
+  padding: 14px 20px;
+  /* header beaucoup plus clair, fini les gros blocs de couleur agressifs */
+  background-color: var(--color-column-header);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-navbar-text);
 }
 
 .column-header h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
+  /* on met le titre en majuscules avec de l'espace, c'est très classe pour des colonnes */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .add-button {
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   line-height: 1;
+  color: var(--color-text);
+  opacity: 0.6;
+  transition: opacity 0.2s, color 0.2s;
+  /* on centre bien le "+" dans un petit carré pour qu'il soit cliquable facilement */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.add-button:hover {
+  opacity: 1;
+  background-color: rgba(0,0,0,0.05);
 }
 
 .column-body {

@@ -2,26 +2,15 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: var(--color-background);
-}
-
-/* la fausse navbar en attendant que le collègue fasse la vraie sur sa branche */
-.navbar-placeholder {
-  height: 60px;
-  background-color: var(--color-dark);
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
-  color: white;
-  font-weight: bold;
+  /* ça c'est notre fond global tout propre */
+  background-color: var(--color-bg);
 }
 
 .board-container {
   display: flex;
-  padding: 24px;
+  padding: 32px; /* un peu plus d'air autour du tableau */
   gap: 24px;
   flex-grow: 1;
   overflow-x: auto;
-  /* ça c'est pour que les colonnes soient longues jusqu'en bas comme sur la maquette */
   align-items: stretch;
 }
