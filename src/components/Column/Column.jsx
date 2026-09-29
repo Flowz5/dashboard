@@ -2,13 +2,13 @@ import { useState } from 'react';
 import TicketModal from '../TicketModal/TicketModal';
 import './Column.css';
 
-const Column = ({ title, children }) => {
+const Column = ({ title, children, headerColor }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="column-container">
-      {/* j'ai viré la prop headerColor, toutes les colonnes ont maintenant le même style pur et sobre */}
-      <div className="column-header">
+      {/* on applique le headerColor en fond pour bien différencier chaque colonne comme tu as demandé */}
+      <div className="column-header" style={{ backgroundColor: headerColor }}>
         <h3>{title}</h3>
         {title === 'To do' && (
           <span className="add-button" onClick={() => setIsModalOpen(true)} title="Créer un ticket">+</span>

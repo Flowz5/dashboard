@@ -1,14 +1,11 @@
 :root {
-  /* on passe sur une palette ultra moderne et clean (style SaaS actuel) */
-  --color-bg: #F8FAFC;          /* un fond gris-bleu très clair, beaucoup plus doux */
-  --color-navbar: #FFFFFF;      /* navbar blanche toute propre */
-  --color-navbar-text: #0F172A; /* texte bien foncé pour contraster avec le blanc */
-  --color-primary: #4F46E5;     /* un indigo vibrant pour les boutons et actions */
-  --color-primary-hover: #4338CA;
-  --color-column-bg: #F1F5F9;   /* fond des colonnes juste un peu plus foncé que le fond de la page */
-  --color-column-header: #E2E8F0; /* header de la colonne discret */
-  --color-text: #334155;        /* texte standard lisible mais pas noir pur */
-  --color-border: #E2E8F0;      /* pour les petites bordures fines */
+  /* on s'inspire du nouveau design : fond très clair et colonnes bien délimitées */
+  --color-bg: #FFFFFF;          /* fond de l'appli tout blanc comme sur ton image */
+  --color-navbar: #FFFFFF;      /* navbar blanche */
+  --color-navbar-text: #1E293B; /* texte bien foncé */
+  --color-column-bg: #F4F5F8;   /* fond des colonnes en gris très léger pour faire ressortir les futures cartes blanches */
+  --color-text: #475569;        
+  --color-border: #E2E8F0;      
 
   --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
   font: 14px/1.5 var(--sans);
@@ -23,7 +20,6 @@
 
 body {
   margin: 0;
-  /* j'ai viré le background dégueu qui traînait dans le Navbar.css du collègue */
 }
 
 #root {

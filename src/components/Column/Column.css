@@ -16,10 +16,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  /* header beaucoup plus clair, fini les gros blocs de couleur agressifs */
-  background-color: var(--color-column-header);
+  /* le background est géré par le style en ligne de React maintenant */
   border-bottom: 1px solid var(--color-border);
-  color: var(--color-navbar-text);
+  color: #1E293B; /* texte bien foncé pour être lisible sur les fonds pastel */
 }
 
 .column-header h3 {
