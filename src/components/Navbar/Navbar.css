@@ -68,8 +68,8 @@
 #search-button img {
   height: 18px;
   opacity: 0.4;
-  /* ça grise l'image pour qu'elle s'intègre bien */
-  filter: grayscale(100%); 
+  /* comme c'est un PNG blanc, on force en noir/gris foncé avec brightness(0) */
+  filter: brightness(0);
 }
 
 .Navbar-links ul {
@@ -83,10 +83,12 @@
 
 .Navbar-links a img {
   height: 20px;
-  opacity: 0.6;
-  transition: opacity 0.2s;
+  /* comme ta navbar est blanche et que tes icônes sont blanches de base, je les passe en gris foncé (brightness(0) = noir) */
+  filter: brightness(0) opacity(0.6);
+  transition: all 0.2s;
 }
 
 .Navbar-links a:hover img {
-  opacity: 1;
+  /* au survol on les rend un peu plus visibles */
+  filter: brightness(0) opacity(1);
 }

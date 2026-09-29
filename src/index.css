@@ -1,10 +1,17 @@
 :root {
-  /* on s'inspire du nouveau design : fond très clair et colonnes bien délimitées */
-  --color-bg: #FFFFFF;          /* fond de l'appli tout blanc comme sur ton image */
-  --color-navbar: #FFFFFF;      /* navbar blanche */
-  --color-navbar-text: #1E293B; /* texte bien foncé */
-  --color-column-bg: #F4F5F8;   /* fond des colonnes en gris très léger pour faire ressortir les futures cartes blanches */
-  --color-text: #475569;        
+  /* on remet la palette officielle coolors pour respecter le branding */
+  --color-background-teal: #bee9e8;
+  --color-primary: #62b6cb;
+  --color-dark: #1b4965;
+  --color-light: #cae9ff;
+  --color-secondary: #5fa8d3;
+
+  /* quelques couleurs neutres pour garder le côté moderne et propre de la maquette */
+  --color-bg: #FFFFFF;          /* on garde le fond blanc moderne */
+  --color-navbar: #FFFFFF;
+  --color-navbar-text: #1b4965; /* le texte de la navbar prend la couleur foncée de la palette */
+  --color-column-bg: #F4F5F8;   
+  --color-text: #333333;        
   --color-border: #E2E8F0;      
 
   --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;

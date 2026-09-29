@@ -8,12 +8,12 @@ function App() {
       <Navbar />
 
       <div className="board-container">
-        {/* on remet les headerColors avec des teintes pastel très douces inspirées du design */}
-        <Column title="To do" headerColor="#E0F2FE" />
-        <Column title="Doing" headerColor="#FEF08A" />
-        <Column title="Done" headerColor="#DCFCE7" />
-        <Column title="Mis en Dev" headerColor="#F3E8FF" />
-        <Column title="A mettre en Prod" headerColor="#FCE7F3" />
+        {/* on repasse sur les couleurs de ta palette de base pour bien les différencier */}
+        <Column title="To do" headerColor="var(--color-primary)" />
+        <Column title="Doing" headerColor="var(--color-primary)" />
+        <Column title="Done" headerColor="var(--color-primary)" />
+        <Column title="Mis en Dev" headerColor="var(--color-dark)" />
+        <Column title="A mettre en Prod" headerColor="var(--color-dark)" />
       </div>
     </div>
   );
