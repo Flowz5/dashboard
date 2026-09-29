@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 250px;
+  /* min-width réduit pour que les 5 colonnes puissent se compresser et tenir sur l'écran */
+  min-width: 180px; 
   background-color: var(--color-column-bg);
-  /* un bord plus doux et subtil */
   border-radius: 10px;
-  /* petite ombre très discrète pour décoller la colonne du fond */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  /* ombre et bordure plus marquées pour bien détacher la colonne du fond et rajouter du contraste */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border);
   overflow: hidden;
 }
 
@@ -15,8 +16,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
-  /* on remet le texte en blanc parce que sur fond bleu foncé ou cyan c'est bien plus lisible */
+  padding: 12px 16px;
+  /* texte blanc car les fonds cyan et bleu foncé de la palette sont sombres */
   color: #ffffff;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -24,9 +25,8 @@
 
 .column-header h3 {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px; /* titre légèrement réduit pour gagner de la place */
   font-weight: 600;
-  /* on met le titre en majuscules avec de l'espace, c'est très classe pour des colonnes */
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -35,10 +35,10 @@
   font-size: 18px;
   cursor: pointer;
   line-height: 1;
-  color: var(--color-text);
-  opacity: 0.6;
-  transition: opacity 0.2s, color 0.2s;
-  /* on centre bien le "+" dans un petit carré pour qu'il soit cliquable facilement */
+  color: #ffffff;
+  opacity: 0.8;
+  transition: opacity 0.2s, background-color 0.2s;
+  /* carré centré pour cliquer plus facilement sur le plus */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,7 +49,7 @@
 
 .add-button:hover {
   opacity: 1;
-  background-color: rgba(0,0,0,0.05);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .column-body {

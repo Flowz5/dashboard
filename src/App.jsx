@@ -8,7 +8,7 @@ function App() {
       <Navbar />
 
       <div className="board-container">
-        {/* on repasse sur les couleurs de ta palette de base pour bien les différencier */}
+        {/* utilisation de la palette de base pour bien différencier les colonnes */}
         <Column title="To do" headerColor="var(--color-primary)" />
         <Column title="Doing" headerColor="var(--color-primary)" />
         <Column title="Done" headerColor="var(--color-primary)" />
