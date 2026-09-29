@@ -5,16 +5,15 @@ import './App.css';
 function App() {
   return (
     <div className="app-container">
-      {/* j'ai viré la div en trop qui entourait la Navbar, le composant fait déjà le taf */}
       <Navbar />
 
       <div className="board-container">
-        {/* on unifie les colonnes pour un rendu plus pro, pas besoin de surcharger les couleurs */}
-        <Column title="To do" />
-        <Column title="Doing" />
-        <Column title="Done" />
-        <Column title="Mis en Dev" />
-        <Column title="A mettre en Prod" />
+        {/* on remet les headerColors avec des teintes pastel très douces inspirées du design */}
+        <Column title="To do" headerColor="#E0F2FE" />
+        <Column title="Doing" headerColor="#FEF08A" />
+        <Column title="Done" headerColor="#DCFCE7" />
+        <Column title="Mis en Dev" headerColor="#F3E8FF" />
+        <Column title="A mettre en Prod" headerColor="#FCE7F3" />
       </div>
     </div>
   );

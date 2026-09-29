@@ -3,15 +3,14 @@ import Button from '../Button/Button';
 
 const Navbar = () => {
   return (
-    /* J'ai fusionné la balise nav avec le container principal, c'est plus propre sémantiquement */
     <nav className="Navbar">
       <div className="Navbar-logo">
-        <a id="logo" href="/">DevBoard</a>
+        <a id="logo" href="/">Kanban Board</a>
       </div>
 
       <div className="Navbar-search">
-        <input id="search-bar" name="search" type="text" placeholder="Search..." />
-        {/* J'ai viré le composant Button pour l'icône de recherche, un simple button HTML suffit pour une icône */}
+        <input id="search-bar" name="search" type="text" placeholder="Search tasks..." />
+        {/* j'ai remis le bouton loupe à l'intérieur de la search bar comme sur ton image */}
         <button id="search-button">
           <img src="/src/assets/search.png" alt="Search" />
         </button>
@@ -30,7 +29,6 @@ const Navbar = () => {
             </a>
           </li>
           <li>
-            {/* on utilise notre vrai bouton pour le compte */}
             <Button onClick={() => alert('Bouton cliqué !')}>
               Mon compte
             </Button>

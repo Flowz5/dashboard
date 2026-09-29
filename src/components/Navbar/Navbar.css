@@ -1,17 +1,16 @@
-/* la navbar est maintenant blanche, fine, avec une ombre légère pour bien détacher du fond */
 .Navbar {
   background-color: var(--color-navbar);
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 32px;
+  padding: 16px 32px;
   position: sticky;
   top: 0;
   z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* j'ai retiré le box shadow fort pour faire plus épuré comme le design */
   border-bottom: 1px solid var(--color-border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .Navbar-logo {
@@ -25,25 +24,27 @@
   color: var(--color-navbar-text);
 }
 
+/* la search bar est maintenant arrondie et grise claire, avec l'icône loupe à droite */
 .Navbar-search {
   display: flex;
   align-items: center;
-  background-color: var(--color-bg); /* input un peu grisé pour contraster avec la navbar blanche */
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  padding: 4px 12px;
+  background-color: #F8FAFC; 
+  border-radius: 20px; /* bien arrondi (pill shape) */
+  border: 1px solid transparent;
+  padding: 8px 16px;
   width: 320px;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .Navbar-search:focus-within {
-  border-color: var(--color-primary);
+  border-color: #CBD5E1;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(226, 232, 240, 0.5);
 }
 
 #search-bar {
   background-color: transparent;
   border: none;
-  padding: 6px 0;
   font-size: 0.9rem;
   color: var(--color-text);
   flex-grow: 1;
@@ -54,12 +55,10 @@
   color: #94A3B8;
 }
 
-/* le bouton de recherche est maintenant discret */
 #search-button {
   background: transparent;
   border: none;
   padding: 0;
-  margin-left: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -67,9 +66,10 @@
 }
 
 #search-button img {
-  height: 16px;
-  opacity: 0.5;
-  filter: grayscale(100%); /* pour calmer les icônes moches si c'est pas des svg */
+  height: 18px;
+  opacity: 0.4;
+  /* ça grise l'image pour qu'elle s'intègre bien */
+  filter: grayscale(100%); 
 }
 
 .Navbar-links ul {
@@ -81,13 +81,10 @@
   padding: 0;
 }
 
-/* on a rétréci les icônes de notifs et calendrier qui étaient énormes */
 .Navbar-links a img {
   height: 20px;
   opacity: 0.6;
   transition: opacity 0.2s;
-  /* si c'est des png on peut inverser pour qu'ils soient foncés sur fond clair */
-  filter: brightness(0) saturate(100%) opacity(0.7);
 }
 
 .Navbar-links a:hover img {
