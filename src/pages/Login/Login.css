@@ -36,6 +36,17 @@
   font-size: 14px;
 }
 
+.login-error {
+  background-color: #FEF2F2;
+  color: #DC2626;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  border: 1px solid #FCA5A5;
+  text-align: center;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
