@@ -4,23 +4,26 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(15, 23, 42, 0.4); /* j'ai mis un gris-bleu très foncé au lieu d'un noir pur, c'est plus doux */
+  /* fond semi-transparent foncé mais doux */
+  background-color: rgba(15, 23, 42, 0.4); 
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(2px); /* petit effet de flou en arrière-plan, très moderne */
+  /* effet blur derrière la modale pour un côté moderne */
+  backdrop-filter: blur(2px); 
 }
 
 .modal-content {
   background-color: white;
-  border-radius: 12px; /* on arrondit un peu plus la modale */
+  /* bords très arrondis */
+  border-radius: 12px; 
   width: 500px;
   max-width: 90vw;
   min-height: 300px;
   display: flex;
   flex-direction: column;
-  /* une belle ombre bien diffuse pour détacher la modale */
+  /* grosse ombre douce pour détacher l'élément central */
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
@@ -35,7 +38,8 @@
 .modal-header h2 {
   margin: 0;
   font-size: 18px;
-  color: var(--color-navbar-text); /* on réutilise le texte foncé de la navbar pour la cohérence */
+  /* texte sombre cohérent avec le reste */
+  color: var(--color-navbar-text); 
   font-weight: 600;
 }
 
@@ -44,7 +48,8 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #94A3B8; /* un petit gris discret */
+  /* croix grise discrète */
+  color: #94A3B8; 
   line-height: 1;
   transition: color 0.2s;
 }

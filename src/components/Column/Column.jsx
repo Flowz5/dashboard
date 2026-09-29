@@ -7,7 +7,7 @@ const Column = ({ title, children, headerColor }) => {
 
   return (
     <div className="column-container">
-      {/* on applique le headerColor en fond pour bien différencier chaque colonne comme tu as demandé */}
+      {/* injection de la couleur spécifique par colonne en inline style */}
       <div className="column-header" style={{ backgroundColor: headerColor }}>
         <h3>{title}</h3>
         {title === 'To do' && (

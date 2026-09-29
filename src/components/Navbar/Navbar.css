@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* j'ai retiré le box shadow fort pour faire plus épuré comme le design */
+  /* petite bordure claire sous la navbar */
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -24,12 +24,12 @@
   color: var(--color-navbar-text);
 }
 
-/* la search bar est maintenant arrondie et grise claire, avec l'icône loupe à droite */
+/* barre de recherche style pilule */
 .Navbar-search {
   display: flex;
   align-items: center;
   background-color: #F8FAFC; 
-  border-radius: 20px; /* bien arrondi (pill shape) */
+  border-radius: 20px;
   border: 1px solid transparent;
   padding: 8px 16px;
   width: 320px;
@@ -68,7 +68,7 @@
 #search-button img {
   height: 18px;
   opacity: 0.4;
-  /* comme c'est un PNG blanc, on force en noir/gris foncé avec brightness(0) */
+  /* passage en noir de la loupe PNG */
   filter: brightness(0);
 }
 
@@ -83,12 +83,12 @@
 
 .Navbar-links a img {
   height: 20px;
-  /* comme ta navbar est blanche et que tes icônes sont blanches de base, je les passe en gris foncé (brightness(0) = noir) */
+  /* inversion des icones PNG pour qu'elles ressortent en gris foncé sur le blanc */
   filter: brightness(0) opacity(0.6);
   transition: all 0.2s;
 }
 
 .Navbar-links a:hover img {
-  /* au survol on les rend un peu plus visibles */
+  /* plus visible au hover */
   filter: brightness(0) opacity(1);
 }

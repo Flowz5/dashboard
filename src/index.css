@@ -1,15 +1,15 @@
 :root {
-  /* on remet la palette officielle coolors pour respecter le branding */
+  /* palette officielle coolors pour respecter le branding */
   --color-background-teal: #bee9e8;
   --color-primary: #62b6cb;
   --color-dark: #1b4965;
   --color-light: #cae9ff;
   --color-secondary: #5fa8d3;
 
-  /* quelques couleurs neutres pour garder le côté moderne et propre de la maquette */
-  --color-bg: #FFFFFF;          /* on garde le fond blanc moderne */
+  /* couleurs neutres pour le fond et les textes */
+  --color-bg: #FFFFFF;
   --color-navbar: #FFFFFF;
-  --color-navbar-text: #1b4965; /* le texte de la navbar prend la couleur foncée de la palette */
+  --color-navbar-text: #1b4965;
   --color-column-bg: #F4F5F8;   
   --color-text: #333333;        
   --color-border: #E2E8F0;      
