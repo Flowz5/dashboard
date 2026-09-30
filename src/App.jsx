@@ -5,20 +5,53 @@ import { auth } from './firebase';
 import Navbar from './components/Navbar/Navbar';
 import Column from './components/Column/Column';
 import Login from './pages/Login/Login';
+import Ticket from './components/Ticket/Ticket';
+import TicketModal from './components/TicketModal/TicketModal';
+import useBoardStore from './store/useBoardStore';
 import './App.css';
 
-import useBoardStore from './store/useBoardStore';
-import Ticket from './components/Ticket/Ticket';
-
-// Ce composant représente le tableau de bord (notre ancienne App)
 const Dashboard = () => {
-  // on récupère tous les tickets depuis notre store global
   const tickets = useBoardStore(state => state.tickets);
+  const addTicket = useBoardStore(state => state.addTicket);
+  const updateTicket = useBoardStore(state => state.updateTicket);
+  const deleteTicket = useBoardStore(state => state.deleteTicket);
 
-  // petite fonction pour filtrer les tickets selon la colonne
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+
+  // Ouvre la modale pour créer un nouveau ticket
+  const handleOpenCreateModal = () => {
+    setSelectedTicket(null);
+    setIsModalOpen(true);
+  };
+
+  // Ouvre la modale pour éditer un ticket existant
+  const handleOpenEditModal = (ticket) => {
+    setSelectedTicket(ticket);
+    setIsModalOpen(true);
+  };
+
+  const handleSubmitModal = (ticketData) => {
+    if (selectedTicket) {
+      updateTicket(ticketData);
+    } else {
+      addTicket(ticketData);
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteTicket = (ticketId) => {
+    deleteTicket(ticketId);
+    setIsModalOpen(false);
+  };
+
   const getTicketsByStatus = (status) => {
     return tickets.filter(ticket => ticket.status === status).map(ticket => (
-      <Ticket key={ticket.id} ticket={ticket} />
+      <Ticket 
+        key={ticket.id} 
+        ticket={ticket} 
+        onClick={() => handleOpenEditModal(ticket)}
+      />
     ));
   };
 
@@ -27,7 +60,7 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="board-container">
-        <Column title="To do" headerColor="var(--color-primary)">
+        <Column title="To do" headerColor="var(--color-primary)" onAddClick={handleOpenCreateModal}>
           {getTicketsByStatus('To do')}
         </Column>
         <Column title="Doing" headerColor="var(--color-primary)">
@@ -43,6 +76,15 @@ const Dashboard = () => {
           {getTicketsByStatus('A mettre en Prod')}
         </Column>
       </div>
+
+      {isModalOpen && (
+        <TicketModal 
+          ticket={selectedTicket}
+          onClose={() => setIsModalOpen(false)} 
+          onSubmit={handleSubmitModal}
+          onDelete={handleDeleteTicket}
+        />
+      )}
     </div>
   );
 };
@@ -52,17 +94,13 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Firebase écoute si un utilisateur est connecté ou non
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
-    
-    // Cleanup de l'écouteur quand le composant est démonté
     return () => unsubscribe();
   }, []);
 
-  // Pendant que Firebase vérifie la connexion, on affiche rien (ou un petit loader)
   if (loading) {
     return <div className="app-container" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>Chargement...</div>;
   }
@@ -70,19 +108,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Si l'utilisateur est déjà connecté, on l'empêche de voir la page de login et on le renvoie au dashboard */}
-        <Route 
-          path="/login" 
-          element={user ? <Navigate to="/" replace /> : <Login />} 
-        />
-        
-        {/* Si l'utilisateur n'est pas connecté, on l'empêche de voir le dashboard et on le renvoie au login */}
-        <Route 
-          path="/" 
-          element={user ? <Dashboard /> : <Navigate to="/login" replace />} 
-        />
-        
-        {/* On redirige tout ce qui n'existe pas vers le dashboard */}
+        <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+        <Route path="/" element={user ? <Dashboard /> : <Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

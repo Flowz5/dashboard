@@ -6,6 +6,14 @@ const useBoardStore = create((set) => ({
   addTicket: (ticket) => set((state) => ({ 
     tickets: [...state.tickets, ticket] 
   })),
+  updateTicket: (updatedTicket) => set((state) => ({
+    tickets: state.tickets.map(ticket => 
+      ticket.id === updatedTicket.id ? updatedTicket : ticket
+    )
+  })),
+  deleteTicket: (ticketId) => set((state) => ({
+    tickets: state.tickets.filter(ticket => ticket.id !== ticketId)
+  })),
   moveTicket: (ticketId, newStatus) => set((state) => ({
     tickets: state.tickets.map(ticket => 
       ticket.id === ticketId ? { ...ticket, status: newStatus } : ticket
