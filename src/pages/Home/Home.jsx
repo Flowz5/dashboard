@@ -17,6 +17,7 @@ const Home = () => {
   const addBoard = useBoardStore(state => state.addBoard);
   const listenToBoards = useBoardStore(state => state.listenToBoards);
   const unsubscribeBoards = useBoardStore(state => state.unsubscribeBoards);
+  const deleteBoard = useBoardStore(state => state.deleteBoard);
   
   const [newBoardTitle, setNewBoardTitle] = useState('');
   const [isCreating, setIsCreating] = useState(false);
@@ -58,6 +59,14 @@ const Home = () => {
     // Si la création a réussi (ID reçu), on redirige tout de suite vers le nouveau Kanban
     if (boardId) {
       navigate(`/board/${boardId}`);
+    }
+  };
+
+  // --- SUPPRESSION DE PROJET ---
+  const handleDeleteBoard = async (e, boardId, boardTitle) => {
+    e.stopPropagation(); // Empêche le clic d'ouvrir le dashboard
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer définitivement le projet "${boardTitle}" et tous ses tickets ?`)) {
+      await deleteBoard(boardId);
     }
   };
 
@@ -109,7 +118,16 @@ const Home = () => {
             <div className="boards-grid">
               {myBoards.map(board => (
                 <div key={board.id} className="board-card" onClick={() => navigate(`/board/${board.id}`)}>
-                  <h3>{board.title}</h3>
+                  <div className="board-card-header">
+                    <h3>{board.title}</h3>
+                    <button 
+                      className="btn-delete-board" 
+                      onClick={(e) => handleDeleteBoard(e, board.id, board.title)}
+                      title="Supprimer le projet"
+                    >
+                      &times;
+                    </button>
+                  </div>
                   <p>Créé le {board.createdAt}</p>
                   <div className="board-card-footer">
                     <span>{board.members.length} membre(s)</span>

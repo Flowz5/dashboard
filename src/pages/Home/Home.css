@@ -172,3 +172,26 @@
   background-color: #F1F5F9;
   border-color: #CBD5E1;
 }
+
+.board-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.btn-delete-board {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-delete-board:hover {
+  color: #EF4444;
+  background-color: #FEE2E2;
+}
