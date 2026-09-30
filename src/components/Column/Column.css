@@ -10,6 +10,13 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--color-border);
   overflow: hidden;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.column-container.drag-over {
+  /* on grise un peu la colonne quand on survole avec un ticket pour bien montrer qu'on peut lâcher */
+  background-color: #E2E8F0;
+  transform: scale(1.02);
 }
 
 .column-header {

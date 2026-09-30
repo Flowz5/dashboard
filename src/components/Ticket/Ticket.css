@@ -1,0 +1,48 @@
+.ticket-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  /* petite ombre pour faire ressortir la carte sur le fond gris de la colonne */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border);
+  cursor: grab;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ticket-card:active {
+  cursor: grabbing;
+}
+
+.ticket-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.ticket-date {
+  font-size: 11px;
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.ticket-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+.ticket-description {
+  margin: 0;
+  font-size: 13px;
+  color: #64748B;
+  line-height: 1.5;
+  /* on coupe la description si elle est trop longue pour que la carte reste jolie */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
