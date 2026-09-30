@@ -7,7 +7,7 @@ import searchIcon from '../../assets/search.png';
 import calendarIcon from '../../assets/calendar.png';
 import notifIcon from '../../assets/notif.png';
 
-const Navbar = ({ board, onInviteClick }) => {
+const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser }) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -46,8 +46,16 @@ const Navbar = ({ board, onInviteClick }) => {
                 <div 
                   key={idx} 
                   className="member-avatar" 
-                  title={email}
-                  style={{ zIndex: 10 - idx }} // Pour que les premiers soient au dessus
+                  title={`${email} (cliquer pour retirer)`}
+                  style={{ 
+                    zIndex: 10 - idx, 
+                    cursor: currentUser?.email === board.owner && email !== board.owner ? 'pointer' : 'default'
+                  }} 
+                  onClick={() => {
+                    if (onRemoveMember) {
+                      onRemoveMember(email);
+                    }
+                  }}
                 >
                   {email.charAt(0).toUpperCase()}
                 </div>
