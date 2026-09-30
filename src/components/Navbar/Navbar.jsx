@@ -8,7 +8,7 @@ import calendarIcon from '../../assets/calendar.png';
 import notifIcon from '../../assets/notif.png';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
-const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser }) => {
+const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange }) => {
   const navigate = useNavigate();
 
   // -- DÉCONNEXION --
@@ -36,7 +36,18 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser }) => {
       </div>
 
       <div className="Navbar-search">
-        <input id="search-bar" name="search" type="text" placeholder="Search tasks..." />
+        {board && onSearchChange ? (
+          <input 
+            id="search-bar" 
+            name="search" 
+            type="text" 
+            placeholder="Chercher un ticket, assigné..." 
+            value={searchQuery || ''}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
+        ) : (
+          <input id="search-bar" name="search" type="text" placeholder="Rechercher..." disabled />
+        )}
         <button id="search-button">
           <img src={searchIcon} alt="Search" />
         </button>

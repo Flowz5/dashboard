@@ -42,6 +42,7 @@ const BoardView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // <-- État pour la barre de recherche
 
   // Redirection de sécurité si l'URL est bidon (projet introuvable)
   if (!currentBoard) {
@@ -80,9 +81,19 @@ const BoardView = () => {
 
   // Petite fonction utilitaire pour répartir les tickets dans les bonnes colonnes
   // On filtre bien par boardId pour pas mélanger les tickets des différents projets !
+  // ET on filtre par la recherche si l'utilisateur a tapé quelque chose
   const getTicketsByStatus = (status) => {
     return tickets
       .filter(ticket => ticket.boardId === id && ticket.status === status)
+      .filter(ticket => {
+        if (!searchQuery.trim()) return true; // Si recherche vide, on garde tout
+        const lowerQuery = searchQuery.toLowerCase();
+        return (
+          ticket.title?.toLowerCase().includes(lowerQuery) ||
+          ticket.description?.toLowerCase().includes(lowerQuery) ||
+          ticket.assignee?.toLowerCase().includes(lowerQuery)
+        );
+      })
       .map(ticket => (
         <Ticket 
           key={ticket.id} 
@@ -112,6 +123,8 @@ const BoardView = () => {
         onInviteClick={() => setIsInviteModalOpen(true)}
         onRemoveMember={handleRemoveMember} 
         currentUser={auth.currentUser}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
 
       {/* Le corps du Kanban, avec nos 5 colonnes */}
