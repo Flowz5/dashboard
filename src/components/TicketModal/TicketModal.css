@@ -16,15 +16,20 @@
 
 .modal-content {
   background-color: white;
-  /* bords très arrondis */
   border-radius: 12px; 
   width: 500px;
   max-width: 90vw;
-  min-height: 300px;
   display: flex;
   flex-direction: column;
   /* grosse ombre douce pour détacher l'élément central */
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  /* petite animation d'apparition douce */
+  animation: modalAppear 0.2s ease-out;
+}
+
+@keyframes modalAppear {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modal-header {
@@ -38,7 +43,6 @@
 .modal-header h2 {
   margin: 0;
   font-size: 18px;
-  /* texte sombre cohérent avec le reste */
   color: var(--color-navbar-text); 
   font-weight: 600;
 }
@@ -48,7 +52,6 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  /* croix grise discrète */
   color: #94A3B8; 
   line-height: 1;
   transition: color 0.2s;
@@ -60,14 +63,70 @@
 
 .modal-body {
   padding: 24px;
-  flex-grow: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.wip-text {
-  color: #64748B;
-  font-style: italic;
-  font-size: 16px;
+/* on réutilise la logique de formulaire du Login mais dans la modale */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-navbar-text);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: #F8FAFC;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+  font-family: inherit;
+  color: var(--color-text);
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--color-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(98, 182, 203, 0.2);
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background-color: #F8FAFC;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.btn-cancel {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+  color: var(--color-text);
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-cancel:hover {
+  background-color: #F1F5F9;
+  border-color: #CBD5E1;
 }
