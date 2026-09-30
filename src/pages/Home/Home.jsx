@@ -5,10 +5,14 @@ import useBoardStore from '../../store/useBoardStore';
 import Button from '../../components/Button/Button';
 import './Home.css';
 
+// Composant de la page d'accueil (Home)
+// C'est le carrefour où l'utilisateur arrive après la connexion.
+// Il permet de voir ses projets et ceux où il est invité.
 const Home = () => {
   const navigate = useNavigate();
   const user = auth.currentUser;
   
+  // Récupération des données et des méthodes du store
   const boards = useBoardStore(state => state.boards);
   const addBoard = useBoardStore(state => state.addBoard);
   const listenToBoards = useBoardStore(state => state.listenToBoards);
@@ -17,49 +21,52 @@ const Home = () => {
   const [newBoardTitle, setNewBoardTitle] = useState('');
   const [isCreating, setIsCreating] = useState(false);
 
-  // On lance l'écoute des boards dès qu'on arrive sur la page d'accueil
+  // On lance l'écoute temps réel (Firestore) des boards dès qu'on arrive sur la page d'accueil.
   useEffect(() => {
     if (user?.email) {
       listenToBoards(user.email);
     }
-    // On nettoie l'écouteur si on quitte complètement l'app, mais ici on le garde
-    // pour que ça reste réactif partout
+    // On garde l'écouteur actif pour que tout se mette à jour direct
   }, [user, listenToBoards]);
 
-  // On récupère les boards qui m'appartiennent
+  // Tri automatique des projets :
+  // D'un côté "Mes boards" (ceux que j'ai créés)
   const myBoards = boards.filter(b => b.owner === user?.email);
   
-  // On récupère les boards où j'ai été invité
+  // De l'autre "Mes invitations" (le owner n'est pas moi, mais je suis dans les members)
   const invitedBoards = boards.filter(b => b.owner !== user?.email && b.members.includes(user?.email));
 
+  // --- CRÉATION DE PROJET ---
   const handleCreateBoard = async (e) => {
     e.preventDefault();
     if (!newBoardTitle.trim() || !user) return;
     
+    // On prépare le nouveau document projet
     const newBoard = {
       title: newBoardTitle.trim(),
       owner: user.email,
-      members: [user.email], // Le créateur est toujours membre
+      members: [user.email], // Le créateur est toujours membre d'office !
       createdAt: new Date().toLocaleDateString()
     };
     
-    // On doit récupérer l'ID généré par Firestore si on veut naviguer direct,
-    // MAIS comme addBoard ne retourne rien pour l'instant, on va le changer dans le store.
+    // On enregistre dans Firestore, et on attend le retour de l'ID généré par Firebase
     const boardId = await addBoard(newBoard);
     
     setNewBoardTitle('');
     setIsCreating(false);
     
+    // Si la création a réussi (ID reçu), on redirige tout de suite vers le nouveau Kanban
     if (boardId) {
       navigate(`/board/${boardId}`);
     }
   };
 
+  // --- DÉCONNEXION ---
   const handleLogout = async () => {
     try {
       await auth.signOut();
     } catch (error) {
-      console.error(error);
+      console.error("Erreur déconnexion:", error);
     }
   };
 

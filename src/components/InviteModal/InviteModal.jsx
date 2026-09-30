@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import Button from '../Button/Button';
 import './InviteModal.css';
 
+// Petite modale toute simple pour inviter quelqu'un via son adresse e-mail
 const InviteModal = ({ onClose, onInvite }) => {
   const [email, setEmail] = useState('');
 
-  // Bloquer le scroll du body quand la modale est ouverte
+  // Bloquer le scroll du body en arrière-plan quand la modale est ouverte
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = 'unset'; };
@@ -14,6 +15,7 @@ const InviteModal = ({ onClose, onInvite }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email.trim()) {
+      // On passe le relais à App.jsx qui va utiliser le store pour l'ajouter sur Firebase
       onInvite(email.trim());
       onClose();
     }
