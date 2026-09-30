@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
-import Button from '../Button/Button';
-import './TicketModal.css';
-
+// La modale qui s'ouvre au clic sur un ticket ou sur "+"
+// Elle sert à la fois pour CRÉER un nouveau ticket et pour MODIFIER un ticket existant.
 const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] }) => {
+  // Petite astuce : si on nous passe un "ticket" dans les props, c'est qu'on est en mode édition !
   const isEditing = !!ticket;
   
+  // États locaux du formulaire (pré-remplis si on est en édition)
   const [title, setTitle] = useState(ticket?.title || '');
   const [description, setDescription] = useState(ticket?.description || '');
-  // On s'assure que si l'ancien assigné a été supprimé du board, il n'est plus assigné
+  
+  // -- VÉRIFICATION DE L'ASSIGNATION --
+  // On s'assure que si l'ancien assigné a été supprimé du board entre temps,
+  // il n'est plus assigné automatiquement pour éviter les bugs fantômes.
   const initialAssignee = ticket?.assignee;
   const isAssigneeStillMember = boardMembers.includes(initialAssignee);
-  
   const [assignee, setAssignee] = useState(
     initialAssignee && isAssigneeStillMember ? initialAssignee : 'Non assigné'
   );
@@ -18,25 +20,28 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
   const [dueDate, setDueDate] = useState(ticket?.dueDate || '');
   const [link, setLink] = useState(ticket?.link || '');
 
-  // Bloquer le scroll du body quand la modale est ouverte
+  // Bloquer le scroll du body en arrière-plan quand la modale est ouverte
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = 'unset'; };
   }, []);
 
+  // -- SOUMISSION DU FORMULAIRE --
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim()) return; // On empêche les tickets sans titre
     
+    // On renvoie un gros objet ticket à App.jsx qui va le balancer dans Firestore
     onSubmit({
-      // Si isEditing est false, l'ID ne sera pas utilisé car addTicket 
-      // confie la création de l'ID à Firestore (addDoc).
+      // Si isEditing est false, l'ID est mis à null car on va laisser 
+      // la fonction addDoc de Firestore générer un vrai ID unique côté serveur.
       id: isEditing ? ticket.id : null,
       title: title.trim(),
       description: description.trim(),
       assignee,
       dueDate,
       link: link.trim(),
+      // Si nouveau ticket, on le met par défaut dans la colonne 'To do'
       status: isEditing ? ticket.status : 'To do',
       date: isEditing ? ticket.date : new Date().toLocaleDateString()
     });

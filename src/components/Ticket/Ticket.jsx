@@ -1,15 +1,23 @@
 import './Ticket.css';
 
+// Composant qui affiche la petite carte d'un ticket dans le Kanban
 const Ticket = ({ ticket, onClick }) => {
-  // on utilise l'API drag and drop native de HTML5
+  
+  // -- GESTION DU DRAG AND DROP --
+  // On utilise l'API native HTML5 (onDragStart / onDragEnd) qui est plus légère que des grosses bibliothèques.
   const handleDragStart = (e) => {
+    // On embarque l'ID du ticket dans le "sac à dos" du drag (dataTransfer)
+    // C'est ça qui permet à la colonne d'arrivée de savoir quel ticket a été lâché !
     e.dataTransfer.setData('ticketId', ticket.id);
+    
+    // Petite astuce visuelle : on rend le ticket transparent à moitié quand on le soulève
     setTimeout(() => {
       e.target.style.opacity = '0.5';
     }, 0);
   };
 
   const handleDragEnd = (e) => {
+    // On remet l'opacité à la normale quand on lâche le ticket
     e.target.style.opacity = '1';
   };
 

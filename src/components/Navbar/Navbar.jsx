@@ -7,9 +7,11 @@ import searchIcon from '../../assets/search.png';
 import calendarIcon from '../../assets/calendar.png';
 import notifIcon from '../../assets/notif.png';
 
+// La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
 const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser }) => {
   const navigate = useNavigate();
 
+  // -- DÉCONNEXION --
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -20,10 +22,12 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser }) => {
 
   return (
     <nav className="Navbar">
+      {/* Clic sur le logo = Retour à la page d'accueil */}
       <div className="Navbar-logo">
         <span id="logo" onClick={() => navigate('/')} style={{cursor: 'pointer'}}>
           Dashboard Dev
         </span>
+        {/* On affiche le nom du projet uniquement si on est dans un board */}
         {board && (
           <span className="navbar-board-title">
             <span className="separator">/</span> {board.title}
@@ -39,24 +43,30 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser }) => {
       </div>
 
       <div className="Navbar-links">
+        {/* On affiche les membres et le bouton "Inviter" seulement dans un board */}
         {board && (
           <div className="navbar-members">
             <div className="members-avatars">
+              {/* On boucle sur les adresses email pour créer les p'tits ronds */}
               {board.members.map((email, idx) => (
                 <div 
                   key={idx} 
                   className="member-avatar" 
                   title={`${email} (cliquer pour retirer)`}
                   style={{ 
+                    // zIndex pour que le premier rond soit devant le deuxième
                     zIndex: 10 - idx, 
+                    // Le curseur passe en main uniquement si c'est le propriétaire qui survole les AUTRES membres
                     cursor: currentUser?.email === board.owner && email !== board.owner ? 'pointer' : 'default'
                   }} 
                   onClick={() => {
+                    // Au clic, on demande à App.jsx de s'en occuper
                     if (onRemoveMember) {
                       onRemoveMember(email);
                     }
                   }}
                 >
+                  {/* On affiche la 1ère lettre de l'email en majuscule */}
                   {email.charAt(0).toUpperCase()}
                 </div>
               ))}

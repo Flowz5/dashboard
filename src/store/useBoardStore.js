@@ -13,7 +13,8 @@ import {
   arrayRemove
 } from 'firebase/firestore';
 
-// On n'utilise plus persist, c'est Firestore la source de vérité !
+// Voici notre store global Zustand !
+// Il ne sauvegarde plus en local, il sert de "pont" entre nos composants React et Firebase Firestore.
 const useBoardStore = create((set, get) => ({
   boards: [],
   tickets: [],
@@ -22,18 +23,24 @@ const useBoardStore = create((set, get) => ({
   unsubscribeBoards: null,
   unsubscribeTickets: null,
 
-  // -- ÉCOUTEURS TEMPS RÉEL --
+  // ==========================================
+  // ÉCOUTEURS TEMPS RÉEL (onSnapshot)
+  // ==========================================
   
   // Écoute tous les boards où l'utilisateur est propriétaire OU membre
   listenToBoards: (userEmail) => {
-    if (get().unsubscribeBoards) get().unsubscribeBoards(); // nettoie l'ancien écouteur
+    // Si on écoutait déjà, on coupe le flux pour pas faire de doublons
+    if (get().unsubscribeBoards) get().unsubscribeBoards(); 
 
+    // On crée la requête : on veut les documents de 'boards' où userEmail est dans le tableau 'members'
     const q = query(
       collection(db, 'boards'), 
       where('members', 'array-contains', userEmail)
     );
 
+    // onSnapshot s'active à chaque fois que la BDD change en temps réel
     const unsubscribe = onSnapshot(q, (snapshot) => {
+      // On fusionne les données et on attache l'ID du document à la fin pour pas qu'il soit écrasé
       const boardsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       set({ boards: boardsData });
     }, (error) => {
@@ -43,7 +50,7 @@ const useBoardStore = create((set, get) => ({
     set({ unsubscribeBoards: unsubscribe });
   },
 
-  // Écoute les tickets d'un board spécifique
+  // Écoute uniquement les tickets du board actuel
   listenToTickets: (boardId) => {
     if (get().unsubscribeTickets) get().unsubscribeTickets();
 
@@ -62,11 +69,13 @@ const useBoardStore = create((set, get) => ({
     set({ unsubscribeTickets: unsubscribe });
   },
 
-  // -- GESTION DES BOARDS (Écriture Firestore) --
+  // ==========================================
+  // GESTION DES BOARDS (Écriture Firestore)
+  // ==========================================
   
   addBoard: async (boardData) => {
     try {
-      // addDoc génère l'ID automatiquement, donc on n'a plus besoin de passer un ID généré au pif
+      // addDoc génère l'ID automatiquement côté Firebase
       const docRef = await addDoc(collection(db, 'boards'), boardData);
       return docRef.id; // On retourne l'ID pour pouvoir naviguer direct dessus
     } catch (error) {
@@ -79,7 +88,7 @@ const useBoardStore = create((set, get) => ({
   inviteMemberToBoard: async (boardId, email) => {
     try {
       const boardRef = doc(db, 'boards', boardId);
-      // arrayUnion ajoute l'élément seulement s'il n'y est pas déjà
+      // arrayUnion ajoute l'élément seulement s'il n'y est pas déjà (super pratique !)
       await updateDoc(boardRef, {
         members: arrayUnion(email)
       });
@@ -91,6 +100,7 @@ const useBoardStore = create((set, get) => ({
   removeMemberFromBoard: async (boardId, email) => {
     try {
       const boardRef = doc(db, 'boards', boardId);
+      // arrayRemove enlève l'élément du tableau
       await updateDoc(boardRef, {
         members: arrayRemove(email)
       });
@@ -99,10 +109,13 @@ const useBoardStore = create((set, get) => ({
     }
   },
 
-  // -- GESTION DES TICKETS (Écriture Firestore) --
+  // ==========================================
+  // GESTION DES TICKETS (Écriture Firestore)
+  // ==========================================
   
   addTicket: async (ticketData) => {
     try {
+      // On retire 'id' si jamais il y a un null ou un ancien ID qui traîne, pour laisser Firebase gérer
       const { id, ...data } = ticketData;
       await addDoc(collection(db, 'tickets'), data);
     } catch (error) {
@@ -128,6 +141,7 @@ const useBoardStore = create((set, get) => ({
     }
   },
   
+  // C'est ça qui est appelé au Drag and Drop
   moveTicket: async (ticketId, newStatus) => {
     try {
       const ticketRef = doc(db, 'tickets', ticketId);

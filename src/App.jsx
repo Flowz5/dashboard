@@ -14,11 +14,16 @@ import { useParams } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import InviteModal from './components/InviteModal/InviteModal';
 
+// BoardView est le composant principal du kanban, il affiche les colonnes et gère la modale
 const BoardView = () => {
+  // On chope l'ID du projet direct depuis l'URL (ex: /board/123)
   const { id } = useParams();
+  
+  // On récupère le projet actuel depuis notre store pour l'afficher (titre, membres)
   const boards = useBoardStore(state => state.boards);
   const currentBoard = boards.find(b => b.id === id);
 
+  // Toutes les méthodes pour manipuler les tickets et les membres
   const tickets = useBoardStore(state => state.tickets);
   const addTicket = useBoardStore(state => state.addTicket);
   const updateTicket = useBoardStore(state => state.updateTicket);
@@ -27,7 +32,7 @@ const BoardView = () => {
   const listenToTickets = useBoardStore(state => state.listenToTickets);
   const removeMember = useBoardStore(state => state.removeMemberFromBoard);
   
-  // Écouter les tickets du board actuel
+  // On branche l'écouteur Firestore pour recevoir les tickets en temps réel dès qu'on arrive sur le board !
   useEffect(() => {
     if (id) {
       listenToTickets(id);
@@ -38,11 +43,12 @@ const BoardView = () => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
 
-  // Redirection de sécurité si l'URL est bidon
+  // Redirection de sécurité si l'URL est bidon (projet introuvable)
   if (!currentBoard) {
     return <Navigate to="/" replace />;
   }
 
+  // --- GESTION DE LA MODALE DES TICKETS ---
   const handleOpenCreateModal = () => {
     setSelectedTicket(null);
     setIsModalOpen(true);
@@ -57,7 +63,7 @@ const BoardView = () => {
     if (selectedTicket) {
       updateTicket(ticketData);
     } else {
-      // On attache bien le ticket au board actuel !
+      // Pour les nouveaux tickets, on n'oublie pas de les attacher au bon board !
       addTicket({ ...ticketData, boardId: id });
     }
     setIsModalOpen(false);
@@ -72,7 +78,8 @@ const BoardView = () => {
     inviteMember(id, email);
   };
 
-  // On filtre par boardId ET par status
+  // Petite fonction utilitaire pour répartir les tickets dans les bonnes colonnes
+  // On filtre bien par boardId pour pas mélanger les tickets des différents projets !
   const getTicketsByStatus = (status) => {
     return tickets
       .filter(ticket => ticket.boardId === id && ticket.status === status)
@@ -85,8 +92,9 @@ const BoardView = () => {
       ));
   };
 
+  // --- GESTION DES MEMBRES ---
   const handleRemoveMember = (email) => {
-    // Seul le owner peut supprimer, et on ne peut pas se supprimer soi-même si on est owner (logiquement)
+    // Seul le propriétaire (owner) a le droit de virer quelqu'un !
     if (currentBoard.owner === auth.currentUser?.email && email !== currentBoard.owner) {
       if (window.confirm(`Voulez-vous vraiment retirer ${email} de ce projet ?`)) {
         removeMember(id, email);
@@ -98,7 +106,7 @@ const BoardView = () => {
 
   return (
     <div className="app-container">
-      {/* On passe le board courant à la Navbar */}
+      {/* On passe le projet courant à la Navbar pour qu'elle affiche le titre et les membres */}
       <Navbar 
         board={currentBoard} 
         onInviteClick={() => setIsInviteModalOpen(true)}
@@ -106,6 +114,7 @@ const BoardView = () => {
         currentUser={auth.currentUser}
       />
 
+      {/* Le corps du Kanban, avec nos 5 colonnes */}
       <div className="board-container">
         <Column title="To do" headerColor="var(--color-primary)" onAddClick={handleOpenCreateModal}>
           {getTicketsByStatus('To do')}
@@ -124,6 +133,7 @@ const BoardView = () => {
         </Column>
       </div>
 
+      {/* Modale pour créer/éditer un ticket */}
       {isModalOpen && (
         <TicketModal 
           ticket={selectedTicket}
@@ -134,6 +144,7 @@ const BoardView = () => {
         />
       )}
       
+      {/* Modale pour inviter un collaborateur */}
       {isInviteModalOpen && (
         <InviteModal 
           onClose={() => setIsInviteModalOpen(false)}
