@@ -60,32 +60,32 @@ graph TD
 
     %% Point d'entrée & Routage
     subgraph Routing ["Accès & Routage (React Router)"]
-        App[App.jsx <br/> Point d'entrée principal]
-        Login[Login.jsx <br/> Authentification]
+        App["App.jsx <br/> Point d'entrée principal"]
+        Login["Login.jsx <br/> Authentification"]
     end
 
     %% Page d'accueil (Projets)
     subgraph Projects ["Espace Projets"]
-        Home[Home.jsx <br/> Liste des Dashboards]
+        Home["Home.jsx <br/> Liste des Dashboards"]
     end
 
     %% Espace Kanban
     subgraph Kanban ["Espace Kanban (BoardView)"]
-        BoardView[BoardView (App.jsx) <br/> Affichage d'un projet]
-        Navbar[Navbar.jsx <br/> En-tête & Recherche]
-        Column[Column.jsx <br/> Colonne de statut]
-        Ticket[Ticket.jsx <br/> Carte du ticket]
-        TicketModal[TicketModal.jsx <br/> Modale Création/Édition]
-        InviteModal[InviteModal.jsx <br/> Inviter un membre]
-        Button[Button.jsx <br/> Bouton partagé]
+        BoardView["BoardView (App.jsx) <br/> Affichage d'un projet"]
+        Navbar["Navbar.jsx <br/> En-tête & Recherche"]
+        Column["Column.jsx <br/> Colonne de statut"]
+        Ticket["Ticket.jsx <br/> Carte du ticket"]
+        TicketModal["TicketModal.jsx <br/> Modale Création/Édition"]
+        InviteModal["InviteModal.jsx <br/> Inviter un membre"]
+        Button["Button.jsx <br/> Bouton partagé"]
     end
 
     %% Gestion des données (State & Backend)
     subgraph Data ["Données & Backend"]
-        Zustand[useBoardStore.js <br/> Store global Zustand]
-        FirebaseSetup[firebase.js <br/> Initialisation SDK]
-        Auth[(Firebase Auth)]
-        Firestore[(Cloud Firestore)]
+        Zustand["useBoardStore.js <br/> Store global Zustand"]
+        FirebaseSetup["firebase.js <br/> Initialisation SDK"]
+        Auth[("(Firebase Auth)")]
+        Firestore[("(Cloud Firestore)")]
     end
 
     %% Flux d'interaction principal
