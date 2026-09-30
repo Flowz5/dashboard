@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 import './Navbar.css';
@@ -6,12 +7,12 @@ import searchIcon from '../../assets/search.png';
 import calendarIcon from '../../assets/calendar.png';
 import notifIcon from '../../assets/notif.png';
 
-const Navbar = () => {
+const Navbar = ({ board, onInviteClick }) => {
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      // Pas besoin de navigate('/login') ici car App.jsx écoute l'état de connexion 
-      // et redirigera automatiquement vers /login quand l'utilisateur passera à null !
     } catch (error) {
       console.error("Erreur lors de la déconnexion", error);
     }
@@ -20,7 +21,14 @@ const Navbar = () => {
   return (
     <nav className="Navbar">
       <div className="Navbar-logo">
-        <a id="logo" href="/">Dashboard Dev</a>
+        <span id="logo" onClick={() => navigate('/')} style={{cursor: 'pointer'}}>
+          Dashboard Dev
+        </span>
+        {board && (
+          <span className="navbar-board-title">
+            <span className="separator">/</span> {board.title}
+          </span>
+        )}
       </div>
 
       <div className="Navbar-search">
@@ -31,19 +39,38 @@ const Navbar = () => {
       </div>
 
       <div className="Navbar-links">
+        {board && (
+          <div className="navbar-members">
+            <div className="members-avatars">
+              {board.members.map((email, idx) => (
+                <div 
+                  key={idx} 
+                  className="member-avatar" 
+                  title={email}
+                  style={{ zIndex: 10 - idx }} // Pour que les premiers soient au dessus
+                >
+                  {email.charAt(0).toUpperCase()}
+                </div>
+              ))}
+            </div>
+            <button className="invite-nav-btn" onClick={onInviteClick}>
+              + Inviter
+            </button>
+          </div>
+        )}
+
         <ul>
           <li>
-            <a href="/">
+            <a href="#">
               <img src={calendarIcon} alt="Calendar" />
             </a>
           </li>
           <li>
-            <a href="/">
+            <a href="#">
               <img src={notifIcon} alt="Notification" />
             </a>
           </li>
           <li>
-            {/* on remplace le petit alert par une vraie fonction de déconnexion */}
             <Button onClick={handleLogout}>
               Déconnexion
             </Button>

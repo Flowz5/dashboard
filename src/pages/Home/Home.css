@@ -1,0 +1,156 @@
+.home-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.home-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-dark);
+}
+
+.home-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-email {
+  font-size: 14px;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.home-main {
+  flex: 1;
+  padding: 48px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.home-top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-top-section h1 {
+  margin: 0;
+  color: var(--color-dark);
+  font-size: 28px;
+  letter-spacing: -0.5px;
+}
+
+.create-board-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.create-board-form input {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.create-board-form input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(98, 182, 203, 0.2);
+}
+
+.boards-section h2 {
+  font-size: 20px;
+  color: var(--color-dark);
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.empty-state {
+  color: #94A3B8;
+  font-size: 15px;
+  font-style: italic;
+}
+
+.boards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.board-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.board-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-primary);
+}
+
+.board-card h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--color-dark);
+}
+
+.board-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748B;
+}
+
+.board-card-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #F1F5F9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.go-arrow {
+  font-size: 18px;
+  color: var(--color-primary);
+  transition: transform 0.2s;
+}
+
+.board-card:hover .go-arrow {
+  transform: translateX(4px);
+}
+
+.invited-card {
+  /* un peu différent visuellement pour les projets invités */
+  background: linear-gradient(to bottom right, #ffffff, #F8FAFC);
+  border-left: 4px solid var(--color-primary);
+}
