@@ -73,6 +73,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  max-width: 80%; /* laisse de la place pour le lien */
 }
 
 .avatar {
@@ -86,12 +87,16 @@
   justify-content: center;
   font-size: 11px;
   font-weight: bold;
+  flex-shrink: 0; /* Empêche l'avatar de se déformer */
 }
 
 .assignee-name {
   font-size: 11px;
   font-weight: 500;
   color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ticket-unassigned {

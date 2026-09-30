@@ -34,7 +34,7 @@ const useBoardStore = create((set, get) => ({
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const boardsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const boardsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       set({ boards: boardsData });
     }, (error) => {
       console.error("Erreur d'écoute des boards:", error);
@@ -53,7 +53,7 @@ const useBoardStore = create((set, get) => ({
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const ticketsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const ticketsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       set({ tickets: ticketsData });
     }, (error) => {
       console.error("Erreur d'écoute des tickets:", error);
@@ -103,7 +103,8 @@ const useBoardStore = create((set, get) => ({
   
   addTicket: async (ticketData) => {
     try {
-      await addDoc(collection(db, 'tickets'), ticketData);
+      const { id, ...data } = ticketData;
+      await addDoc(collection(db, 'tickets'), data);
     } catch (error) {
       console.error("Erreur addTicket:", error);
     }
