@@ -7,18 +7,41 @@ import Column from './components/Column/Column';
 import Login from './pages/Login/Login';
 import './App.css';
 
+import useBoardStore from './store/useBoardStore';
+import Ticket from './components/Ticket/Ticket';
+
 // Ce composant représente le tableau de bord (notre ancienne App)
 const Dashboard = () => {
+  // on récupère tous les tickets depuis notre store global
+  const tickets = useBoardStore(state => state.tickets);
+
+  // petite fonction pour filtrer les tickets selon la colonne
+  const getTicketsByStatus = (status) => {
+    return tickets.filter(ticket => ticket.status === status).map(ticket => (
+      <Ticket key={ticket.id} ticket={ticket} />
+    ));
+  };
+
   return (
     <div className="app-container">
       <Navbar />
 
       <div className="board-container">
-        <Column title="To do" headerColor="var(--color-primary)" />
-        <Column title="Doing" headerColor="var(--color-primary)" />
-        <Column title="Done" headerColor="var(--color-primary)" />
-        <Column title="Mis en Dev" headerColor="var(--color-dark)" />
-        <Column title="A mettre en Prod" headerColor="var(--color-dark)" />
+        <Column title="To do" headerColor="var(--color-primary)">
+          {getTicketsByStatus('To do')}
+        </Column>
+        <Column title="Doing" headerColor="var(--color-primary)">
+          {getTicketsByStatus('Doing')}
+        </Column>
+        <Column title="Done" headerColor="var(--color-primary)">
+          {getTicketsByStatus('Done')}
+        </Column>
+        <Column title="Mis en Dev" headerColor="var(--color-dark)">
+          {getTicketsByStatus('Mis en Dev')}
+        </Column>
+        <Column title="A mettre en Prod" headerColor="var(--color-dark)">
+          {getTicketsByStatus('A mettre en Prod')}
+        </Column>
       </div>
     </div>
   );
