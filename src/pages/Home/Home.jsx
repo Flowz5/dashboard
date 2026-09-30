@@ -11,9 +11,20 @@ const Home = () => {
   
   const boards = useBoardStore(state => state.boards);
   const addBoard = useBoardStore(state => state.addBoard);
+  const listenToBoards = useBoardStore(state => state.listenToBoards);
+  const unsubscribeBoards = useBoardStore(state => state.unsubscribeBoards);
   
   const [newBoardTitle, setNewBoardTitle] = useState('');
   const [isCreating, setIsCreating] = useState(false);
+
+  // On lance l'écoute des boards dès qu'on arrive sur la page d'accueil
+  useEffect(() => {
+    if (user?.email) {
+      listenToBoards(user.email);
+    }
+    // On nettoie l'écouteur si on quitte complètement l'app, mais ici on le garde
+    // pour que ça reste réactif partout
+  }, [user, listenToBoards]);
 
   // On récupère les boards qui m'appartiennent
   const myBoards = boards.filter(b => b.owner === user?.email);
@@ -21,24 +32,27 @@ const Home = () => {
   // On récupère les boards où j'ai été invité
   const invitedBoards = boards.filter(b => b.owner !== user?.email && b.members.includes(user?.email));
 
-  const handleCreateBoard = (e) => {
+  const handleCreateBoard = async (e) => {
     e.preventDefault();
     if (!newBoardTitle.trim() || !user) return;
     
     const newBoard = {
-      id: Date.now().toString(),
       title: newBoardTitle.trim(),
       owner: user.email,
       members: [user.email], // Le créateur est toujours membre
       createdAt: new Date().toLocaleDateString()
     };
     
-    addBoard(newBoard);
+    // On doit récupérer l'ID généré par Firestore si on veut naviguer direct,
+    // MAIS comme addBoard ne retourne rien pour l'instant, on va le changer dans le store.
+    const boardId = await addBoard(newBoard);
+    
     setNewBoardTitle('');
     setIsCreating(false);
     
-    // On redirige direct vers le nouveau board !
-    navigate(`/board/${newBoard.id}`);
+    if (boardId) {
+      navigate(`/board/${boardId}`);
+    }
   };
 
   const handleLogout = async () => {

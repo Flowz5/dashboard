@@ -2,20 +2,19 @@ import { useState, useEffect } from 'react';
 import Button from '../Button/Button';
 import './TicketModal.css';
 
-const TEAM_MEMBERS = [
-  "Non assigné",
-  "Jean Dupont",
-  "Alice Dubois",
-  "Marc Lemoine",
-  "Sophie Martin"
-];
-
-const TicketModal = ({ onClose, onSubmit, onDelete, ticket }) => {
+const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] }) => {
   const isEditing = !!ticket;
   
   const [title, setTitle] = useState(ticket?.title || '');
   const [description, setDescription] = useState(ticket?.description || '');
-  const [assignee, setAssignee] = useState(ticket?.assignee || 'Non assigné');
+  // On s'assure que si l'ancien assigné a été supprimé du board, il n'est plus assigné
+  const initialAssignee = ticket?.assignee;
+  const isAssigneeStillMember = boardMembers.includes(initialAssignee);
+  
+  const [assignee, setAssignee] = useState(
+    initialAssignee && isAssigneeStillMember ? initialAssignee : 'Non assigné'
+  );
+  
   const [dueDate, setDueDate] = useState(ticket?.dueDate || '');
   const [link, setLink] = useState(ticket?.link || '');
 
@@ -30,7 +29,9 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket }) => {
     if (!title.trim()) return;
     
     onSubmit({
-      id: isEditing ? ticket.id : Date.now().toString(),
+      // Si isEditing est false, l'ID ne sera pas utilisé car addTicket 
+      // confie la création de l'ID à Firestore (addDoc).
+      id: isEditing ? ticket.id : null,
       title: title.trim(),
       description: description.trim(),
       assignee,
@@ -83,7 +84,8 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket }) => {
                   value={assignee}
                   onChange={(e) => setAssignee(e.target.value)}
                 >
-                  {TEAM_MEMBERS.map(member => (
+                  <option value="Non assigné">Non assigné</option>
+                  {boardMembers.map(member => (
                     <option key={member} value={member}>{member}</option>
                   ))}
                 </select>

@@ -24,6 +24,15 @@ const BoardView = () => {
   const updateTicket = useBoardStore(state => state.updateTicket);
   const deleteTicket = useBoardStore(state => state.deleteTicket);
   const inviteMember = useBoardStore(state => state.inviteMemberToBoard);
+  const listenToTickets = useBoardStore(state => state.listenToTickets);
+  const removeMember = useBoardStore(state => state.removeMemberFromBoard);
+  
+  // Écouter les tickets du board actuel
+  useEffect(() => {
+    if (id) {
+      listenToTickets(id);
+    }
+  }, [id, listenToTickets]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
@@ -76,10 +85,26 @@ const BoardView = () => {
       ));
   };
 
+  const handleRemoveMember = (email) => {
+    // Seul le owner peut supprimer, et on ne peut pas se supprimer soi-même si on est owner (logiquement)
+    if (currentBoard.owner === auth.currentUser?.email && email !== currentBoard.owner) {
+      if (window.confirm(`Voulez-vous vraiment retirer ${email} de ce projet ?`)) {
+        removeMember(id, email);
+      }
+    } else if (email !== currentBoard.owner) {
+       alert("Seul le propriétaire du projet peut retirer des membres.");
+    }
+  };
+
   return (
     <div className="app-container">
       {/* On passe le board courant à la Navbar */}
-      <Navbar board={currentBoard} onInviteClick={() => setIsInviteModalOpen(true)} />
+      <Navbar 
+        board={currentBoard} 
+        onInviteClick={() => setIsInviteModalOpen(true)}
+        onRemoveMember={handleRemoveMember} 
+        currentUser={auth.currentUser}
+      />
 
       <div className="board-container">
         <Column title="To do" headerColor="var(--color-primary)" onAddClick={handleOpenCreateModal}>
@@ -102,6 +127,7 @@ const BoardView = () => {
       {isModalOpen && (
         <TicketModal 
           ticket={selectedTicket}
+          boardMembers={currentBoard.members}
           onClose={() => setIsModalOpen(false)} 
           onSubmit={handleSubmitModal}
           onDelete={handleDeleteTicket}
