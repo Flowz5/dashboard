@@ -71,6 +71,8 @@ const useBoardStore = create((set, get) => ({
       return docRef.id; // On retourne l'ID pour pouvoir naviguer direct dessus
     } catch (error) {
       console.error("Erreur addBoard:", error);
+      alert("Impossible de créer le projet. Vérifie que tu as bien créé la base de données Firestore dans ta console Firebase (en mode test). Erreur : " + error.message);
+      return null;
     }
   },
   
