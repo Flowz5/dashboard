@@ -10,7 +10,9 @@ import {
   query, 
   where,
   arrayUnion,
-  arrayRemove
+  arrayRemove,
+  getDocs,
+  writeBatch
 } from 'firebase/firestore';
 
 // Voici notre store global Zustand !
@@ -82,6 +84,26 @@ const useBoardStore = create((set, get) => ({
       console.error("Erreur addBoard:", error);
       alert("Impossible de créer le projet. Vérifie que tu as bien créé la base de données Firestore dans ta console Firebase (en mode test). Erreur : " + error.message);
       return null;
+    }
+  },
+  
+  deleteBoard: async (boardId) => {
+    try {
+      // 1. On supprime d'abord tous les tickets liés à ce projet
+      // pour pas laisser de "déchets" (tickets fantômes) dans la base de données.
+      const q = query(collection(db, 'tickets'), where('boardId', '==', boardId));
+      const querySnapshot = await getDocs(q);
+      
+      const batch = writeBatch(db);
+      querySnapshot.forEach((document) => {
+        batch.delete(document.ref);
+      });
+      await batch.commit(); // Exécute toutes les suppressions de tickets d'un coup
+
+      // 2. Ensuite on supprime le projet lui-même
+      await deleteDoc(doc(db, 'boards', boardId));
+    } catch (error) {
+      console.error("Erreur deleteBoard:", error);
     }
   },
   
