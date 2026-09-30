@@ -10,22 +10,35 @@ import TicketModal from './components/TicketModal/TicketModal';
 import useBoardStore from './store/useBoardStore';
 import './App.css';
 
-const Dashboard = () => {
+import { useParams } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import InviteModal from './components/InviteModal/InviteModal';
+
+const BoardView = () => {
+  const { id } = useParams();
+  const boards = useBoardStore(state => state.boards);
+  const currentBoard = boards.find(b => b.id === id);
+
   const tickets = useBoardStore(state => state.tickets);
   const addTicket = useBoardStore(state => state.addTicket);
   const updateTicket = useBoardStore(state => state.updateTicket);
   const deleteTicket = useBoardStore(state => state.deleteTicket);
+  const inviteMember = useBoardStore(state => state.inviteMemberToBoard);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
 
-  // Ouvre la modale pour créer un nouveau ticket
+  // Redirection de sécurité si l'URL est bidon
+  if (!currentBoard) {
+    return <Navigate to="/" replace />;
+  }
+
   const handleOpenCreateModal = () => {
     setSelectedTicket(null);
     setIsModalOpen(true);
   };
 
-  // Ouvre la modale pour éditer un ticket existant
   const handleOpenEditModal = (ticket) => {
     setSelectedTicket(ticket);
     setIsModalOpen(true);
@@ -35,7 +48,8 @@ const Dashboard = () => {
     if (selectedTicket) {
       updateTicket(ticketData);
     } else {
-      addTicket(ticketData);
+      // On attache bien le ticket au board actuel !
+      addTicket({ ...ticketData, boardId: id });
     }
     setIsModalOpen(false);
   };
@@ -45,19 +59,27 @@ const Dashboard = () => {
     setIsModalOpen(false);
   };
 
+  const handleInvite = (email) => {
+    inviteMember(id, email);
+  };
+
+  // On filtre par boardId ET par status
   const getTicketsByStatus = (status) => {
-    return tickets.filter(ticket => ticket.status === status).map(ticket => (
-      <Ticket 
-        key={ticket.id} 
-        ticket={ticket} 
-        onClick={() => handleOpenEditModal(ticket)}
-      />
-    ));
+    return tickets
+      .filter(ticket => ticket.boardId === id && ticket.status === status)
+      .map(ticket => (
+        <Ticket 
+          key={ticket.id} 
+          ticket={ticket} 
+          onClick={() => handleOpenEditModal(ticket)}
+        />
+      ));
   };
 
   return (
     <div className="app-container">
-      <Navbar />
+      {/* On passe le board courant à la Navbar */}
+      <Navbar board={currentBoard} onInviteClick={() => setIsInviteModalOpen(true)} />
 
       <div className="board-container">
         <Column title="To do" headerColor="var(--color-primary)" onAddClick={handleOpenCreateModal}>
@@ -85,6 +107,13 @@ const Dashboard = () => {
           onDelete={handleDeleteTicket}
         />
       )}
+      
+      {isInviteModalOpen && (
+        <InviteModal 
+          onClose={() => setIsInviteModalOpen(false)}
+          onInvite={handleInvite}
+        />
+      )}
     </div>
   );
 };
@@ -109,7 +138,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-        <Route path="/" element={user ? <Dashboard /> : <Navigate to="/login" replace />} />
+        {/* La racine pointe maintenant sur la Home */}
+        <Route path="/" element={user ? <Home /> : <Navigate to="/login" replace />} />
+        {/* Le kanban pointe sur /board/:id */}
+        <Route path="/board/:id" element={user ? <BoardView /> : <Navigate to="/login" replace />} />
+        
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

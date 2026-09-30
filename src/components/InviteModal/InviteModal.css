@@ -1,0 +1,19 @@
+/* On réutilise les classes de base (modal-overlay, modal-content) 
+   définies globalement ou dans TicketModal.css, 
+   ici on met juste les spécificités de la modale d'invitation */
+
+.invite-modal {
+  width: 450px !important;
+}
+
+.invite-desc {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #F8FAFC;
+  border-radius: 8px;
+  border-left: 4px solid var(--color-primary);
+}
