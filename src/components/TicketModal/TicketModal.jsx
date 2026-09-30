@@ -1,3 +1,7 @@
+import { useState, useEffect } from 'react';
+import Button from '../Button/Button';
+import './TicketModal.css';
+
 // La modale qui s'ouvre au clic sur un ticket ou sur "+"
 // Elle sert à la fois pour CRÉER un nouveau ticket et pour MODIFIER un ticket existant.
 const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] }) => {
