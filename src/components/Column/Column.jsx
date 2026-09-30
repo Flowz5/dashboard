@@ -1,22 +1,12 @@
 import { useState } from 'react';
-import TicketModal from '../TicketModal/TicketModal';
 import useBoardStore from '../../store/useBoardStore';
 import './Column.css';
 
-const Column = ({ title, children, headerColor }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const Column = ({ title, children, headerColor, onAddClick }) => {
   const [isDragOver, setIsDragOver] = useState(false);
-  
-  // on récupère nos actions depuis le store Zustand
-  const addTicket = useBoardStore(state => state.addTicket);
   const moveTicket = useBoardStore(state => state.moveTicket);
 
-  const handleAddTicket = (newTicket) => {
-    addTicket(newTicket);
-  };
-
   const handleDragOver = (e) => {
-    // on autorise le drop
     e.preventDefault();
     setIsDragOver(true);
   };
@@ -29,7 +19,6 @@ const Column = ({ title, children, headerColor }) => {
     e.preventDefault();
     setIsDragOver(false);
     
-    // on récupère l'id du ticket et on le déplace dans la colonne actuelle (title)
     const ticketId = e.dataTransfer.getData('ticketId');
     if (ticketId) {
       moveTicket(ticketId, title);
@@ -45,14 +34,14 @@ const Column = ({ title, children, headerColor }) => {
     >
       <div className="column-header" style={{ backgroundColor: headerColor }}>
         <h3>{title}</h3>
-        {title === 'To do' && (
-          <span className="add-button" onClick={() => setIsModalOpen(true)} title="Créer un ticket">+</span>
+        {/* On appelle la prop onAddClick que le Dashboard nous passe */}
+        {title === 'To do' && onAddClick && (
+          <span className="add-button" onClick={onAddClick} title="Créer un ticket">+</span>
         )}
       </div>
       <div className="column-body">
         {children}
       </div>
-      {isModalOpen && <TicketModal onClose={() => setIsModalOpen(false)} onSubmit={handleAddTicket} />}
     </div>
   );
 };
