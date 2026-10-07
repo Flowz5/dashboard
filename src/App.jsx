@@ -106,6 +106,13 @@ const BoardView = () => {
             return timeA - timeB; // Du plus vieux au plus récent
           case 'title_asc':
             return (a.title || '').localeCompare(b.title || ''); // De A à Z
+          case 'priority_desc': {
+            const getPrioWeight = (p) => p === 'Haute' ? 3 : p === 'Basse' ? 1 : 2;
+            const weightA = getPrioWeight(a.priority);
+            const weightB = getPrioWeight(b.priority);
+            if (weightA !== weightB) return weightB - weightA; // Du plus urgent au moins urgent
+            return timeB - timeA; // Départage par date de création (récent d'abord)
+          }
           case 'dueDate_asc':
             // S'il y a pas de date, on les met tout à la fin
             if (!a.dueDate) return 1;

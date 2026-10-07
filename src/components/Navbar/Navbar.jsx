@@ -67,6 +67,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
           >
             <option value="created_desc">Le plus récent</option>
             <option value="created_asc">Le plus ancien</option>
+            <option value="priority_desc">Priorité (Haute → Basse)</option>
             <option value="dueDate_asc">Date butoire</option>
             <option value="title_asc">De A à Z</option>
           </select>
