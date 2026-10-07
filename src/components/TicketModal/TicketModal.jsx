@@ -6,10 +6,11 @@ import './TicketModal.css';
 
 // La modale qui s'ouvre au clic sur un ticket ou sur "+"
 // Elle sert à la fois pour CRÉER un nouveau ticket et pour MODIFIER un ticket existant.
-const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] }) => {
+const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], userRole }) => {
   const isDarkMode = useThemeStore(state => state.isDarkMode);
   // Petite astuce : si on nous passe un "ticket" dans les props, c'est qu'on est en mode édition !
   const isEditing = !!ticket;
+  const isViewer = userRole === 'viewer';
   
   // États locaux du formulaire (pré-remplis si on est en édition)
   const [title, setTitle] = useState(ticket?.title || '');
@@ -72,7 +73,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
           <div className="modal-body">
             <div className="form-group">
               <label htmlFor="ticket-title">Titre du ticket *</label>
-              <input 
+              <input disabled={isViewer} 
                 type="text" 
                 id="ticket-title" 
                 value={title}
@@ -90,7 +91,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
                   id="ticket-desc"
                   value={description}
                   onChange={setDescription}
-                  preview="edit"
+                  preview={isViewer ? "preview" : "edit"} hideToolbar={isViewer}
                   height={200}
                   textareaProps={{
                     placeholder: "Décrivez la tâche à accomplir (Markdown supporté)..."
@@ -102,7 +103,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
             <div className="form-row">
               <div className="form-group half">
                 <label htmlFor="ticket-assignee">Assigné à</label>
-                <select 
+                <select disabled={isViewer} 
                   id="ticket-assignee" 
                   value={assignee}
                   onChange={(e) => setAssignee(e.target.value)}
@@ -116,7 +117,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
 
               <div className="form-group half">
                 <label htmlFor="ticket-date">Date butoire</label>
-                <input 
+                <input disabled={isViewer} 
                   type="date" 
                   id="ticket-date" 
                   value={dueDate}
@@ -128,7 +129,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
             <div className="form-row">
               <div className="form-group half">
                 <label htmlFor="ticket-priority">Priorité</label>
-                <select 
+                <select disabled={isViewer} 
                   id="ticket-priority" 
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
@@ -141,7 +142,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
 
               <div className="form-group half">
                 <label htmlFor="ticket-link">Image ou Lien (Optionnel)</label>
-                <input 
+                <input disabled={isViewer} 
                   type="url" 
                   id="ticket-link" 
                   value={link}
@@ -158,7 +159,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
 
             <div className="form-group" style={{ marginTop: '16px' }}>
               <label htmlFor="ticket-tags">Étiquettes (Tags)</label>
-              <input 
+              <input disabled={isViewer} 
                 type="text" 
                 id="ticket-tags" 
                 value={tags}
@@ -168,8 +169,8 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
             </div>
           </div>
           
-          <div className="modal-footer" style={{ justifyContent: isEditing ? 'space-between' : 'flex-end' }}>
-            {isEditing && (
+          <div className="modal-footer" style={{ justifyContent: isEditing && !isViewer ? 'space-between' : 'flex-end' }}>
+            {isEditing && !isViewer && (
               <button 
                 type="button" 
                 className="btn-delete" 
@@ -185,11 +186,13 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
             
             <div className="footer-actions">
               <button type="button" className="btn-cancel" onClick={onClose}>
-                Annuler
+                {isViewer ? "Fermer" : "Annuler"}
               </button>
-              <Button type="submit" disabled={!title.trim()}>
-                {isEditing ? "Mettre à jour" : "Ajouter"}
-              </Button>
+              {!isViewer && (
+                <Button type="submit" disabled={!title.trim()}>
+                  {isEditing ? "Mettre à jour" : "Ajouter"}
+                </Button>
+              )}
             </div>
           </div>
         </form>

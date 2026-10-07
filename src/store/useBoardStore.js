@@ -107,24 +107,38 @@ const useBoardStore = create((set, get) => ({
     }
   },
   
-  inviteMemberToBoard: async (boardId, email) => {
+  inviteMemberToBoard: async (boardId, email, role = 'editor') => {
     try {
       const boardRef = doc(db, 'boards', boardId);
       // arrayUnion ajoute l'élément seulement s'il n'y est pas déjà (super pratique !)
       await updateDoc(boardRef, {
-        members: arrayUnion(email)
+        members: arrayUnion(email),
+        [`roles.${email}`]: role
       });
     } catch (error) {
       console.error("Erreur inviteMember:", error);
     }
   },
 
+  updateMemberRole: async (boardId, email, role) => {
+    try {
+      const boardRef = doc(db, 'boards', boardId);
+      await updateDoc(boardRef, {
+        [`roles.${email}`]: role
+      });
+    } catch (error) {
+      console.error("Erreur updateMemberRole:", error);
+    }
+  },
+
   removeMemberFromBoard: async (boardId, email) => {
     try {
       const boardRef = doc(db, 'boards', boardId);
-      // arrayRemove enlève l'élément du tableau
+      // On utilise arrayRemove pour enlever du tableau, et deleteField pour supprimer la clé de l'objet roles
+      const { deleteField } = await import('firebase/firestore');
       await updateDoc(boardRef, {
-        members: arrayRemove(email)
+        members: arrayRemove(email),
+        [`roles.${email}`]: deleteField()
       });
     } catch (error) {
       console.error("Erreur removeMember:", error);

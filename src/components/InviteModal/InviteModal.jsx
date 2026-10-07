@@ -5,6 +5,7 @@ import './InviteModal.css';
 // Petite modale toute simple pour inviter quelqu'un via son adresse e-mail
 const InviteModal = ({ onClose, onInvite }) => {
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('editor');
 
   // Bloquer le scroll du body en arrière-plan quand la modale est ouverte
   useEffect(() => {
@@ -16,7 +17,7 @@ const InviteModal = ({ onClose, onInvite }) => {
     e.preventDefault();
     if (email.trim()) {
       // On passe le relais à App.jsx qui va utiliser le store pour l'ajouter sur Firebase
-      onInvite(email.trim());
+      onInvite(email.trim(), role);
       onClose();
     }
   };
@@ -32,7 +33,7 @@ const InviteModal = ({ onClose, onInvite }) => {
         <form onSubmit={handleSubmit}>
           <div className="modal-body">
             <p className="invite-desc">
-              Entrez l'adresse email de la personne que vous souhaitez inviter sur ce Dashboard. Elle le verra apparaître directement sur sa page d'accueil !
+              Entrez l'adresse email de la personne à inviter et choisissez ses permissions.
             </p>
             <div className="form-group">
               <label htmlFor="invite-email">Adresse Email</label>
@@ -45,6 +46,17 @@ const InviteModal = ({ onClose, onInvite }) => {
                 required
                 autoFocus
               />
+            </div>
+            <div className="form-group" style={{ marginTop: '16px' }}>
+              <label htmlFor="invite-role">Rôle</label>
+              <select 
+                id="invite-role" 
+                value={role} 
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="editor">Éditeur (Peut créer et modifier des tickets)</option>
+                <option value="viewer">Lecteur (Peut seulement consulter)</option>
+              </select>
             </div>
           </div>
           

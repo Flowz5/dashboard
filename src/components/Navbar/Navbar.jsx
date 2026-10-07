@@ -9,7 +9,7 @@ import notifIcon from '../../assets/notif.png';
 import useThemeStore from '../../store/useThemeStore';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
-const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick }) => {
+const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick, userRole }) => {
   const navigate = useNavigate();
   const isDarkMode = useThemeStore(state => state.isDarkMode);
   const toggleTheme = useThemeStore(state => state.toggleTheme);
@@ -109,11 +109,15 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
           <div className="navbar-members">
             <div className="members-avatars">
               {/* On boucle sur les adresses email pour créer les p'tits ronds */}
-              {board.members.map((email, idx) => (
+              {board.members.map((email, idx) => {
+                const isOwner = email === board.owner;
+                const roleLabel = isOwner ? 'Propriétaire' : (board.roles?.[email] === 'viewer' ? 'Lecteur' : 'Éditeur');
+                
+                return (
                 <div 
                   key={idx} 
                   className="member-avatar" 
-                  title={`${email} (cliquer pour retirer)`}
+                  title={`${email} - ${roleLabel}${currentUser?.email === board.owner && !isOwner ? ' (cliquer pour retirer)' : ''}`}
                   style={{ 
                     // zIndex pour que le premier rond soit devant le deuxième
                     zIndex: 10 - idx, 
@@ -130,11 +134,14 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
                   {/* On affiche la 1ère lettre de l'email en majuscule */}
                   {email.charAt(0).toUpperCase()}
                 </div>
-              ))}
+                );
+              })}
             </div>
-            <button className="invite-nav-btn" onClick={onInviteClick}>
-              + Inviter
-            </button>
+            {userRole !== "viewer" && (
+              <button className="invite-nav-btn" onClick={onInviteClick}>
+                + Inviter
+              </button>
+            )}
           </div>
         )}
 
