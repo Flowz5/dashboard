@@ -47,7 +47,9 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
       link: link.trim(),
       // Si nouveau ticket, on le met par défaut dans la colonne 'To do'
       status: isEditing ? ticket.status : 'To do',
-      date: isEditing ? ticket.date : new Date().toLocaleDateString()
+      date: isEditing ? ticket.date : new Date().toLocaleDateString(),
+      // Un vrai timestamp technique pour faciliter les tris
+      createdAt: isEditing ? (ticket.createdAt || Date.now()) : Date.now()
     });
   };
 
