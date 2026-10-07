@@ -24,7 +24,7 @@ const StatisticsModal = ({ board, tickets, onClose }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content stats-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>📊 Statistiques : {board.title}</h2>
+          <h2 style={{ display: "flex", alignItems: "center" }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "8px" }}><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> Statistiques : {board.title}</h2>
           <button className="close-button" onClick={onClose}>&times;</button>
         </div>
         
