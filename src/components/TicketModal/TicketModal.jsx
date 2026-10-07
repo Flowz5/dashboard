@@ -23,6 +23,8 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
   
   const [dueDate, setDueDate] = useState(ticket?.dueDate || '');
   const [link, setLink] = useState(ticket?.link || '');
+  const [priority, setPriority] = useState(ticket?.priority || 'Moyenne');
+  const [tags, setTags] = useState(ticket?.tags?.join(', ') || '');
 
   // Bloquer le scroll du body en arrière-plan quand la modale est ouverte
   useEffect(() => {
@@ -45,6 +47,8 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
       assignee,
       dueDate,
       link: link.trim(),
+      priority,
+      tags: tags.split(',').map(t => t.trim()).filter(t => t.length > 0),
       // Si nouveau ticket, on le met par défaut dans la colonne 'To do'
       status: isEditing ? ticket.status : 'To do',
       date: isEditing ? ticket.date : new Date().toLocaleDateString(),
@@ -113,20 +117,46 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
               </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="ticket-link">Image ou Lien attaché (Optionnel)</label>
-              <input 
-                type="url" 
-                id="ticket-link" 
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
-                placeholder="https://..."
-              />
+            <div className="form-row">
+              <div className="form-group half">
+                <label htmlFor="ticket-priority">Priorité</label>
+                <select 
+                  id="ticket-priority" 
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}
+                >
+                  <option value="Basse">🟢 Basse</option>
+                  <option value="Moyenne">🟠 Moyenne</option>
+                  <option value="Haute">🔴 Haute</option>
+                </select>
+              </div>
+
+              <div className="form-group half">
+                <label htmlFor="ticket-link">Image ou Lien (Optionnel)</label>
+                <input 
+                  type="url" 
+                  id="ticket-link" 
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                  placeholder="https://..."
+                />
+              </div>
+            </div>
               {link && (
-                <div className="link-preview">
+                <div className="link-preview" style={{ marginTop: '8px' }}>
                   <a href={link} target="_blank" rel="noopener noreferrer">Ouvrir le lien attaché</a>
                 </div>
               )}
+
+            <div className="form-group" style={{ marginTop: '16px' }}>
+              <label htmlFor="ticket-tags">Étiquettes (Tags)</label>
+              <input 
+                type="text" 
+                id="ticket-tags" 
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                placeholder="Ex: bug, design, frontend (séparés par des virgules)"
+              />
             </div>
           </div>
           

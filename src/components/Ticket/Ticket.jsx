@@ -30,7 +30,14 @@ const Ticket = ({ ticket, onClick }) => {
       onClick={onClick}
     >
       <div className="ticket-header">
-        <span className="ticket-date">{ticket.date}</span>
+        <div className="ticket-header-left" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span className="ticket-date">{ticket.date}</span>
+          {ticket.priority && (
+            <span className={`ticket-priority priority-${ticket.priority.toLowerCase()}`} style={{ fontSize: '11px', fontWeight: '500' }}>
+              {ticket.priority === 'Haute' ? '🔴' : ticket.priority === 'Basse' ? '🟢' : '🟠'} {ticket.priority}
+            </span>
+          )}
+        </div>
         {ticket.dueDate && (
           <span className="ticket-due-date" title="Date butoire">
             📅 {new Date(ticket.dueDate).toLocaleDateString()}
@@ -42,6 +49,24 @@ const Ticket = ({ ticket, onClick }) => {
       
       {ticket.description && (
         <p className="ticket-description">{ticket.description}</p>
+      )}
+
+      {ticket.tags && ticket.tags.length > 0 && (
+        <div className="ticket-tags" style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          {ticket.tags.map(tag => (
+            <span key={tag} className="ticket-tag" style={{
+              backgroundColor: 'var(--color-primary)',
+              color: 'white',
+              padding: '2px 8px',
+              borderRadius: '12px',
+              fontSize: '10px',
+              fontWeight: '600',
+              textTransform: 'uppercase'
+            }}>
+              {tag}
+            </span>
+          ))}
+        </div>
       )}
 
       <div className="ticket-footer">
