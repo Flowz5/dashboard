@@ -1,0 +1,42 @@
+.profile-modal {
+  width: 400px !important;
+}
+
+.profile-preview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.profile-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 32px;
+  font-weight: 600;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 3px solid var(--color-card-bg);
+}
+
+.color-picker {
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: none;
+}
+.color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.color-picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 8px;
+}

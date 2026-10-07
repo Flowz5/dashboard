@@ -109,9 +109,10 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
                   onChange={(e) => setAssignee(e.target.value)}
                 >
                   <option value="Non assigné">Non assigné</option>
-                  {boardMembers.map(member => (
-                    <option key={member} value={member}>{member}</option>
-                  ))}
+                  {boardMembers.map(member => {
+                    const profile = useUserStore.getState().users?.[member];
+                    return <option key={member} value={member}>{profile?.displayName || member}</option>;
+                  })}
                 </select>
               </div>
 
