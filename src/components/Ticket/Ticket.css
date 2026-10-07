@@ -34,9 +34,9 @@
 
 .ticket-due-date {
   font-size: 11px;
-  color: #EF4444; /* Rouge pour montrer l'importance de la date butoire */
+  color: var(--color-danger-text); /* Rouge pour montrer l'importance de la date butoire */
   font-weight: 600;
-  background-color: #FEF2F2;
+  background-color: var(--color-danger-bg);
   padding: 2px 6px;
   border-radius: 4px;
 }

@@ -20,6 +20,9 @@
   --color-footer-bg: #F8FAFC;
   --color-muted: #94A3B8;
   --color-muted-bg: #F1F5F9;
+  
+  --color-danger-bg: #FEF2F2;
+  --color-danger-text: #EF4444;
 }
 
 [data-theme='dark'] {
@@ -35,6 +38,9 @@
   --color-footer-bg: #1E293B;
   --color-muted: #64748B;
   --color-muted-bg: #334155;
+  
+  --color-danger-bg: rgba(239, 68, 68, 0.2);
+  --color-danger-text: #FCA5A5;
   
   /* On ajuste un peu les couleurs brand pour le mode sombre pour plus de lisibilité */
   --color-dark: #38bdf8; 

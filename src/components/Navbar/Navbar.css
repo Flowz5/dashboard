@@ -195,3 +195,8 @@
   background-color: var(--color-border);
   transform: scale(1.1);
 }
+
+.theme-toggle-btn svg {
+  color: var(--color-navbar-text);
+  transition: color 0.2s;
+}
