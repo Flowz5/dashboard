@@ -83,12 +83,29 @@ const Ticket = ({ ticket, onClick, userRole }) => {
 
       <div className="ticket-footer">
         {ticket.assignee && ticket.assignee !== 'Non assigné' ? (
-          <div className="ticket-assignee" title={`Assigné à ${ticket.assignee}`}>
-            <span className="avatar">
-              {ticket.assignee.charAt(0).toUpperCase()}
-            </span>
-            <span className="assignee-name">{ticket.assignee}</span>
-          </div>
+          (() => {
+            const assigneeProfile = useUserStore.getState().users?.[ticket.assignee];
+            const displayName = assigneeProfile?.displayName || ticket.assignee;
+            const initial = displayName.charAt(0).toUpperCase();
+            const bgColor = assigneeProfile?.color || 'var(--color-primary)';
+            const photoURL = assigneeProfile?.photoURL || '';
+
+            return (
+              <div className="ticket-assignee" title={`Assigné à ${displayName}`}>
+                <span className="avatar" style={{
+                  backgroundColor: bgColor,
+                  backgroundImage: photoURL ? `url(${photoURL})` : 'none',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  color: 'white',
+                  textShadow: '0 1px 2px rgba(0,0,0,0.2)'
+                }}>
+                  {!photoURL && initial}
+                </span>
+                <span className="assignee-name">{displayName}</span>
+              </div>
+            );
+          })()
         ) : (
           <div className="ticket-unassigned">Non assigné</div>
         )}

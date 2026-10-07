@@ -9,10 +9,11 @@ import notifIcon from '../../assets/notif.png';
 import useThemeStore from '../../store/useThemeStore';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
-const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick, userRole }) => {
+const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick, userRole, onProfileClick }) => {
   const navigate = useNavigate();
   const isDarkMode = useThemeStore(state => state.isDarkMode);
   const toggleTheme = useThemeStore(state => state.toggleTheme);
+  const userProfile = useUserStore(state => state.userProfile);
 
   // -- DÉCONNEXION --
   const handleLogout = async () => {
@@ -113,16 +114,28 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
                 const isOwner = email === board.owner;
                 const roleLabel = isOwner ? 'Propriétaire' : (board.roles?.[email] === 'viewer' ? 'Lecteur' : 'Éditeur');
                 
+                // On récupère le profil de ce membre (s'il existe en base)
+                const memberProfile = useUserStore.getState().users?.[email];
+                const displayName = memberProfile?.displayName || email;
+                const initial = displayName.charAt(0).toUpperCase();
+                const bgColor = memberProfile?.color || 'var(--color-primary)';
+                const photoURL = memberProfile?.photoURL || '';
+
                 return (
                 <div 
                   key={idx} 
                   className="member-avatar" 
-                  title={`${email} - ${roleLabel}${currentUser?.email === board.owner && !isOwner ? ' (cliquer pour retirer)' : ''}`}
+                  title={`${displayName} - ${roleLabel}${currentUser?.email === board.owner && !isOwner ? ' (cliquer pour retirer)' : ''}`}
                   style={{ 
                     // zIndex pour que le premier rond soit devant le deuxième
                     zIndex: 10 - idx, 
                     // Le curseur passe en main uniquement si c'est le propriétaire qui survole les AUTRES membres
-                    cursor: currentUser?.email === board.owner && email !== board.owner ? 'pointer' : 'default'
+                    cursor: currentUser?.email === board.owner && email !== board.owner ? 'pointer' : 'default',
+                    backgroundColor: bgColor,
+                    backgroundImage: photoURL ? `url(${photoURL})` : 'none',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    border: '2px solid var(--color-navbar)'
                   }} 
                   onClick={() => {
                     // Au clic, on demande à App.jsx de s'en occuper
@@ -131,8 +144,8 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
                     }
                   }}
                 >
-                  {/* On affiche la 1ère lettre de l'email en majuscule */}
-                  {email.charAt(0).toUpperCase()}
+                  {/* On affiche la 1ère lettre du pseudo/email, sauf s'il y a une photo */}
+                  {!photoURL && initial}
                 </div>
                 );
               })}
@@ -181,6 +194,32 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
             <Button onClick={handleLogout}>
               Déconnexion
             </Button>
+          </li>
+          <li>
+            <div 
+              className="navbar-profile-btn" 
+              onClick={onProfileClick}
+              title="Mon profil"
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: userProfile?.color || 'var(--color-primary)',
+                backgroundImage: userProfile?.photoURL ? `url(${userProfile.photoURL})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                border: '2px solid var(--color-border)',
+                marginLeft: '8px'
+              }}
+            >
+              {!userProfile?.photoURL && (userProfile?.displayName ? userProfile.displayName.charAt(0).toUpperCase() : (currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : '?'))}
+            </div>
           </li>
         </ul>
       </div>

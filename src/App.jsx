@@ -1,3 +1,4 @@
+import useUserStore from "./store/useUserStore";
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -14,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import InviteModal from './components/InviteModal/InviteModal';
 import StatisticsModal from './components/StatisticsModal/StatisticsModal';
+import ProfileModal from "./components/ProfileModal/ProfileModal";
 
 // BoardView est le composant principal du kanban, il affiche les colonnes et gère la modale
 const BoardView = () => {
@@ -43,6 +45,7 @@ const BoardView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [searchQuery, setSearchQuery] = useState(''); // <-- État pour la barre de recherche
   const [sortOption, setSortOption] = useState('created_desc'); // <-- État pour le tri
@@ -165,6 +168,7 @@ const BoardView = () => {
         sortOption={sortOption}
         onSortChange={setSortOption}
         onStatsClick={() => setIsStatsModalOpen(true)}
+        onProfileClick={() => setIsProfileModalOpen(true)}
         userRole={userRole}
       />
 
@@ -216,6 +220,11 @@ const BoardView = () => {
           onClose={() => setIsStatsModalOpen(false)}
         />
       )}
+
+      {/* Modale de personnalisation du profil */}
+      {isProfileModalOpen && (
+        <ProfileModal onClose={() => setIsProfileModalOpen(false)} />
+      )}
     </div>
   );
 };
@@ -233,6 +242,10 @@ function App() {
     
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser?.email) {
+        useUserStore.getState().loadUserProfile(currentUser.email);
+        useUserStore.getState().listenToUsers();
+      }
       setLoading(false);
     });
     return () => unsubscribe();
