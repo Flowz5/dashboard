@@ -13,6 +13,7 @@ import './App.css';
 import { useParams } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import InviteModal from './components/InviteModal/InviteModal';
+import StatisticsModal from './components/StatisticsModal/StatisticsModal';
 
 // BoardView est le composant principal du kanban, il affiche les colonnes et gère la modale
 const BoardView = () => {
@@ -41,6 +42,7 @@ const BoardView = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [searchQuery, setSearchQuery] = useState(''); // <-- État pour la barre de recherche
   const [sortOption, setSortOption] = useState('created_desc'); // <-- État pour le tri
@@ -156,6 +158,7 @@ const BoardView = () => {
         onSearchChange={setSearchQuery}
         sortOption={sortOption}
         onSortChange={setSortOption}
+        onStatsClick={() => setIsStatsModalOpen(true)}
       />
 
       {/* Le corps du Kanban, avec nos 5 colonnes */}
@@ -193,6 +196,15 @@ const BoardView = () => {
         <InviteModal 
           onClose={() => setIsInviteModalOpen(false)}
           onInvite={handleInvite}
+        />
+      )}
+
+      {/* Modale des statistiques du projet */}
+      {isStatsModalOpen && (
+        <StatisticsModal 
+          board={currentBoard}
+          tickets={tickets}
+          onClose={() => setIsStatsModalOpen(false)}
         />
       )}
     </div>
