@@ -15,7 +15,7 @@
 
 .column-container.drag-over {
   /* on grise un peu la colonne quand on survole avec un ticket pour bien montrer qu'on peut lâcher */
-  background-color: #E2E8F0;
+  background-color: var(--color-border);
   transform: scale(1.02);
 }
 

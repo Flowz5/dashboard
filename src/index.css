@@ -6,14 +6,42 @@
   --color-light: #cae9ff;
   --color-secondary: #5fa8d3;
 
-  /* couleurs neutres pour le fond et les textes */
+  /* couleurs neutres pour le fond et les textes (Thème Clair par défaut) */
   --color-bg: #FFFFFF;
   --color-navbar: #FFFFFF;
   --color-navbar-text: #1b4965;
   --color-column-bg: #F4F5F8;   
   --color-text: #333333;        
   --color-border: #E2E8F0;      
+  
+  /* variables ajoutées pour le mode sombre (inputs, modales, cartes) */
+  --color-card-bg: #ffffff;
+  --color-input-bg: #F8FAFC;
+  --color-footer-bg: #F8FAFC;
+  --color-muted: #94A3B8;
+  --color-muted-bg: #F1F5F9;
+}
 
+[data-theme='dark'] {
+  --color-bg: #0F172A;
+  --color-navbar: #1E293B;
+  --color-navbar-text: #F8FAFC;
+  --color-column-bg: #1E293B;   
+  --color-text: #F8FAFC;        
+  --color-border: #334155;
+  
+  --color-card-bg: #1E293B;
+  --color-input-bg: #0F172A;
+  --color-footer-bg: #1E293B;
+  --color-muted: #64748B;
+  --color-muted-bg: #334155;
+  
+  /* On ajuste un peu les couleurs brand pour le mode sombre pour plus de lisibilité */
+  --color-dark: #38bdf8; 
+  --color-primary: #38bdf8;
+}
+
+:root {
   --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
   font: 14px/1.5 var(--sans);
   color: var(--color-text);

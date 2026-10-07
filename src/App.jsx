@@ -168,17 +168,23 @@ const BoardView = () => {
   );
 };
 
+import useThemeStore from './store/useThemeStore';
+
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const initTheme = useThemeStore(state => state.initTheme);
 
   useEffect(() => {
+    // Initialise le thème sombre si l'utilisateur l'avait activé
+    initTheme();
+    
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, [initTheme]);
 
   if (loading) {
     return <div className="app-container" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>Chargement...</div>;
