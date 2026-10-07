@@ -111,6 +111,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
                 >
                   <option value="Non assigné">Non assigné</option>
                   {boardMembers.map(member => {
+                    // On récupère son profil pour afficher son joli pseudo dans la liste
                     const profile = useUserStore.getState().users?.[member];
                     return <option key={member} value={member}>{profile?.displayName || member}</option>;
                   })}

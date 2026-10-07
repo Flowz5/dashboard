@@ -3,19 +3,25 @@ import useUserStore from '../../store/useUserStore';
 import Button from '../Button/Button';
 import './ProfileModal.css';
 
+// Composant pour la modale de personnalisation du profil
+// C'est ici qu'on laisse l'utilisateur pimper son avatar et son pseudo !
 const ProfileModal = ({ onClose }) => {
+  // On récupère le profil actuel et la fonction pour le modifier depuis notre store
   const userProfile = useUserStore(state => state.userProfile);
   const updateUserProfile = useUserStore(state => state.updateUserProfile);
 
+  // Petits states locaux pour le formulaire, pré-remplis avec les infos du mec
   const [displayName, setDisplayName] = useState(userProfile?.displayName || '');
   const [photoURL, setPhotoURL] = useState(userProfile?.photoURL || '');
   const [color, setColor] = useState(userProfile?.color || '#62b6cb');
 
+  // Au submit, on envoie la sauce vers Firebase
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (userProfile?.email) {
       await updateUserProfile(userProfile.email, { displayName, photoURL, color });
     }
+    // Et on ferme la modale une fois que c'est bon
     onClose();
   };
 

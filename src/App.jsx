@@ -243,7 +243,9 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser?.email) {
+        // On charge son profil pour avoir son pseudo et ses couleurs
         useUserStore.getState().loadUserProfile(currentUser.email);
+        // Et on se branche sur la collection pour récupérer les profils des autres gars
         useUserStore.getState().listenToUsers();
       }
       setLoading(false);
