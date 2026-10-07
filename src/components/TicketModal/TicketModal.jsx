@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import useThemeStore from '../../store/useThemeStore';
 import useUserStore from '../../store/useUserStore';
+import rehypeSanitize from 'rehype-sanitize';
 import Button from '../Button/Button';
 import './TicketModal.css';
 
@@ -88,7 +89,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
             <div className="form-group">
               <label htmlFor="ticket-desc">Description détaillée</label>
               <div data-color-mode={isDarkMode ? "dark" : "light"}>
-                <MDEditor
+                <MDEditor previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
                   id="ticket-desc"
                   value={description}
                   onChange={setDescription}

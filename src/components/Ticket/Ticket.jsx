@@ -1,6 +1,7 @@
 import MDEditor from '@uiw/react-md-editor';
 import useThemeStore from '../../store/useThemeStore';
 import useUserStore from '../../store/useUserStore';
+import rehypeSanitize from 'rehype-sanitize';
 import './Ticket.css';
 
 // Composant qui affiche la petite carte d'un ticket dans le Kanban
@@ -57,7 +58,7 @@ const Ticket = ({ ticket, onClick, userRole }) => {
       
       {ticket.description && (
         <div className="ticket-description" data-color-mode={isDarkMode ? "dark" : "light"} style={{ background: 'transparent' }}>
-          <MDEditor.Markdown 
+          <MDEditor.Markdown rehypePlugins={[[rehypeSanitize]]} 
             source={ticket.description} 
             style={{ whiteSpace: 'pre-wrap', background: 'transparent', color: 'inherit', fontSize: '13px' }}
           />
