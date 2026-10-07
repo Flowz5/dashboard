@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import MDEditor from '@uiw/react-md-editor';
+import useThemeStore from '../../store/useThemeStore';
 import Button from '../Button/Button';
 import './TicketModal.css';
 
 // La modale qui s'ouvre au clic sur un ticket ou sur "+"
 // Elle sert à la fois pour CRÉER un nouveau ticket et pour MODIFIER un ticket existant.
 const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] }) => {
+  const isDarkMode = useThemeStore(state => state.isDarkMode);
   // Petite astuce : si on nous passe un "ticket" dans les props, c'est qu'on est en mode édition !
   const isEditing = !!ticket;
   
@@ -82,13 +85,18 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [] })
             
             <div className="form-group">
               <label htmlFor="ticket-desc">Description détaillée</label>
-              <textarea 
-                id="ticket-desc" 
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Décrivez la tâche à accomplir en quelques mots..."
-                rows={4}
-              />
+              <div data-color-mode={isDarkMode ? "dark" : "light"}>
+                <MDEditor
+                  id="ticket-desc"
+                  value={description}
+                  onChange={setDescription}
+                  preview="edit"
+                  height={200}
+                  textareaProps={{
+                    placeholder: "Décrivez la tâche à accomplir (Markdown supporté)..."
+                  }}
+                />
+              </div>
             </div>
 
             <div className="form-row">
