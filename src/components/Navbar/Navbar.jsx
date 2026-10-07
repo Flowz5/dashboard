@@ -6,10 +6,13 @@ import Button from '../Button/Button';
 import searchIcon from '../../assets/search.png';
 import calendarIcon from '../../assets/calendar.png';
 import notifIcon from '../../assets/notif.png';
+import useThemeStore from '../../store/useThemeStore';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
 const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange }) => {
   const navigate = useNavigate();
+  const isDarkMode = useThemeStore(state => state.isDarkMode);
+  const toggleTheme = useThemeStore(state => state.toggleTheme);
 
   // -- DÉCONNEXION --
   const handleLogout = async () => {
@@ -89,6 +92,11 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
         )}
 
         <ul>
+          <li>
+            <button className="theme-toggle-btn" onClick={toggleTheme} title={isDarkMode ? "Passer au thème clair" : "Passer au thème sombre"}>
+              {isDarkMode ? "☀️" : "🌙"}
+            </button>
+          </li>
           <li>
             <a href="#">
               <img src={calendarIcon} alt="Calendar" />

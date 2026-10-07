@@ -40,7 +40,7 @@
 }
 
 .separator {
-  color: #E2E8F0;
+  color: var(--color-border);
   font-weight: 300;
 }
 
@@ -48,7 +48,7 @@
 .Navbar-search {
   display: flex;
   align-items: center;
-  background-color: #F8FAFC; 
+  background-color: var(--color-input-bg); 
   border-radius: 20px;
   border: 1px solid transparent;
   padding: 8px 16px;
@@ -57,8 +57,8 @@
 }
 
 .Navbar-search:focus-within {
-  border-color: #CBD5E1;
-  background-color: #FFFFFF;
+  border-color: var(--color-border);
+  background-color: var(--color-bg);
   box-shadow: 0 0 0 2px rgba(226, 232, 240, 0.5);
 }
 
@@ -72,7 +72,7 @@
 }
 
 #search-bar::placeholder {
-  color: #94A3B8;
+  color: var(--color-muted);
 }
 
 #search-button {
@@ -122,7 +122,7 @@
   justify-content: center;
   font-size: 13px;
   font-weight: 600;
-  border: 2px solid white;
+  border: 2px solid var(--color-navbar);
   margin-left: -8px;
   position: relative;
 }
@@ -167,4 +167,31 @@
 .Navbar-links a:hover img {
   /* plus visible au hover */
   filter: brightness(0) opacity(1);
+}
+
+/* Fix des icones noires pour le mode sombre */
+[data-theme='dark'] #search-button img,
+[data-theme='dark'] .Navbar-links a img {
+  filter: brightness(1) opacity(0.8);
+}
+[data-theme='dark'] .Navbar-links a:hover img {
+  filter: brightness(1) opacity(1);
+}
+
+.theme-toggle-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: transform 0.2s, background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--color-border);
+  transform: scale(1.1);
 }
