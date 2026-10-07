@@ -1,7 +1,10 @@
+import MDEditor from '@uiw/react-md-editor';
+import useThemeStore from '../../store/useThemeStore';
 import './Ticket.css';
 
 // Composant qui affiche la petite carte d'un ticket dans le Kanban
 const Ticket = ({ ticket, onClick }) => {
+  const isDarkMode = useThemeStore(state => state.isDarkMode);
   
   // -- GESTION DU DRAG AND DROP --
   // On utilise l'API native HTML5 (onDragStart / onDragEnd) qui est plus légère que des grosses bibliothèques.
@@ -48,7 +51,12 @@ const Ticket = ({ ticket, onClick }) => {
       <h4 className="ticket-title">{ticket.title}</h4>
       
       {ticket.description && (
-        <p className="ticket-description">{ticket.description}</p>
+        <div className="ticket-description" data-color-mode={isDarkMode ? "dark" : "light"} style={{ background: 'transparent' }}>
+          <MDEditor.Markdown 
+            source={ticket.description} 
+            style={{ whiteSpace: 'pre-wrap', background: 'transparent', color: 'inherit', fontSize: '13px' }}
+          />
+        </div>
       )}
 
       {ticket.tags && ticket.tags.length > 0 && (
