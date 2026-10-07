@@ -9,7 +9,7 @@ import notifIcon from '../../assets/notif.png';
 import useThemeStore from '../../store/useThemeStore';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
-const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange }) => {
+const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick }) => {
   const navigate = useNavigate();
   const isDarkMode = useThemeStore(state => state.isDarkMode);
   const toggleTheme = useThemeStore(state => state.toggleTheme);
@@ -75,6 +75,27 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
       </div>
 
       <div className="Navbar-links">
+        {board && (
+          <button 
+            className="btn-stats" 
+            onClick={onStatsClick} 
+            title="Voir les statistiques du projet"
+            style={{ 
+              background: 'transparent', 
+              border: '1px solid var(--color-border)', 
+              color: 'var(--color-text)', 
+              padding: '6px 12px', 
+              borderRadius: '6px', 
+              cursor: 'pointer', 
+              fontSize: '13px', 
+              fontWeight: '600',
+              marginRight: '8px'
+            }}
+          >
+            📊 Stats
+          </button>
+        )}
+        
         {/* On affiche les membres et le bouton "Inviter" seulement dans un board */}
         {board && (
           <div className="navbar-members">
