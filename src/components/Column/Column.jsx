@@ -3,7 +3,7 @@ import useBoardStore from '../../store/useBoardStore';
 import './Column.css';
 
 // Une colonne du Kanban (ex: "To do", "Doing", etc.)
-const Column = ({ title, children, headerColor, onAddClick }) => {
+const Column = ({ title, children, headerColor, onAddClick, userRole }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const moveTicket = useBoardStore(state => state.moveTicket);
 
@@ -11,16 +11,19 @@ const Column = ({ title, children, headerColor, onAddClick }) => {
   
   // Autoriser le drop (par défaut le navigateur l'interdit !)
   const handleDragOver = (e) => {
+    if (userRole === 'viewer') return;
     e.preventDefault();
     setIsDragOver(true); // Permet de mettre la colonne en surbrillance (cf CSS)
   };
 
   const handleDragLeave = () => {
+    if (userRole === 'viewer') return;
     setIsDragOver(false); // On enlève la surbrillance si le curseur sort de la colonne
   };
 
   // Ce qui se passe quand on lâche la souris avec un ticket au-dessus
   const handleDrop = (e) => {
+    if (userRole === 'viewer') return;
     e.preventDefault();
     setIsDragOver(false);
     

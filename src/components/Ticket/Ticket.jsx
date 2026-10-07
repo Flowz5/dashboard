@@ -3,12 +3,16 @@ import useThemeStore from '../../store/useThemeStore';
 import './Ticket.css';
 
 // Composant qui affiche la petite carte d'un ticket dans le Kanban
-const Ticket = ({ ticket, onClick }) => {
+const Ticket = ({ ticket, onClick, userRole }) => {
   const isDarkMode = useThemeStore(state => state.isDarkMode);
   
   // -- GESTION DU DRAG AND DROP --
   // On utilise l'API native HTML5 (onDragStart / onDragEnd) qui est plus légère que des grosses bibliothèques.
   const handleDragStart = (e) => {
+    if (userRole === 'viewer') {
+      e.preventDefault();
+      return;
+    }
     // On embarque l'ID du ticket dans le "sac à dos" du drag (dataTransfer)
     // C'est ça qui permet à la colonne d'arrivée de savoir quel ticket a été lâché !
     e.dataTransfer.setData('ticketId', ticket.id);
@@ -27,7 +31,7 @@ const Ticket = ({ ticket, onClick }) => {
   return (
     <div 
       className="ticket-card"
-      draggable
+      draggable={userRole !== 'viewer'}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onClick={onClick}

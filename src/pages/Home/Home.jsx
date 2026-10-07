@@ -47,6 +47,7 @@ const Home = () => {
       title: newBoardTitle.trim(),
       owner: user.email,
       members: [user.email], // Le créateur est toujours membre d'office !
+      roles: {}, // Pour stocker les rôles (ex: { "toto@gmail.com": "editor" })
       createdAt: new Date().toLocaleDateString()
     };
     

@@ -47,6 +47,11 @@ const BoardView = () => {
   const [searchQuery, setSearchQuery] = useState(''); // <-- État pour la barre de recherche
   const [sortOption, setSortOption] = useState('created_desc'); // <-- État pour le tri
 
+  // --- DÉTERMINER LE RÔLE DE L'UTILISATEUR ---
+  const currentUserEmail = auth.currentUser?.email;
+  const userRole = currentBoard?.owner === currentUserEmail ? 'owner' 
+    : (currentBoard?.roles?.[currentUserEmail] || 'editor');
+
   // Redirection de sécurité si l'URL est bidon (projet introuvable)
   if (!currentBoard) {
     return <Navigate to="/" replace />;
@@ -78,8 +83,8 @@ const BoardView = () => {
     setIsModalOpen(false);
   };
 
-  const handleInvite = (email) => {
-    inviteMember(id, email);
+  const handleInvite = (email, role) => {
+    inviteMember(id, email, role);
   };
 
   // Petite fonction utilitaire pour répartir les tickets dans les bonnes colonnes
@@ -130,6 +135,7 @@ const BoardView = () => {
           key={ticket.id} 
           ticket={ticket} 
           onClick={() => handleOpenEditModal(ticket)}
+          userRole={userRole}
         />
       ));
   };
@@ -159,23 +165,25 @@ const BoardView = () => {
         sortOption={sortOption}
         onSortChange={setSortOption}
         onStatsClick={() => setIsStatsModalOpen(true)}
+        userRole={userRole}
       />
 
       {/* Le corps du Kanban, avec nos 5 colonnes */}
+      {/* Le corps du Kanban, avec nos 5 colonnes */}
       <div className="board-container">
-        <Column title="To do" headerColor="var(--color-primary)" onAddClick={handleOpenCreateModal}>
+        <Column title="To do" headerColor="var(--color-primary)" onAddClick={userRole !== 'viewer' ? handleOpenCreateModal : undefined} userRole={userRole}>
           {getTicketsByStatus('To do')}
         </Column>
-        <Column title="Doing" headerColor="var(--color-primary)">
+        <Column title="Doing" headerColor="var(--color-primary)" userRole={userRole}>
           {getTicketsByStatus('Doing')}
         </Column>
-        <Column title="Done" headerColor="var(--color-primary)">
+        <Column title="Done" headerColor="var(--color-primary)" userRole={userRole}>
           {getTicketsByStatus('Done')}
         </Column>
-        <Column title="Mis en Dev" headerColor="var(--color-dark)">
+        <Column title="Mis en Dev" headerColor="var(--color-dark)" userRole={userRole}>
           {getTicketsByStatus('Mis en Dev')}
         </Column>
-        <Column title="A mettre en Prod" headerColor="var(--color-dark)">
+        <Column title="A mettre en Prod" headerColor="var(--color-dark)" userRole={userRole}>
           {getTicketsByStatus('A mettre en Prod')}
         </Column>
       </div>
@@ -186,8 +194,9 @@ const BoardView = () => {
           ticket={selectedTicket}
           boardMembers={currentBoard.members}
           onClose={() => setIsModalOpen(false)} 
-          onSubmit={handleSubmitModal}
-          onDelete={handleDeleteTicket}
+          onSubmit={userRole !== 'viewer' ? handleSubmitModal : undefined}
+          onDelete={userRole !== 'viewer' ? handleDeleteTicket : undefined}
+          userRole={userRole}
         />
       )}
       
