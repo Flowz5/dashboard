@@ -9,7 +9,7 @@ import notifIcon from '../../assets/notif.png';
 import useThemeStore from '../../store/useThemeStore';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
-const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange }) => {
+const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange }) => {
   const navigate = useNavigate();
   const isDarkMode = useThemeStore(state => state.isDarkMode);
   const toggleTheme = useThemeStore(state => state.toggleTheme);
@@ -38,22 +38,39 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
         )}
       </div>
 
-      <div className="Navbar-search">
-        {board && onSearchChange ? (
-          <input 
-            id="search-bar" 
-            name="search" 
-            type="text" 
-            placeholder="Chercher un ticket, assigné..." 
-            value={searchQuery || ''}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
-        ) : (
-          <input id="search-bar" name="search" type="text" placeholder="Rechercher..." disabled />
+      <div className="Navbar-controls-center" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+        <div className="Navbar-search">
+          {board && onSearchChange ? (
+            <input 
+              id="search-bar" 
+              name="search" 
+              type="text" 
+              placeholder="Chercher un ticket, assigné..." 
+              value={searchQuery || ''}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+          ) : (
+            <input id="search-bar" name="search" type="text" placeholder="Rechercher..." disabled />
+          )}
+          <button id="search-button">
+            <img src={searchIcon} alt="Search" />
+          </button>
+        </div>
+
+        {/* Menu de tri uniquement si on est dans un projet */}
+        {board && onSortChange && (
+          <select 
+            className="Navbar-sort" 
+            value={sortOption || 'created_desc'}
+            onChange={(e) => onSortChange(e.target.value)}
+            title="Trier les tickets"
+          >
+            <option value="created_desc">Le plus récent</option>
+            <option value="created_asc">Le plus ancien</option>
+            <option value="dueDate_asc">Date butoire</option>
+            <option value="title_asc">De A à Z</option>
+          </select>
         )}
-        <button id="search-button">
-          <img src={searchIcon} alt="Search" />
-        </button>
       </div>
 
       <div className="Navbar-links">

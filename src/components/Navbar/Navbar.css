@@ -200,3 +200,21 @@
   color: var(--color-navbar-text);
   transition: color 0.2s;
 }
+
+.Navbar-sort {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.Navbar-sort:focus, .Navbar-sort:hover {
+  border-color: var(--color-primary);
+}

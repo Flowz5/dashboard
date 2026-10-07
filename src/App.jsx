@@ -43,6 +43,7 @@ const BoardView = () => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [searchQuery, setSearchQuery] = useState(''); // <-- État pour la barre de recherche
+  const [sortOption, setSortOption] = useState('created_desc'); // <-- État pour le tri
 
   // Redirection de sécurité si l'URL est bidon (projet introuvable)
   if (!currentBoard) {
@@ -82,6 +83,7 @@ const BoardView = () => {
   // Petite fonction utilitaire pour répartir les tickets dans les bonnes colonnes
   // On filtre bien par boardId pour pas mélanger les tickets des différents projets !
   // ET on filtre par la recherche si l'utilisateur a tapé quelque chose
+  // ET on trie selon l'option choisie !
   const getTicketsByStatus = (status) => {
     return tickets
       .filter(ticket => ticket.boardId === id && ticket.status === status)
@@ -93,6 +95,26 @@ const BoardView = () => {
           ticket.description?.toLowerCase().includes(lowerQuery) ||
           ticket.assignee?.toLowerCase().includes(lowerQuery)
         );
+      })
+      .sort((a, b) => {
+        // Pour les vieux tickets qui n'ont pas de createdAt, on simule un timestamp à 0
+        const timeA = a.createdAt || 0;
+        const timeB = b.createdAt || 0;
+
+        switch (sortOption) {
+          case 'created_asc':
+            return timeA - timeB; // Du plus vieux au plus récent
+          case 'title_asc':
+            return (a.title || '').localeCompare(b.title || ''); // De A à Z
+          case 'dueDate_asc':
+            // S'il y a pas de date, on les met tout à la fin
+            if (!a.dueDate) return 1;
+            if (!b.dueDate) return -1;
+            return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(); // Du plus urgent au moins urgent
+          case 'created_desc':
+          default:
+            return timeB - timeA; // Du plus récent au plus vieux
+        }
       })
       .map(ticket => (
         <Ticket 
@@ -125,6 +147,8 @@ const BoardView = () => {
         currentUser={auth.currentUser}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        sortOption={sortOption}
+        onSortChange={setSortOption}
       />
 
       {/* Le corps du Kanban, avec nos 5 colonnes */}
