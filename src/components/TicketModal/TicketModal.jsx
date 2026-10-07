@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import useThemeStore from '../../store/useThemeStore';
+import useUserStore from '../../store/useUserStore';
 import Button from '../Button/Button';
 import './TicketModal.css';
 

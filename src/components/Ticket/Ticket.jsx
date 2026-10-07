@@ -1,5 +1,6 @@
 import MDEditor from '@uiw/react-md-editor';
 import useThemeStore from '../../store/useThemeStore';
+import useUserStore from '../../store/useUserStore';
 import './Ticket.css';
 
 // Composant qui affiche la petite carte d'un ticket dans le Kanban
@@ -86,7 +87,7 @@ const Ticket = ({ ticket, onClick, userRole }) => {
           (() => {
             const assigneeProfile = useUserStore.getState().users?.[ticket.assignee];
             const displayName = assigneeProfile?.displayName || ticket.assignee;
-            const initial = displayName.charAt(0).toUpperCase();
+            const initial = (displayName || "?").charAt(0).toUpperCase();
             const bgColor = assigneeProfile?.color || 'var(--color-primary)';
             const photoURL = assigneeProfile?.photoURL || '';
 

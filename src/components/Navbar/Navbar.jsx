@@ -7,6 +7,7 @@ import searchIcon from '../../assets/search.png';
 import calendarIcon from '../../assets/calendar.png';
 import notifIcon from '../../assets/notif.png';
 import useThemeStore from '../../store/useThemeStore';
+import useUserStore from '../../store/useUserStore';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
 const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick, userRole, onProfileClick }) => {
@@ -117,7 +118,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
                 // On récupère le profil de ce membre (s'il existe en base)
                 const memberProfile = useUserStore.getState().users?.[email];
                 const displayName = memberProfile?.displayName || email;
-                const initial = displayName.charAt(0).toUpperCase();
+                const initial = (displayName || "?").charAt(0).toUpperCase();
                 const bgColor = memberProfile?.color || 'var(--color-primary)';
                 const photoURL = memberProfile?.photoURL || '';
 
@@ -218,7 +219,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
                 marginLeft: '8px'
               }}
             >
-              {!userProfile?.photoURL && (userProfile?.displayName ? userProfile.displayName.charAt(0).toUpperCase() : (currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : '?'))}
+              {!userProfile?.photoURL && (userProfile?.displayName ? String(userProfile.displayName).charAt(0).toUpperCase() : (currentUser?.email ? String(currentUser.email).charAt(0).toUpperCase() : '?'))}
             </div>
           </li>
         </ul>
