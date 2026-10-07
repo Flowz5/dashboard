@@ -191,12 +191,10 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
               <img src={notifIcon} alt="Notification" />
             </a>
           </li>
-          <li>
+          <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <Button onClick={handleLogout}>
               Déconnexion
             </Button>
-          </li>
-          <li>
             <div 
               className="navbar-profile-btn" 
               onClick={onProfileClick}
@@ -215,8 +213,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
                 color: 'white',
                 fontWeight: 'bold',
                 cursor: 'pointer',
-                border: '2px solid var(--color-border)',
-                marginLeft: '8px'
+                border: '2px solid var(--color-border)'
               }}
             >
               {!userProfile?.photoURL && (userProfile?.displayName ? String(userProfile.displayName).charAt(0).toUpperCase() : (currentUser?.email ? String(currentUser.email).charAt(0).toUpperCase() : '?'))}
