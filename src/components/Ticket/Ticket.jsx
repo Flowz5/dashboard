@@ -85,6 +85,7 @@ const Ticket = ({ ticket, onClick, userRole }) => {
       <div className="ticket-footer">
         {ticket.assignee && ticket.assignee !== 'Non assigné' ? (
           (() => {
+            // Petit hack pour choper les infos de l'assigné depuis le store des profils
             const assigneeProfile = useUserStore.getState().users?.[ticket.assignee];
             const displayName = assigneeProfile?.displayName || ticket.assignee;
             const initial = (displayName || "?").charAt(0).toUpperCase();
