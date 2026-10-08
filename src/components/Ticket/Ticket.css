@@ -114,3 +114,14 @@
 .ticket-link-icon:hover {
   transform: scale(1.1);
 }
+
+.priority-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.priority-dot.low { background-color: #10B981; }
+.priority-dot.medium { background-color: #F59E0B; }
+.priority-dot.high { background-color: #EF4444; }

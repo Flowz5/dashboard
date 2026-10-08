@@ -252,7 +252,9 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                 >
-                  <div className="dropzone-icon">📥</div>
+                  <div className="dropzone-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  </div>
                   <div className="dropzone-text">Glissez-déposez vos fichiers ici</div>
                   <div className="dropzone-subtext">Images automagiquement compressées ! PDF max 800 Ko.</div>
                 </div>
@@ -263,7 +265,9 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
                   {attachments.map((att, idx) => (
                     <div key={idx} className="attachment-item">
                       <div className="attachment-info">
-                        <span className="attachment-icon">📎</span>
+                        <span className="attachment-icon">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                        </span>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                           <a href={att.data} download={att.name} className="attachment-name" title={att.name}>
                             {att.name}
@@ -321,9 +325,9 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
                 >
-                  <option value="Basse">🟢 Basse</option>
-                  <option value="Moyenne">🟠 Moyenne</option>
-                  <option value="Haute">🔴 Haute</option>
+                  <option value="Basse">Basse</option>
+                  <option value="Moyenne">Moyenne</option>
+                  <option value="Haute">Haute</option>
                 </select>
               </div>
 
