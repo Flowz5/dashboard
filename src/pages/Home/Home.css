@@ -355,3 +355,52 @@
     display: none; /* Hide on mobile to save space */
   }
 }
+
+/* --- FOLDER TREE (ACCORDEON) --- */
+.folder-tree-node {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-expand-folder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-expand-folder:hover {
+  color: var(--color-text) !important;
+}
+
+.folder-children-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease-out;
+}
+.folder-children-wrapper.expanded {
+  grid-template-rows: 1fr;
+}
+
+.folder-children {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-board-item {
+  padding: 8px 12px 8px 40px;
+  font-size: 13px;
+  color: var(--color-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+.sidebar-board-item:hover {
+  color: var(--color-text);
+  background-color: rgba(255, 255, 255, 0.03);
+  border-left-color: rgba(98, 182, 203, 0.5);
+}
