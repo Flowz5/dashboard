@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import useBoardStore from '../../store/useBoardStore';
 import useUserStore from '../../store/useUserStore';
-import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './NotificationsModal.css';
 
-const NotificationsModal = ({ onClose }) => {
-  const { currentUser } = useAuth();
+const NotificationsModal = ({ onClose, currentUser }) => {
   const userProfile = useUserStore(state => state.userProfile);
   const updateUserProfile = useUserStore(state => state.updateUserProfile);
   const boards = useBoardStore(state => state.boards);
