@@ -42,14 +42,16 @@ const Ticket = ({ ticket, onClick, userRole }) => {
         <div className="ticket-header-left" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <span className="ticket-date">{ticket.date}</span>
           {ticket.priority && (
-            <span className={`ticket-priority priority-${ticket.priority.toLowerCase()}`} style={{ fontSize: '11px', fontWeight: '500' }}>
-              {ticket.priority === 'Haute' ? '🔴' : ticket.priority === 'Basse' ? '🟢' : '🟠'} {ticket.priority}
+            <span className={`ticket-priority priority-${ticket.priority.toLowerCase()}`} style={{ fontSize: '11px', fontWeight: '500', display: 'flex', alignItems: 'center' }}>
+              <span className={`priority-dot ${ticket.priority === 'Haute' ? 'high' : ticket.priority === 'Basse' ? 'low' : 'medium'}`}></span>
+              {ticket.priority}
             </span>
           )}
         </div>
         {ticket.dueDate && (
-          <span className="ticket-due-date" title="Date butoire">
-            📅 {new Date(ticket.dueDate).toLocaleDateString()}
+          <span className="ticket-due-date" title="Date butoire" style={{ display: 'flex', alignItems: 'center' }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '4px'}}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            {new Date(ticket.dueDate).toLocaleDateString()}
           </span>
         )}
       </div>
@@ -122,13 +124,14 @@ const Ticket = ({ ticket, onClick, userRole }) => {
             onClick={(e) => e.stopPropagation()} /* Empêche d'ouvrir la modale si on clique sur le lien */
             title="Ouvrir le lien"
           >
-            🔗
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           </a>
         )}
         
         {ticket.attachments && ticket.attachments.length > 0 && (
           <div className="ticket-link-icon" title={`${ticket.attachments.length} pièce(s) jointe(s)`}>
-            📎 {ticket.attachments.length}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '2px'}}><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+            {ticket.attachments.length}
           </div>
         )}
       </div>

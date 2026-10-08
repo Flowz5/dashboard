@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+const fs = require('fs');
+
+const content = `import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
 import useBoardStore from '../../store/useBoardStore';
@@ -75,13 +77,13 @@ const Home = () => {
     setIsCreating(false);
     
     if (boardId) {
-      navigate(`/board/${boardId}`);
+      navigate(\`/board/\${boardId}\`);
     }
   };
 
   const handleDeleteBoard = async (e, boardId, boardTitle) => {
     e.stopPropagation();
-    if (window.confirm(`Êtes-vous sûr de vouloir supprimer définitivement le projet "${boardTitle}" ?`)) {
+    if (window.confirm(\`Êtes-vous sûr de vouloir supprimer définitivement le projet "\${boardTitle}" ?\`)) {
       await deleteBoard(boardId);
       await moveBoardToFolder(user.email, boardId, null); // nettoyage
     }
@@ -98,7 +100,7 @@ const Home = () => {
 
   const handleDeleteFolder = async (e, folderId, folderName) => {
     e.stopPropagation();
-    if (window.confirm(`Supprimer le workspace "${folderName}" ? Les projets à l'intérieur ne seront PAS supprimés.`)) {
+    if (window.confirm(\`Supprimer le workspace "\${folderName}" ? Les projets à l'intérieur ne seront PAS supprimés.\`)) {
       await deleteFolder(user.email, folderId);
       if (activeFolderId === folderId) setActiveFolderId('all');
     }
@@ -108,7 +110,6 @@ const Home = () => {
   const handleDragStart = (e, boardId) => {
     setDraggedBoardId(boardId);
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", boardId); // Requis pour Firefox/Safari
   };
 
   const handleDragOver = (e) => {
@@ -149,29 +150,24 @@ const Home = () => {
         
         <div className="sidebar-section">
           <div 
-            className={`sidebar-item ${activeFolderId === 'all' ? 'active' : ''}`}
+            className={\`sidebar-item \${activeFolderId === 'all' ? 'active' : ''}\`}
             onClick={() => setActiveFolderId('all')}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            Tous les projets
+            🏠 Tous les projets
           </div>
           <div 
-            className={`sidebar-item ${activeFolderId === 'unassigned' ? 'active' : ''}`}
+            className={\`sidebar-item \${activeFolderId === 'unassigned' ? 'active' : ''}\`}
             onClick={() => setActiveFolderId('unassigned')}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDropOnFolder(e, 'unassigned')}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
-            Non classés
+            📥 Non classés
           </div>
         </div>
 
         <div className="sidebar-section">
           <div className="sidebar-title">
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '6px'}}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-              Workspaces
-            </span>
+            <span>🗂️ Workspaces</span>
             <button className="btn-add-folder" onClick={() => setIsCreatingFolder(true)}>+</button>
           </div>
           
@@ -195,15 +191,12 @@ const Home = () => {
             {folders.map(folder => (
               <div 
                 key={folder.id}
-                className={`sidebar-item folder-item ${activeFolderId === folder.id ? 'active' : ''}`}
+                className={\`sidebar-item folder-item \${activeFolderId === folder.id ? 'active' : ''}\`}
                 onClick={() => setActiveFolderId(folder.id)}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDropOnFolder(e, folder.id)}
               >
-                <span className="folder-name" style={{ display: 'flex', alignItems: 'center' }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                  {folder.name}
-                </span>
+                <span className="folder-name">📁 {folder.name}</span>
                 <button 
                   className="btn-delete-folder"
                   onClick={(e) => handleDeleteFolder(e, folder.id, folder.name)}
@@ -246,9 +239,7 @@ const Home = () => {
 
         {displayedBoards.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-            </div>
+            <div className="empty-icon">🗂️</div>
             <p>Aucun projet dans ce Workspace.</p>
             <p className="empty-subtext">Créez un nouveau projet, ou glissez-en un ici depuis le menu de gauche.</p>
           </div>
@@ -257,8 +248,8 @@ const Home = () => {
             {displayedBoards.map(board => (
               <div 
                 key={board.id} 
-                className={`board-card ${board.owner !== user?.email ? 'invited-card' : ''}`}
-                onClick={() => navigate(`/board/${board.id}`)}
+                className={\`board-card \${board.owner !== user?.email ? 'invited-card' : ''}\`}
+                onClick={() => navigate(\`/board/\${board.id}\`)}
                 draggable
                 onDragStart={(e) => handleDragStart(e, board.id)}
                 title="Vous pouvez glisser ce projet dans un Workspace à gauche"
@@ -275,7 +266,7 @@ const Home = () => {
                     </button>
                   )}
                 </div>
-                <p>{board.owner === user?.email ? `Créé le ${board.createdAt}` : `Propriétaire: ${board.owner}`}</p>
+                <p>{board.owner === user?.email ? \`Créé le \${board.createdAt}\` : \`Propriétaire: \${board.owner}\`}</p>
                 <div className="board-card-footer">
                   <span>{board.members.length} membre(s)</span>
                   <span className="go-arrow">→</span>
@@ -290,3 +281,6 @@ const Home = () => {
 };
 
 export default Home;
+`;
+
+fs.writeFileSync('src/pages/Home/Home.jsx', content);
