@@ -220,18 +220,24 @@
 }
 
 /* --- RESPONSIVE DESIGN --- */
-@media (max-width: 1100px) {
+.Navbar-controls-center {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+@media (max-width: 1500px) {
   .Navbar {
     padding: 12px 16px;
     gap: 12px;
   }
   
   .Navbar-search {
-    width: 200px; /* Search bar plus petite */
+    width: 250px;
   }
 
   .Navbar-links ul {
-    gap: 12px; /* Espacement réduit entre les icônes */
+    gap: 12px;
   }
 
   .navbar-members {
@@ -240,14 +246,13 @@
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 1400px) {
   .Navbar {
-    flex-wrap: wrap; /* On permet à la navbar de passer sur plusieurs lignes */
+    flex-wrap: wrap; /* Dès 1200px (PC portable classique), on passe sur 2 lignes ! */
     padding: 16px;
     gap: 16px;
   }
 
-  /* La barre de recherche passe en dessous et prend toute la largeur */
   .Navbar-controls-center {
     order: 3;
     width: 100%;
@@ -256,7 +261,7 @@
 
   .Navbar-search {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
   }
 
   .Navbar-logo {
@@ -268,17 +273,11 @@
   }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 650px) {
   .Navbar-logo {
     font-size: 1.1rem;
   }
   .navbar-board-title {
-    display: none; /* On masque le nom du projet sur mobile pour gagner de la place */
+    display: none;
   }
-}
-
-.Navbar-controls-center {
-  display: flex;
-  gap: 16px;
-  align-items: center;
 }
