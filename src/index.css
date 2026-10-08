@@ -68,3 +68,14 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+@keyframes highlight-blink {
+  0% { box-shadow: 0 0 0 0 rgba(43, 196, 219, 0.7); border-color: var(--color-primary); }
+  50% { box-shadow: 0 0 0 10px rgba(43, 196, 219, 0); border-color: var(--color-primary); }
+  100% { box-shadow: 0 0 0 0 rgba(43, 196, 219, 0); }
+}
+
+.ticket-card.highlight-blink {
+  animation: highlight-blink 1.5s ease-out 2;
+  border-color: var(--color-primary) !important;
+}
