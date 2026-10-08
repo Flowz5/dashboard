@@ -6,6 +6,8 @@ import rehypeSanitize from 'rehype-sanitize';
 import Button from '../Button/Button';
 import './TicketModal.css';
 
+const generateAttachmentId = () => Date.now().toString() + Math.random().toString(36).substring(2, 9);
+
 // La modale qui s'ouvre au clic sur un ticket ou sur "+"
 // Elle sert à la fois pour CRÉER un nouveau ticket et pour MODIFIER un ticket existant.
 const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], userRole, initialDueDate = '' }) => {
@@ -95,7 +97,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
       }
 
       const newAttachment = {
-        id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
+        id: generateAttachmentId(),
         name: file.name,
         data: finalDataUrl,
         size: finalSize,
