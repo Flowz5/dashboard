@@ -29,6 +29,8 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
   
   const [dueDate, setDueDate] = useState(ticket?.dueDate || '');
   const [link, setLink] = useState(ticket?.link || '');
+  const [attachments, setAttachments] = useState(ticket?.attachments || []);
+  const [isDragActive, setIsDragActive] = useState(false);
   const [priority, setPriority] = useState(ticket?.priority || 'Moyenne');
   const [tags, setTags] = useState(ticket?.tags?.join(', ') || '');
 
@@ -38,7 +40,76 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
     return () => { document.body.style.overflow = 'unset'; };
   }, []);
 
+
+  // -- GESTION DU DRAG & DROP (BASE64) --
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    if (isViewer) return;
+    setIsDragActive(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    if (isViewer) return;
+    setIsDragActive(false);
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    if (isViewer) return;
+    setIsDragActive(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length === 0) return;
+
+    for (const file of files) {
+      // Limite stricte de 500 Ko pour ne pas faire exploser Firestore (limite de 1 Mo par document)
+      if (file.size > 500 * 1024) {
+        alert(`Le fichier "${file.name}" est trop volumineux (max 500 Ko).`);
+        continue;
+      }
+      await uploadFileBase64(file);
+    }
+  };
+
+  const uploadFileBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64Data = reader.result;
+        const newAttachment = {
+          id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
+          name: file.name,
+          data: base64Data, // Le contenu du fichier encodé
+          size: file.size,
+          type: file.type
+        };
+        setAttachments(prev => [...prev, newAttachment]);
+        resolve();
+      };
+      reader.onerror = (error) => {
+        console.error("Erreur de lecture du fichier :", error);
+        reject(error);
+      };
+    });
+  };
+
+  const handleDeleteAttachment = (attachmentToDelete) => {
+    if (isViewer) return;
+    setAttachments(prev => prev.filter(att => att.id !== attachmentToDelete.id));
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  };
+
   // -- SOUMISSION DU FORMULAIRE --
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim()) return; // On empêche les tickets sans titre
@@ -56,6 +127,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
       priority,
       tags: tags.split(',').map(t => t.trim()).filter(t => t.length > 0),
       // Si nouveau ticket, on le met par défaut dans la colonne 'To do'
+      attachments: attachments,
       status: isEditing ? ticket.status : 'To do',
       date: isEditing ? ticket.date : new Date().toLocaleDateString(),
       // Un vrai timestamp technique pour faciliter les tris
@@ -100,6 +172,51 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
                   }}
                 />
               </div>
+            </div>
+
+            
+            {/* -- Pièces jointes (Drag & Drop Base64) -- */}
+            <div className="form-group">
+              <label>Pièces jointes (Optionnel - Max 500 Ko/fichier)</label>
+              
+              {!isViewer && (
+                <div 
+                  className={`dropzone ${isDragActive ? 'active' : ''}`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <div className="dropzone-icon">📥</div>
+                  <div className="dropzone-text">Glissez-déposez vos fichiers ici</div>
+                  <div className="dropzone-subtext">Images, petits PDF (Max 500 Ko)</div>
+                </div>
+              )}
+
+              {attachments.length > 0 && (
+                <div className="attachments-list">
+                  {attachments.map((att, idx) => (
+                    <div key={idx} className="attachment-item">
+                      <div className="attachment-info">
+                        <span className="attachment-icon">📎</span>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <a href={att.data} download={att.name} className="attachment-name" title={att.name}>
+                            {att.name}
+                          </a>
+                          <span className="attachment-size">{formatFileSize(att.size)}</span>
+                        </div>
+                      </div>
+                      {!isViewer && (
+                        <button type="button" className="btn-remove-attachment" onClick={() => handleDeleteAttachment(att)} title="Supprimer la pièce jointe">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="form-row">

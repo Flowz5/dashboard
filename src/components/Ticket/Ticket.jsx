@@ -125,6 +125,12 @@ const Ticket = ({ ticket, onClick, userRole }) => {
             🔗
           </a>
         )}
+        
+        {ticket.attachments && ticket.attachments.length > 0 && (
+          <div className="ticket-link-icon" title={`${ticket.attachments.length} pièce(s) jointe(s)`}>
+            📎 {ticket.attachments.length}
+          </div>
+        )}
       </div>
     </div>
   );
