@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* min-width réduit pour que les 5 colonnes puissent se compresser et tenir sur l'écran */
-  min-width: 180px; 
+  /* min-width à 280px pour éviter que ça soit trop écrasé sur petit écran */
+  min-width: 280px; 
   background-color: var(--color-column-bg);
   border-radius: 10px;
   /* ombre et bordure plus marquées pour bien détacher la colonne du fond et rajouter du contraste */
@@ -65,4 +65,5 @@
   flex-direction: column;
   gap: 12px;
   flex-grow: 1;
+  overflow-y: auto;
 }

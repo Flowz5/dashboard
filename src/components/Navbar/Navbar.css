@@ -218,3 +218,67 @@
 .Navbar-sort:focus, .Navbar-sort:hover {
   border-color: var(--color-primary);
 }
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 1100px) {
+  .Navbar {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  
+  .Navbar-search {
+    width: 200px; /* Search bar plus petite */
+  }
+
+  .Navbar-links ul {
+    gap: 12px; /* Espacement réduit entre les icônes */
+  }
+
+  .navbar-members {
+    padding-right: 12px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 850px) {
+  .Navbar {
+    flex-wrap: wrap; /* On permet à la navbar de passer sur plusieurs lignes */
+    padding: 16px;
+    gap: 16px;
+  }
+
+  /* La barre de recherche passe en dessous et prend toute la largeur */
+  .Navbar-controls-center {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .Navbar-search {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .Navbar-logo {
+    order: 1;
+  }
+
+  .Navbar-links {
+    order: 2;
+  }
+}
+
+@media (max-width: 550px) {
+  .Navbar-logo {
+    font-size: 1.1rem;
+  }
+  .navbar-board-title {
+    display: none; /* On masque le nom du projet sur mobile pour gagner de la place */
+  }
+}
+
+.Navbar-controls-center {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
