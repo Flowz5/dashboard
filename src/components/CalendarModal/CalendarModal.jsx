@@ -4,7 +4,7 @@ import useBoardStore from '../../store/useBoardStore';
 import { useNavigate } from 'react-router-dom';
 import './CalendarModal.css';
 
-const CalendarModal = ({ onClose, currentUser }) => {
+const CalendarModal = ({ onClose, currentUser, onCreateTicketForDate }) => {
   const myTickets = useUserStore(state => state.myTickets);
   const boards = useBoardStore(state => state.boards);
   const navigate = useNavigate();
@@ -124,7 +124,31 @@ const CalendarModal = ({ onClose, currentUser }) => {
 
         {selectedDate && (
           <div className="calendar-selected-tickets">
-            <h3>Tickets pour le {selectedDate.toLocaleDateString('fr-FR')}</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <h3 style={{ margin: 0 }}>Tickets pour le {selectedDate.toLocaleDateString('fr-FR')}</h3>
+              {onCreateTicketForDate && (
+                <button 
+                  onClick={() => {
+                    const y = selectedDate.getFullYear();
+                    const m = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                    const d = String(selectedDate.getDate()).padStart(2, '0');
+                    onCreateTicketForDate(`${y}-${m}-${d}`);
+                    onClose();
+                  }}
+                  style={{
+                    background: 'var(--color-primary)',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '4px 12px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '12px'
+                  }}
+                >
+                  + Créer un ticket
+                </button>
+              )}
+            </div>
             {selectedTickets.length === 0 ? (
               <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', margin: 0 }}>Aucun ticket prévu pour ce jour.</p>
             ) : (

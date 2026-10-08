@@ -12,7 +12,7 @@ import NotificationsModal from '../NotificationsModal/NotificationsModal';
 import CalendarModal from '../CalendarModal/CalendarModal';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
-const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick, userRole, onProfileClick }) => {
+const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick, userRole, onProfileClick, onCreateTicketForDate }) => {
   const navigate = useNavigate();
   const isDarkMode = useThemeStore(state => state.isDarkMode);
   const toggleTheme = useThemeStore(state => state.toggleTheme);
@@ -291,7 +291,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
       </div>
 
       {isCalendarOpen && (
-        <CalendarModal onClose={() => setIsCalendarOpen(false)} currentUser={currentUser} />
+        <CalendarModal onClose={() => setIsCalendarOpen(false)} currentUser={currentUser} onCreateTicketForDate={onCreateTicketForDate} />
       )}
       {isNotifModalOpen && (
         <NotificationsModal onClose={() => setIsNotifModalOpen(false)} currentUser={currentUser} />
