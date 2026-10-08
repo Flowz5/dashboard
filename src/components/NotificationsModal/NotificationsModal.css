@@ -13,7 +13,7 @@
 }
 
 .notif-modal-content {
-  background-color: var(--color-background);
+  background-color: var(--color-card-bg);
   width: 400px;
   max-width: 90vw;
   height: 100vh;
