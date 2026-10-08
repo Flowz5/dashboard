@@ -3,7 +3,7 @@
   top: 60px;
   right: 60px;
   width: 400px;
-  background: var(--color-surface);
+  background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -151,7 +151,7 @@
 .calendar-selected-tickets {
   padding: 16px;
   border-top: 1px solid var(--color-border);
-  background: var(--color-background);
+  background: var(--color-bg);
   overflow-y: auto;
   max-height: 200px;
 }
@@ -164,7 +164,7 @@
 
 .calendar-ticket-item {
   padding: 8px 12px;
-  background: var(--color-surface);
+  background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: 4px;
   margin-bottom: 8px;

@@ -195,7 +195,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
       // Si nouveau ticket, on le met par défaut dans la colonne 'To do'
       attachments: attachments,
       status: isEditing ? ticket.status : 'To do',
-      date: isEditing ? ticket.date : new Date().toLocaleDateString(),
+      date: isEditing ? ticket.date : new Date().toLocaleDateString('fr-FR'),
       // Un vrai timestamp technique pour faciliter les tris
       createdAt: isEditing ? (ticket.createdAt || Date.now()) : Date.now()
     });

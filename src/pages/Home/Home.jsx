@@ -62,7 +62,7 @@ const Home = () => {
       owner: user.email,
       members: [user.email],
       roles: {},
-      createdAt: new Date().toLocaleDateString()
+      createdAt: new Date().toLocaleDateString('fr-FR')
     };
     
     const boardId = await addBoard(newBoard);
