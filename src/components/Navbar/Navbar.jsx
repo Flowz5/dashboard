@@ -26,10 +26,10 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
     let count = 0;
     const dismissedNotifs = userProfile?.dismissedNotifs || [];
 
-    boards.forEach(board => {
-      board.columns.forEach(col => {
-        const isDone = col.title.toLowerCase().includes('terminé') || col.title.toLowerCase().includes('done') || col.title.toLowerCase().includes('fini');
-        col.tickets.forEach(ticket => {
+    (boards || []).forEach(board => {
+      (board.columns || []).forEach(col => {
+        const isDone = (col.title || '').toLowerCase().includes('terminé') || (col.title || '').toLowerCase().includes('done') || (col.title || '').toLowerCase().includes('fini');
+        (col.tickets || []).forEach(ticket => {
           if (ticket.assignee === currentUser.email && !isDone) {
             let notifId = 'assigned-' + ticket.id;
             if (ticket.dueDate) {
@@ -140,7 +140,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
           <div className="navbar-members">
             <div className="members-avatars">
               {/* On boucle sur les adresses email pour créer les p'tits ronds */}
-              {board.members.map((email, idx) => {
+              {(board.members || []).map((email, idx) => {
                 const isOwner = email === board.owner;
                 const roleLabel = isOwner ? 'Propriétaire' : (board.roles?.[email] === 'viewer' ? 'Lecteur' : 'Éditeur');
                 
