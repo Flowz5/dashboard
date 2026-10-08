@@ -37,6 +37,7 @@ const Ticket = ({ ticket, onClick, userRole }) => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onClick={onClick}
+      id={`ticket-${ticket.id}`}
     >
       <div className="ticket-header">
         <div className="ticket-header-left" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
