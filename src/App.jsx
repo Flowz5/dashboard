@@ -47,6 +47,7 @@ const BoardView = () => {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [initialDateForNewTicket, setInitialDateForNewTicket] = useState('');
   const [searchQuery, setSearchQuery] = useState(''); // <-- État pour la barre de recherche
   const [sortOption, setSortOption] = useState('created_desc'); // <-- État pour le tri
 
@@ -170,6 +171,11 @@ const BoardView = () => {
         onStatsClick={() => setIsStatsModalOpen(true)}
         onProfileClick={() => setIsProfileModalOpen(true)}
         userRole={userRole}
+        onCreateTicketForDate={(dateStr) => {
+          setSelectedTicket(null);
+          setInitialDateForNewTicket(dateStr);
+          setIsModalOpen(true);
+        }}
       />
 
       {/* Le corps du Kanban, avec nos 5 colonnes */}
@@ -197,7 +203,8 @@ const BoardView = () => {
         <TicketModal 
           ticket={selectedTicket}
           boardMembers={currentBoard.members}
-          onClose={() => setIsModalOpen(false)} 
+          initialDueDate={initialDateForNewTicket}
+          onClose={() => { setIsModalOpen(false); setInitialDateForNewTicket(''); }} 
           onSubmit={userRole !== 'viewer' ? handleSubmitModal : undefined}
           onDelete={userRole !== 'viewer' ? handleDeleteTicket : undefined}
           userRole={userRole}

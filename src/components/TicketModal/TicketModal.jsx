@@ -8,7 +8,7 @@ import './TicketModal.css';
 
 // La modale qui s'ouvre au clic sur un ticket ou sur "+"
 // Elle sert à la fois pour CRÉER un nouveau ticket et pour MODIFIER un ticket existant.
-const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], userRole }) => {
+const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], userRole, initialDueDate = '' }) => {
   const isDarkMode = useThemeStore(state => state.isDarkMode);
   // Petite astuce : si on nous passe un "ticket" dans les props, c'est qu'on est en mode édition !
   const isEditing = !!ticket;
@@ -27,7 +27,7 @@ const TicketModal = ({ onClose, onSubmit, onDelete, ticket, boardMembers = [], u
     initialAssignee && isAssigneeStillMember ? initialAssignee : 'Non assigné'
   );
   
-  const [dueDate, setDueDate] = useState(ticket?.dueDate || '');
+  const [dueDate, setDueDate] = useState(ticket?.dueDate || initialDueDate);
   const [link, setLink] = useState(ticket?.link || '');
   const [attachments, setAttachments] = useState(ticket?.attachments || []);
   const [isDragActive, setIsDragActive] = useState(false);
