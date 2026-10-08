@@ -221,3 +221,123 @@
   border-color: var(--color-primary) !important;
   box-shadow: 0 0 0 2px rgba(98, 182, 203, 0.2) !important;
 }
+
+/* -- Zone de Drag & Drop pour les pièces jointes -- */
+.dropzone {
+  border: 2px dashed var(--color-border);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  background-color: var(--color-input-bg);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--color-muted);
+}
+
+.dropzone.active {
+  border-color: var(--color-primary);
+  background-color: rgba(98, 182, 203, 0.1);
+  color: var(--color-primary);
+}
+
+.dropzone-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.dropzone-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dropzone-subtext {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* -- Liste des pièces jointes -- */
+.attachments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.attachment-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.attachment-icon {
+  font-size: 18px;
+}
+
+.attachment-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-navbar-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
+.attachment-name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.attachment-size {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.btn-remove-attachment {
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-remove-attachment:hover {
+  color: #EF4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.upload-progress {
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-border);
+  border-radius: 2px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.upload-progress-bar {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.2s;
+}
