@@ -1,10 +1,24 @@
 import { create } from 'zustand';
 import { db } from '../firebase';
-import { doc, getDoc, setDoc, updateDoc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, collection, onSnapshot, query, where } from 'firebase/firestore';
 
 const useUserStore = create((set, get) => ({
   userProfile: null,
   users: {},
+  myTickets: [],
+  unsubscribeMyTickets: null,
+
+  listenToMyTickets: (email) => {
+    const state = get();
+    if (state.unsubscribeMyTickets) state.unsubscribeMyTickets();
+    if (!email) return;
+    const q = query(collection(db, 'tickets'), where('assignee', '==', email));
+    const unsub = onSnapshot(q, (snapshot) => {
+      const t = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      set({ myTickets: t });
+    });
+    set({ unsubscribeMyTickets: unsub });
+  },
 
   listenToUsers: () => {
     const q = collection(db, "users");
