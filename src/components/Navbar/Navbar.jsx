@@ -40,7 +40,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
         )}
       </div>
 
-      <div className="Navbar-controls-center" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+      <div className="Navbar-controls-center">
         <div className="Navbar-search">
           {board && onSearchChange ? (
             <input 
