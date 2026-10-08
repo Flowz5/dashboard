@@ -22,11 +22,11 @@ const NotificationsModal = ({ onClose, currentUser }) => {
     const notifs = [];
     const now = new Date();
 
-    boards.forEach(board => {
-      board.columns.forEach(col => {
-        const isDone = col.title.toLowerCase().includes('terminé') || col.title.toLowerCase().includes('done') || col.title.toLowerCase().includes('fini');
+    (boards || []).forEach(board => {
+      (board.columns || []).forEach(col => {
+        const isDone = (col.title || '').toLowerCase().includes('terminé') || (col.title || '').toLowerCase().includes('done') || (col.title || '').toLowerCase().includes('fini');
 
-        col.tickets.forEach(ticket => {
+        (col.tickets || []).forEach(ticket => {
           if (ticket.assignee === currentUser.email && !isDone) {
             
             if (ticket.dueDate) {
