@@ -28,6 +28,13 @@
   animation: modalAppear 0.2s ease-out;
 }
 
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; /* Permet au form de rétrécir et scroller */
+}
+
 @keyframes modalAppear {
   from { opacity: 0; transform: translateY(10px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -67,6 +74,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex: 1; /* Permet au body de s'adapter à la hauteur dispo */
+  min-height: 0; /* Crucial pour le scroll dans un flex container */
   overflow-y: auto;
 }
 
