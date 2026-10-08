@@ -45,7 +45,7 @@ const NotificationsModal = ({ onClose, currentUser }) => {
               id: `overdue-${ticket.id}`,
               type: 'danger',
               title: 'Ticket en retard !',
-              message: `Le ticket "${ticket.title}" devait être terminé le ${dueDate.toLocaleDateString()}.`,
+              message: `Le ticket "${ticket.title}" devait être terminé le ${dueDate.toLocaleDateString('fr-FR')}.`,
               boardId: ticket.boardId,
               ticketId: ticket.id,
               date: dueDate
@@ -55,7 +55,7 @@ const NotificationsModal = ({ onClose, currentUser }) => {
               id: `due-soon-${ticket.id}`,
               type: 'warning',
               title: 'Échéance très proche',
-              message: `Le ticket "${ticket.title}" est à rendre pour le ${dueDate.toLocaleDateString()}.`,
+              message: `Le ticket "${ticket.title}" est à rendre pour le ${dueDate.toLocaleDateString('fr-FR')}.`,
               boardId: ticket.boardId,
               ticketId: ticket.id,
               date: dueDate

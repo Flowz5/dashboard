@@ -35,13 +35,13 @@ const CalendarModal = ({ onClose, currentUser }) => {
   };
 
   const getTicketsForDate = (date) => {
-    const targetDateStr = date.toLocaleDateString();
+    const targetDateStr = date.toLocaleDateString('fr-FR');
     
     return (myTickets || []).filter(ticket => {
       if (!ticket.dueDate) return false;
       const dueDateStr = ticket.dueDate.includes('T') ? ticket.dueDate : ticket.dueDate + 'T12:00:00';
       const d = new Date(dueDateStr);
-      return d.toLocaleDateString() === targetDateStr;
+      return d.toLocaleDateString('fr-FR') === targetDateStr;
     });
   };
 
@@ -54,8 +54,8 @@ const CalendarModal = ({ onClose, currentUser }) => {
 
     for (let i = 1; i <= daysInMonth; i++) {
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
-      const isToday = date.toLocaleDateString() === new Date().toLocaleDateString();
-      const isSelected = selectedDate && date.toLocaleDateString() === selectedDate.toLocaleDateString();
+      const isToday = date.toLocaleDateString('fr-FR') === new Date().toLocaleDateString('fr-FR');
+      const isSelected = selectedDate && date.toLocaleDateString('fr-FR') === selectedDate.toLocaleDateString('fr-FR');
       
       const dayTickets = getTicketsForDate(date);
       
@@ -124,7 +124,7 @@ const CalendarModal = ({ onClose, currentUser }) => {
 
         {selectedDate && (
           <div className="calendar-selected-tickets">
-            <h3>Tickets pour le {selectedDate.toLocaleDateString()}</h3>
+            <h3>Tickets pour le {selectedDate.toLocaleDateString('fr-FR')}</h3>
             {selectedTickets.length === 0 ? (
               <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', margin: 0 }}>Aucun ticket prévu pour ce jour.</p>
             ) : (
