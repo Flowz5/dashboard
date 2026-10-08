@@ -74,9 +74,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
             <option value="title_asc">De A à Z</option>
           </select>
         )}
-      </div>
 
-      <div className="Navbar-links">
         {board && (
           <button 
             className="btn-stats" 
@@ -91,7 +89,6 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
               cursor: 'pointer', 
               fontSize: '13px', 
               fontWeight: '600',
-              marginRight: '8px',
               display: 'flex',
               alignItems: 'center',
               gap: '6px'
@@ -158,6 +155,9 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
             )}
           </div>
         )}
+      </div>
+
+      <div className="Navbar-links">
 
         <ul>
           <li>
