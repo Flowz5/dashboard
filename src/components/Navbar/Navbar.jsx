@@ -1,22 +1,26 @@
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 import './Navbar.css';
 import Button from '../Button/Button';
 import searchIcon from '../../assets/search.png';
-import calendarIcon from '../../assets/calendar.png';
-import notifIcon from '../../assets/notif.png';
 import useThemeStore from '../../store/useThemeStore';
 import useUserStore from '../../store/useUserStore';
+import useBoardStore from '../../store/useBoardStore';
+import NotificationsModal from '../NotificationsModal/NotificationsModal';
 
 // La barre de navigation du haut (Logo, Recherche, Membres, Déconnexion)
 const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery, onSearchChange, sortOption, onSortChange, onStatsClick, userRole, onProfileClick }) => {
   const navigate = useNavigate();
   const isDarkMode = useThemeStore(state => state.isDarkMode);
+  const toggleTheme = useThemeStore(state => state.toggleTheme);
+  const userProfile = useUserStore(state => state.userProfile);
+  const boards = useBoardStore(state => state.boards);
+  const [isNotifModalOpen, setIsNotifModalOpen] = useState(false);
 
   // -- CALCUL DES NOTIFICATIONS POUR LE BADGE --
-  const boards = useBoardStore(state => state.boards);
-  const unreadNotifsCount = React.useMemo(() => {
+  const unreadNotifsCount = useMemo(() => {
     if (!currentUser) return 0;
     const now = new Date();
     let count = 0;
@@ -43,9 +47,6 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
     });
     return count;
   }, [boards, currentUser, userProfile?.dismissedNotifs]);
-
-  const toggleTheme = useThemeStore(state => state.toggleTheme);
-  const userProfile = useUserStore(state => state.userProfile);
 
   // -- DÉCONNEXION --
   const handleLogout = async () => {
@@ -281,7 +282,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
       </div>
 
       {isNotifModalOpen && (
-        <NotificationsModal onClose={() => setIsNotifModalOpen(false)} />
+        <NotificationsModal onClose={() => setIsNotifModalOpen(false)} currentUser={currentUser} />
       )}
     </nav>
 
