@@ -69,6 +69,7 @@
   color: var(--color-text);
   flex-grow: 1;
   outline: none;
+  min-width: 0; /* Empêche l'input de casser la ligne */
 }
 
 #search-bar::placeholder {
@@ -222,45 +223,47 @@
   display: flex;
   gap: 16px;
   align-items: center;
-  flex-wrap: wrap;
+  flex: 1; /* Permet de prendre l'espace disponible et de rétrécir si besoin */
+  justify-content: center;
+  margin: 0 16px;
 }
 
+/* Sur PC Portable, on rétrécit les éléments mais on garde TOUT sur une ligne */
 @media (max-width: 1500px) {
   .Navbar {
     padding: 12px 16px;
-    gap: 12px;
+    gap: 8px;
   }
   
   .Navbar-search {
-    width: 250px;
+    width: 100%;
+    max-width: 300px; /* La barre de recherche peut rétrécir */
+  }
+
+  .Navbar-controls-center {
+    gap: 8px;
   }
 
   .Navbar-links ul {
-    gap: 12px;
+    gap: 8px; /* On rapproche les icônes */
   }
 
   .navbar-members {
-    padding-right: 12px;
     gap: 8px;
   }
 }
 
-@media (max-width: 1400px) {
+/* Seulement sur mobile / petite tablette on passe sur 2 lignes */
+@media (max-width: 850px) {
   .Navbar {
-    flex-wrap: wrap; /* Dès 1200px (PC portable classique), on passe sur 2 lignes ! */
-    padding: 16px;
-    gap: 16px;
+    flex-wrap: wrap; 
+    padding: 12px;
   }
 
   .Navbar-controls-center {
     order: 3;
     width: 100%;
-    justify-content: center;
-  }
-
-  .Navbar-search {
-    width: 100%;
-    max-width: 600px;
+    margin: 8px 0 0 0;
   }
 
   .Navbar-logo {
