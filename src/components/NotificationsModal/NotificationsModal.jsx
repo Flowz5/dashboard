@@ -16,69 +16,73 @@ const NotificationsModal = ({ onClose, currentUser }) => {
     return () => { document.body.style.overflow = 'auto'; };
   }, []);
 
+  const myTickets = useUserStore(state => state.myTickets);
+  
   const generateNotifications = () => {
     if (!currentUser) return [];
     
     const notifs = [];
     const now = new Date();
 
-    (boards || []).forEach(board => {
-      (board.columns || []).forEach(col => {
-        const isDone = (col.title || '').toLowerCase().includes('terminé') || (col.title || '').toLowerCase().includes('done') || (col.title || '').toLowerCase().includes('fini');
+    (myTickets || []).forEach(ticket => {
+      const isDone = (ticket.status || '').toLowerCase().includes('terminé') || (ticket.status || '').toLowerCase().includes('done') || (ticket.status || '').toLowerCase().includes('fini');
+      if (!isDone) {
+        // Retrouver le titre du board pour un affichage joli (si on l'a dans le store)
+        const board = (boards || []).find(b => b.id === ticket.boardId);
+        const boardTitle = board ? board.title : 'Projet';
 
-        (col.tickets || []).forEach(ticket => {
-          if (ticket.assignee === currentUser.email && !isDone) {
-            
-            if (ticket.dueDate) {
-              const dueDate = new Date(ticket.dueDate);
-              const diffTime = dueDate.getTime() - now.getTime();
-              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-              
-              if (diffDays < 0) {
-                notifs.push({
-                  id: `overdue-${ticket.id}`,
-                  type: 'danger',
-                  title: 'Ticket en retard !',
-                  message: `Le ticket "${ticket.title}" devait être terminé le ${dueDate.toLocaleDateString()}.`,
-                  boardId: board.id,
-                  ticketId: ticket.id,
-                  date: dueDate
-                });
-              } else if (diffDays <= 2) {
-                notifs.push({
-                  id: `due-soon-${ticket.id}`,
-                  type: 'warning',
-                  title: 'Échéance très proche',
-                  message: `Le ticket "${ticket.title}" est à rendre pour le ${dueDate.toLocaleDateString()}.`,
-                  boardId: board.id,
-                  ticketId: ticket.id,
-                  date: dueDate
-                });
-              } else {
-                notifs.push({
-                  id: `assigned-${ticket.id}`,
-                  type: 'info',
-                  title: 'Nouveau ticket assigné',
-                  message: `Vous êtes assigné au ticket "${ticket.title}" dans le projet "${board.title}".`,
-                  boardId: board.id,
-                  ticketId: ticket.id,
-                  date: new Date(ticket.date || new Date())
-                });
-              }
-            } else {
-              notifs.push({
-                id: `assigned-${ticket.id}`,
-                type: 'info',
-                title: 'Nouveau ticket assigné',
-                message: `Vous êtes assigné au ticket "${ticket.title}" dans le projet "${board.title}".`,
-                boardId: board.id,
-                ticketId: ticket.id,
-                date: new Date(ticket.date || new Date())
-              });
-            }
+        if (ticket.dueDate) {
+          // ticket.dueDate est en YYYY-MM-DD
+          // Mais attention au décalage horaire avec new Date("YYYY-MM-DD") -> UTC
+          // On ajoute "T12:00:00" pour être sûr d'être au milieu de la journée locale
+          const dueDateStr = ticket.dueDate.includes('T') ? ticket.dueDate : ticket.dueDate + 'T12:00:00';
+          const dueDate = new Date(dueDateStr);
+          const diffTime = dueDate.getTime() - now.getTime();
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          
+          if (diffDays < 0) {
+            notifs.push({
+              id: `overdue-${ticket.id}`,
+              type: 'danger',
+              title: 'Ticket en retard !',
+              message: `Le ticket "${ticket.title}" devait être terminé le ${dueDate.toLocaleDateString()}.`,
+              boardId: ticket.boardId,
+              ticketId: ticket.id,
+              date: dueDate
+            });
+          } else if (diffDays <= 2) {
+            notifs.push({
+              id: `due-soon-${ticket.id}`,
+              type: 'warning',
+              title: 'Échéance très proche',
+              message: `Le ticket "${ticket.title}" est à rendre pour le ${dueDate.toLocaleDateString()}.`,
+              boardId: ticket.boardId,
+              ticketId: ticket.id,
+              date: dueDate
+            });
+          } else {
+            notifs.push({
+              id: `assigned-${ticket.id}`,
+              type: 'info',
+              title: 'Nouveau ticket assigné',
+              message: `Vous êtes assigné au ticket "${ticket.title}" dans le projet "${boardTitle}".`,
+              boardId: ticket.boardId,
+              ticketId: ticket.id,
+              date: new Date(ticket.date || new Date())
+            });
           }
-        });
-      });
+        } else {
+          notifs.push({
+            id: `assigned-${ticket.id}`,
+            type: 'info',
+            title: 'Nouveau ticket assigné',
+            message: `Vous êtes assigné au ticket "${ticket.title}" dans le projet "${boardTitle}".`,
+            boardId: ticket.boardId,
+            ticketId: ticket.id,
+            date: new Date(ticket.date || new Date())
+          });
+        }
+      }
     });
 
     return notifs.sort((a, b) => b.date - a.date);
@@ -124,7 +128,7 @@ const NotificationsModal = ({ onClose, currentUser }) => {
           {visibleNotifs.length === 0 ? (
             <div className="empty-notifs">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><line x1="2" y1="2" x2="22" y2="22"></line></svg>
-              <p>Vous n'avez aucune notification pour le moment.</p>
+              <p>Vous n'avez aucune notification pour le moment.</p><p style={{fontSize:'10px'}}>Debug: currentUser={currentUser?.email}, boards={boards?.length}, allNotifs={allNotifs?.length}, visibleNotifs={visibleNotifs?.length}, dismissedNotifs={dismissedNotifs?.length}</p>
             </div>
           ) : (
             visibleNotifs.map(notif => (

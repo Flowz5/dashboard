@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
@@ -20,33 +20,39 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
   const [isNotifModalOpen, setIsNotifModalOpen] = useState(false);
 
   // -- CALCUL DES NOTIFICATIONS POUR LE BADGE --
+  const myTickets = useUserStore(state => state.myTickets);
+  const listenToMyTickets = useUserStore(state => state.listenToMyTickets);
+
+  useEffect(() => {
+    if (currentUser?.email) {
+      listenToMyTickets(currentUser.email);
+    }
+  }, [currentUser?.email, listenToMyTickets]);
+
   const unreadNotifsCount = useMemo(() => {
     if (!currentUser) return 0;
     const now = new Date();
     let count = 0;
     const dismissedNotifs = userProfile?.dismissedNotifs || [];
 
-    (boards || []).forEach(board => {
-      (board.columns || []).forEach(col => {
-        const isDone = (col.title || '').toLowerCase().includes('terminé') || (col.title || '').toLowerCase().includes('done') || (col.title || '').toLowerCase().includes('fini');
-        (col.tickets || []).forEach(ticket => {
-          if (ticket.assignee === currentUser.email && !isDone) {
-            let notifId = 'assigned-' + ticket.id;
-            if (ticket.dueDate) {
-              const diffTime = new Date(ticket.dueDate).getTime() - now.getTime();
-              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-              if (diffDays < 0) notifId = 'overdue-' + ticket.id;
-              else if (diffDays <= 2) notifId = 'due-soon-' + ticket.id;
-            }
-            if (!dismissedNotifs.includes(notifId)) {
-              count++;
-            }
-          }
-        });
-      });
+    (myTickets || []).forEach(ticket => {
+      const isDone = (ticket.status || '').toLowerCase().includes('terminé') || (ticket.status || '').toLowerCase().includes('done') || (ticket.status || '').toLowerCase().includes('fini');
+      if (!isDone) {
+        let notifId = 'assigned-' + ticket.id;
+        if (ticket.dueDate) {
+          const dueDateStr = ticket.dueDate.includes('T') ? ticket.dueDate : ticket.dueDate + 'T12:00:00';
+          const diffTime = new Date(dueDateStr).getTime() - now.getTime();
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          if (diffDays < 0) notifId = 'overdue-' + ticket.id;
+          else if (diffDays <= 2) notifId = 'due-soon-' + ticket.id;
+        }
+        if (!dismissedNotifs.includes(notifId)) {
+          count++;
+        }
+      }
     });
     return count;
-  }, [boards, currentUser, userProfile?.dismissedNotifs]);
+  }, [myTickets, currentUser, userProfile?.dismissedNotifs]);
 
   // -- DÉCONNEXION --
   const handleLogout = async () => {
