@@ -55,9 +55,10 @@
   --color-danger-bg: rgba(239, 68, 68, 0.15);
   --color-danger-text: #F87171;
   
-  /* Ajustement de la couleur brand pour le mode sombre pour une visibilité éclatante */
-  --color-dark: #38bdf8; 
+  /* Ajustement des couleurs brand pour le mode sombre */
+  --color-dark: #1e3a5f; 
   --color-primary: #38bdf8;
+  --color-secondary: #0284c7;
 
   /* Glassmorphism & ombres sombres */
   --glass-bg: rgba(15, 23, 42, 0.88);
