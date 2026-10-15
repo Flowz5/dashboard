@@ -3,19 +3,18 @@
   top: 60px;
   right: 60px;
   width: 400px;
-  background: var(--color-card-bg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-border-subtle);
   z-index: 1000;
   display: flex;
   flex-direction: column;
   max-height: 80vh;
   overflow: hidden;
-}
-
-[data-theme="dark"] .calendar-modal-overlay {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  animation: modalAppear 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .calendar-modal-header {

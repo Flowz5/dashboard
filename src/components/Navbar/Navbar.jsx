@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 import './Navbar.css';
-import Button from '../Button/Button';
-import searchIcon from '../../assets/search.png';
 import useThemeStore from '../../store/useThemeStore';
 import useUserStore from '../../store/useUserStore';
 import useBoardStore from '../../store/useBoardStore';
@@ -69,9 +67,16 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
     <nav className="Navbar">
       {/* Clic sur le logo = Retour à la page d'accueil */}
       <div className="Navbar-logo">
-        <span id="logo" onClick={() => navigate('/')} style={{cursor: 'pointer'}}>
-          Dashboard Dev
-        </span>
+        <div className="Navbar-brand" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          <div className="Navbar-brand-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+          </div>
+          <span id="logo">Dashboard Dev</span>
+        </div>
         {/* On affiche le nom du projet uniquement si on est dans un board */}
         {board && (
           <span className="navbar-board-title">
@@ -82,6 +87,10 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
 
       <div className="Navbar-controls-center">
         <div className="Navbar-search">
+          <svg className="search-svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
           {board && onSearchChange ? (
             <input 
               id="search-bar" 
@@ -94,9 +103,7 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
           ) : (
             <input id="search-bar" name="search" type="text" placeholder="Rechercher..." disabled />
           )}
-          <button id="search-button">
-            <img src={searchIcon} alt="Search" />
-          </button>
+          <span className="search-shortcut">⌘K</span>
         </div>
 
         {/* Menu de tri uniquement si on est dans un projet */}
@@ -260,9 +267,9 @@ const Navbar = ({ board, onInviteClick, onRemoveMember, currentUser, searchQuery
             </div>
           </li>
           <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <Button onClick={handleLogout}>
+            <button className="btn-logout-nav" onClick={handleLogout} title="Se déconnecter">
               Déconnexion
-            </Button>
+            </button>
             <div 
               className="navbar-profile-btn" 
               onClick={onProfileClick}

@@ -45,6 +45,13 @@ const Login = () => {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
+          <div className="login-brand-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+          </div>
           <h2>Dashboard Dev</h2>
           <p>{isRegister ? "Créez votre compte pour rejoindre l'équipe" : "Connectez-vous à votre espace de travail"}</p>
         </div>

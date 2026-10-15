@@ -155,15 +155,25 @@ const Home = () => {
     <div className="home-layout">
       {/* -- SIDEBAR (WORKSPACES) -- */}
       <aside className="home-sidebar">
-        <div className="home-logo">Dashboard Dev</div>
+        <div className="home-logo">
+          <div className="home-logo-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+          </div>
+          Dashboard Dev
+        </div>
         
         <div className="sidebar-section">
           <div 
             className={`sidebar-item ${activeFolderId === 'all' ? 'active' : ''}`}
             onClick={() => setActiveFolderId('all')}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
             Tous les projets
+            <span className="sidebar-count">{allAccessibleBoards.length}</span>
           </div>
           <div 
             className={`sidebar-item ${activeFolderId === 'unassigned' ? 'active' : ''}`}
@@ -171,8 +181,9 @@ const Home = () => {
             onDragOver={handleDragOver}
             onDrop={(e) => handleDropOnFolder(e, 'unassigned')}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
             Non classés
+            <span className="sidebar-count">{allAccessibleBoards.filter(b => !boardFolders[b.id]).length}</span>
           </div>
         </div>
 
@@ -229,13 +240,18 @@ const Home = () => {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                     {folder.name}
                   </span>
-                  <button 
-                    className="btn-delete-folder"
-                    onClick={(e) => handleDeleteFolder(e, folder.id, folder.name)}
-                    title="Supprimer le workspace"
-                  >
-                    &times;
-                  </button>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: 'auto' }}>
+                    <span className="sidebar-count">
+                      {allAccessibleBoards.filter(b => boardFolders[b.id] === folder.id).length}
+                    </span>
+                    <button 
+                      className="btn-delete-folder"
+                      onClick={(e) => handleDeleteFolder(e, folder.id, folder.name)}
+                      title="Supprimer le workspace"
+                    >
+                      &times;
+                    </button>
+                  </div>
                 </div>
                 
                 {/* Sous-liste animée des projets */}
@@ -263,7 +279,10 @@ const Home = () => {
         </div>
 
         <div className="sidebar-footer">
-          <span className="user-email" title={user?.email}>{user?.email}</span>
+          <div className="sidebar-user-info">
+            <span className="user-email" title={user?.email}>{user?.email}</span>
+            <span className="user-status"><span className="status-dot-online"></span> En ligne</span>
+          </div>
           <button className="btn-logout-small" onClick={handleLogout}>Déconnexion</button>
         </div>
       </aside>
@@ -274,7 +293,10 @@ const Home = () => {
           <h1>{getFolderName()}</h1>
           
           {!isCreating ? (
-            <Button onClick={() => setIsCreating(true)}>+ Nouveau Dashboard</Button>
+            <Button onClick={() => setIsCreating(true)}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Nouveau Dashboard
+            </Button>
           ) : (
             <form onSubmit={handleCreateBoard} className="create-board-form">
               <input 
@@ -293,9 +315,9 @@ const Home = () => {
         {displayedBoards.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
             </div>
-            <p>Aucun projet dans ce Workspace.</p>
+            <p style={{ fontWeight: 600, color: 'var(--color-text)', margin: '0 0 6px 0' }}>Aucun projet dans ce Workspace</p>
             <p className="empty-subtext">Créez un nouveau projet, ou glissez-en un ici depuis le menu de gauche.</p>
           </div>
         ) : (
@@ -321,9 +343,9 @@ const Home = () => {
                     </button>
                   )}
                 </div>
-                <p>{board.owner === user?.email ? `Créé le ${board.createdAt}` : `Propriétaire: ${board.owner}`}</p>
+                <p>{board.owner === user?.email ? `Créé le ${board.createdAt}` : `Propriétaire : ${board.owner}`}</p>
                 <div className="board-card-footer">
-                  <span>{board.members.length} membre(s)</span>
+                  <span className="board-members-pill">{board.members.length} membre{board.members.length > 1 ? 's' : ''}</span>
                   <span className="go-arrow">→</span>
                 </div>
               </div>

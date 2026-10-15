@@ -1,27 +1,41 @@
 .custom-button {
   background-color: var(--color-primary);
-  color: #ffffff;
-  border: none;
-  /* bouton légèrement arrondi, classique */
-  border-radius: 6px;
-  /* padding pour aérer un peu le texte */
+  color: #0F172A;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
   padding: 8px 16px; 
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* petite ombre légère */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.custom-button:hover {
-  /* on récupère la même couleur en un peu différent (géré via CSS si besoin, ou on hardcode l'effet) */
-  background-color: var(--color-dark);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  /* léger rebond visuel */
+[data-theme='light'] .custom-button {
+  color: #ffffff;
+  background-color: var(--color-primary);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.custom-button:hover:not(:disabled) {
+  opacity: 0.92;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transform: translateY(-1px);
 }
+
+.custom-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.custom-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+

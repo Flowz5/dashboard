@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Children } from 'react';
 import useBoardStore from '../../store/useBoardStore';
 import './Column.css';
 
@@ -7,30 +7,41 @@ const Column = ({ title, children, headerColor, onAddClick, userRole }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const moveTicket = useBoardStore(state => state.moveTicket);
 
+  const ticketCount = Children.count(children);
+
+  // Couleurs de puces de statut subtiles et harmonisées
+  const getStatusColor = (colTitle) => {
+    switch (colTitle) {
+      case 'To do': return '#38bdf8'; // Cyan
+      case 'Doing': return '#f59e0b'; // Ambre
+      case 'Done': return '#10b981'; // Émeraude
+      case 'Mis en Dev': return '#818cf8'; // Indigo
+      case 'A mettre en Prod': return '#c084fc'; // Violet
+      default: return headerColor || 'var(--color-primary)';
+    }
+  };
+
+  const statusColor = getStatusColor(title);
+
   // -- GESTION DU DRAG AND DROP (RÉCEPTION) --
-  
-  // Autoriser le drop (par défaut le navigateur l'interdit !)
   const handleDragOver = (e) => {
     if (userRole === 'viewer') return;
     e.preventDefault();
-    setIsDragOver(true); // Permet de mettre la colonne en surbrillance (cf CSS)
+    setIsDragOver(true);
   };
 
   const handleDragLeave = () => {
     if (userRole === 'viewer') return;
-    setIsDragOver(false); // On enlève la surbrillance si le curseur sort de la colonne
+    setIsDragOver(false);
   };
 
-  // Ce qui se passe quand on lâche la souris avec un ticket au-dessus
   const handleDrop = (e) => {
     if (userRole === 'viewer') return;
     e.preventDefault();
     setIsDragOver(false);
     
-    // On ouvre le "sac à dos" du drag pour récupérer l'ID du ticket
     const ticketId = e.dataTransfer.getData('ticketId');
     if (ticketId) {
-      // On prévient le store (et donc Firestore) que ce ticket change de colonne !
       moveTicket(ticketId, title);
     }
   };
@@ -42,11 +53,19 @@ const Column = ({ title, children, headerColor, onAddClick, userRole }) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="column-header" style={{ backgroundColor: headerColor }}>
-        <h3>{title}</h3>
-        {/* On appelle la prop onAddClick que le Dashboard nous passe */}
+      <div className="column-header">
+        <div className="column-header-left">
+          <span className="column-status-dot" style={{ backgroundColor: statusColor, boxShadow: `0 0 8px ${statusColor}55` }}></span>
+          <h3>{title}</h3>
+          <span className="column-count-badge">{ticketCount}</span>
+        </div>
         {title === 'To do' && onAddClick && (
-          <span className="add-button" onClick={onAddClick} title="Créer un ticket">+</span>
+          <button className="column-add-btn" onClick={onAddClick} title="Créer un ticket">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
         )}
       </div>
       <div className="column-body">
@@ -57,3 +76,4 @@ const Column = ({ title, children, headerColor, onAddClick, userRole }) => {
 };
 
 export default Column;
+

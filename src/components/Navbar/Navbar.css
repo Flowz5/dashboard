@@ -1,108 +1,136 @@
 .Navbar {
-  background-color: var(--color-navbar);
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   width: 100%;
   box-sizing: border-box;
-  padding: 16px 32px;
+  padding: 12px 28px;
   position: sticky;
   top: 0;
   z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* petite bordure claire sous la navbar */
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-sm);
 }
 
 .Navbar-logo {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-#logo {
-  text-decoration: none;
-  color: var(--color-navbar-text);
+.Navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   transition: opacity 0.2s;
 }
 
-#logo:hover {
-  opacity: 0.7;
+.Navbar-brand:hover {
+  opacity: 0.85;
+}
+
+.Navbar-brand-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+#logo {
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .navbar-board-title {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .separator {
-  color: var(--color-border);
+  color: var(--color-muted);
+  opacity: 0.4;
   font-weight: 300;
 }
 
-/* barre de recherche style pilule */
+/* Barre de recherche moderne */
 .Navbar-search {
   display: flex;
   align-items: center;
   background-color: var(--color-input-bg); 
-  border-radius: 20px;
-  border: 1px solid transparent;
-  padding: 8px 16px;
-  width: 320px;
-  transition: all 0.2s;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  padding: 6px 12px;
+  width: 260px;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .Navbar-search:focus-within {
-  border-color: var(--color-border);
-  background-color: var(--color-bg);
-  box-shadow: 0 0 0 2px rgba(226, 232, 240, 0.5);
+  border-color: var(--color-primary);
+  background-color: var(--color-card-bg);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  width: 300px;
+}
+
+.search-svg-icon {
+  color: var(--color-muted);
+  flex-shrink: 0;
 }
 
 #search-bar {
   background-color: transparent;
   border: none;
-  font-size: 0.9rem;
+  font-size: 13px;
   color: var(--color-text);
   flex-grow: 1;
   outline: none;
-  min-width: 0; /* Empêche l'input de casser la ligne */
+  min-width: 0;
+  font-family: inherit;
 }
 
 #search-bar::placeholder {
   color: var(--color-muted);
+  opacity: 0.7;
 }
 
-#search-button {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#search-button img {
-  height: 18px;
-  opacity: 0.4;
-  /* passage en noir de la loupe PNG */
-  filter: brightness(0);
+.search-shortcut {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-muted);
+  background: rgba(148, 163, 184, 0.12);
+  padding: 2px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border-subtle);
+  flex-shrink: 0;
+  line-height: 1.2;
 }
 
 .Navbar-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
 .navbar-members {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .members-avatars {
@@ -111,103 +139,85 @@
 }
 
 .member-avatar {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background-color: var(--color-primary);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   border: 2px solid var(--color-navbar);
   margin-left: -8px;
   position: relative;
+  transition: transform 0.2s, z-index 0.2s;
 }
 
 .member-avatar:first-child {
   margin-left: 0;
 }
 
+.member-avatar:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
 .invite-nav-btn {
   background: transparent;
   border: 1px dashed var(--color-primary);
   color: var(--color-primary);
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .invite-nav-btn:hover {
-  background-color: var(--color-primary);
-  color: white;
+  background-color: rgba(56, 189, 248, 0.12);
 }
 
 .Navbar-links ul {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
   margin: 0;
   padding: 0;
 }
 
-.Navbar-links a img {
-  height: 20px;
-  /* inversion des icones PNG pour qu'elles ressortent en gris foncé sur le blanc */
-  filter: brightness(0) opacity(0.6);
-  transition: all 0.2s;
-}
-
-.Navbar-links a:hover img {
-  /* plus visible au hover */
-  filter: brightness(0) opacity(1);
-}
-
-/* Fix des icones noires pour le mode sombre */
-[data-theme='dark'] #search-button img,
-[data-theme='dark'] .Navbar-links a img {
-  filter: brightness(1) opacity(0.8);
-}
-[data-theme='dark'] .Navbar-links a:hover img {
-  filter: brightness(1) opacity(1);
-}
-
-.theme-toggle-btn {
+.theme-toggle-btn,
+.navbar-calendar-btn,
+.navbar-notif-btn {
   background: transparent;
   border: none;
-  font-size: 1.2rem;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 50%;
-  transition: transform 0.2s, background-color 0.2s;
+  padding: 7px;
+  border-radius: 8px;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-muted);
 }
 
-.theme-toggle-btn:hover {
-  background-color: var(--color-border);
-  transform: scale(1.1);
-}
-
-.theme-toggle-btn svg {
-  color: var(--color-navbar-text);
-  transition: color 0.2s;
+.theme-toggle-btn:hover,
+.navbar-calendar-btn:hover,
+.navbar-notif-btn:hover {
+  background-color: var(--color-hover);
+  color: var(--color-text);
 }
 
 .Navbar-sort {
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 8px;
   border: 1px solid var(--color-border);
   background-color: var(--color-input-bg);
   color: var(--color-text);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   outline: none;
   cursor: pointer;
@@ -218,52 +228,55 @@
   border-color: var(--color-primary);
 }
 
+.btn-logout-nav {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-logout-nav:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
 /* --- RESPONSIVE DESIGN --- */
 .Navbar-controls-center {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
-  flex: 1; /* Permet de prendre l'espace disponible et de rétrécir si besoin */
+  flex: 1;
   justify-content: center;
   margin: 0 16px;
 }
 
-/* Sur PC Portable, on rétrécit les éléments mais on garde TOUT sur une ligne */
-@media (max-width: 1500px) {
-  .Navbar {
-    padding: 12px 16px;
-    gap: 8px;
-  }
-  
+@media (max-width: 1200px) {
   .Navbar-search {
-    width: 100%;
-    max-width: 300px; /* La barre de recherche peut rétrécir */
+    width: 200px;
   }
-
-  .Navbar-controls-center {
-    gap: 8px;
-  }
-
-  .Navbar-links ul {
-    gap: 8px; /* On rapproche les icônes */
-  }
-
-  .navbar-members {
-    gap: 8px;
+  .Navbar-search:focus-within {
+    width: 240px;
   }
 }
 
-/* Seulement sur mobile / petite tablette on passe sur 2 lignes */
-@media (max-width: 850px) {
+@media (max-width: 900px) {
   .Navbar {
     flex-wrap: wrap; 
-    padding: 12px;
+    padding: 12px 16px;
   }
 
   .Navbar-controls-center {
     order: 3;
     width: 100%;
-    margin: 8px 0 0 0;
+    margin: 10px 0 0 0;
+    justify-content: space-between;
   }
 
   .Navbar-logo {
@@ -277,9 +290,13 @@
 
 @media (max-width: 650px) {
   .Navbar-logo {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   .navbar-board-title {
     display: none;
   }
+  .search-shortcut {
+    display: none;
+  }
 }
+
