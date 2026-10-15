@@ -184,7 +184,7 @@ const BoardView = () => {
         <Column title="To do" headerColor="var(--color-primary)" onAddClick={userRole !== 'viewer' ? handleOpenCreateModal : undefined} userRole={userRole}>
           {getTicketsByStatus('To do')}
         </Column>
-        <Column title="Doing" headerColor="var(--color-primary)" userRole={userRole}>
+        <Column title="Doing" headerColor="var(--color-secondary)" userRole={userRole}>
           {getTicketsByStatus('Doing')}
         </Column>
         <Column title="Done" headerColor="var(--color-primary)" userRole={userRole}>
