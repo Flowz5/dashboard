@@ -6,49 +6,51 @@
   --color-light: #cae9ff;
   --color-secondary: #5fa8d3;
 
-  /* couleurs neutres pour le fond et les textes (Thème Clair par défaut) */
-  --color-bg: #F8FAFC;
+  /* Thème Clair : Identité bleue affirmée, fini le tout blanc délavé */
+  --color-bg: #eaf4fb;
   --color-navbar: #FFFFFF;
   --color-navbar-text: #1b4965;
-  --color-column-bg: #F1F5F9;   
-  --color-text: #0F172A;        
-  --color-border: #E2E8F0;
-  --color-border-subtle: rgba(0, 0, 0, 0.06);
-  --color-hover: #F1F5F9;
+  --color-column-bg: #dbeaf4;   
+  --color-text: #1b4965;        
+  --color-border: #bcd5e5;
+  --color-border-subtle: rgba(27, 73, 101, 0.12);
+  --color-hover: #e0eef7;
   
-  /* variables pour cartes, inputs, modales */
+  /* variables pour cartes, inputs, modales en mode clair */
   --color-card-bg: #FFFFFF;
-  --color-input-bg: #F8FAFC;
-  --color-footer-bg: #F8FAFC;
-  --color-muted: #64748B;
-  --color-muted-bg: #F1F5F9;
+  --color-input-bg: #f2f7fc;
+  --color-footer-bg: #eaf4fb;
+  --color-muted: #4e738c;
+  --color-text-muted: #4e738c;
+  --color-muted-bg: #dbeaf4;
   
-  --color-danger-bg: #FEF2F2;
-  --color-danger-text: #EF4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.1);
+  --color-danger-text: #DC2626;
 
-  /* Glassmorphism & ombres douces */
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  /* Glassmorphism & ombres douces bleutées */
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(27, 73, 101, 0.12);
+  --shadow-sm: 0 1px 3px 0 rgba(27, 73, 101, 0.08);
+  --shadow-md: 0 4px 10px -1px rgba(27, 73, 101, 0.12), 0 2px 4px -2px rgba(27, 73, 101, 0.08);
+  --shadow-lg: 0 14px 24px -4px rgba(27, 73, 101, 0.15), 0 4px 8px -4px rgba(27, 73, 101, 0.08);
 }
 
 [data-theme='dark'] {
-  --color-bg: #0B1120;
+  --color-bg: #0F172A;
   --color-navbar: #0F172A;
   --color-navbar-text: #F8FAFC;
-  --color-column-bg: #162032;   
+  --color-column-bg: #1E293B;   
   --color-text: #F8FAFC;        
-  --color-border: #1E293B;
-  --color-border-subtle: rgba(255, 255, 255, 0.07);
+  --color-border: #334155;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
   --color-hover: #1E293B;
   
   --color-card-bg: #1E293B;
   --color-input-bg: #0F172A;
   --color-footer-bg: #0F172A;
   --color-muted: #94A3B8;
-  --color-muted-bg: #1E293B;
+  --color-text-muted: #94A3B8;
+  --color-muted-bg: #334155;
   
   --color-danger-bg: rgba(239, 68, 68, 0.15);
   --color-danger-text: #F87171;
@@ -58,7 +60,7 @@
   --color-primary: #38bdf8;
 
   /* Glassmorphism & ombres sombres */
-  --glass-bg: rgba(15, 23, 42, 0.85);
+  --glass-bg: rgba(15, 23, 42, 0.88);
   --glass-border: rgba(255, 255, 255, 0.08);
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);

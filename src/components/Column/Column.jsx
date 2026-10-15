@@ -53,6 +53,7 @@ const Column = ({ title, children, headerColor, onAddClick, userRole }) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
+      <div className="column-top-accent" style={{ backgroundColor: statusColor, boxShadow: `0 0 10px ${statusColor}44` }}></div>
       <div className="column-header">
         <div className="column-header-left">
           <span className="column-status-dot" style={{ backgroundColor: statusColor, boxShadow: `0 0 8px ${statusColor}55` }}></span>
