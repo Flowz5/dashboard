@@ -37,5 +37,10 @@ Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
+
+# Scratch & temporary scripts
+*.cjs
+fix_*.js
+check_*.js
+patch_*.js
