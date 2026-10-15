@@ -7,48 +7,66 @@
   --color-secondary: #5fa8d3;
 
   /* couleurs neutres pour le fond et les textes (Thème Clair par défaut) */
-  --color-bg: #FFFFFF;
+  --color-bg: #F8FAFC;
   --color-navbar: #FFFFFF;
   --color-navbar-text: #1b4965;
-  --color-column-bg: #F4F5F8;   
-  --color-text: #333333;        
-  --color-border: #E2E8F0;      
+  --color-column-bg: #F1F5F9;   
+  --color-text: #0F172A;        
+  --color-border: #E2E8F0;
+  --color-border-subtle: rgba(0, 0, 0, 0.06);
+  --color-hover: #F1F5F9;
   
-  /* variables ajoutées pour le mode sombre (inputs, modales, cartes) */
-  --color-card-bg: #ffffff;
+  /* variables pour cartes, inputs, modales */
+  --color-card-bg: #FFFFFF;
   --color-input-bg: #F8FAFC;
   --color-footer-bg: #F8FAFC;
-  --color-muted: #94A3B8;
+  --color-muted: #64748B;
   --color-muted-bg: #F1F5F9;
   
   --color-danger-bg: #FEF2F2;
   --color-danger-text: #EF4444;
+
+  /* Glassmorphism & ombres douces */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
 }
 
 [data-theme='dark'] {
-  --color-bg: #0F172A;
-  --color-navbar: #1E293B;
+  --color-bg: #0B1120;
+  --color-navbar: #0F172A;
   --color-navbar-text: #F8FAFC;
-  --color-column-bg: #1E293B;   
+  --color-column-bg: #162032;   
   --color-text: #F8FAFC;        
-  --color-border: #334155;
+  --color-border: #1E293B;
+  --color-border-subtle: rgba(255, 255, 255, 0.07);
+  --color-hover: #1E293B;
   
   --color-card-bg: #1E293B;
   --color-input-bg: #0F172A;
-  --color-footer-bg: #1E293B;
-  --color-muted: #64748B;
-  --color-muted-bg: #334155;
+  --color-footer-bg: #0F172A;
+  --color-muted: #94A3B8;
+  --color-muted-bg: #1E293B;
   
-  --color-danger-bg: rgba(239, 68, 68, 0.2);
-  --color-danger-text: #FCA5A5;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-danger-text: #F87171;
   
-  /* On ajuste un peu les couleurs brand pour le mode sombre pour plus de lisibilité */
+  /* Ajustement de la couleur brand pour le mode sombre pour une visibilité éclatante */
   --color-dark: #38bdf8; 
   --color-primary: #38bdf8;
+
+  /* Glassmorphism & ombres sombres */
+  --glass-bg: rgba(15, 23, 42, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
 }
 
 :root {
-  --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font: 14px/1.5 var(--sans);
   color: var(--color-text);
   background: var(--color-bg);
@@ -61,6 +79,9 @@
 
 body {
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
 #root {
@@ -69,10 +90,29 @@ body {
   flex-direction: column;
 }
 
+/* Scrollbars modernes ultra-fines */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
 @keyframes highlight-blink {
-  0% { box-shadow: 0 0 0 0 rgba(43, 196, 219, 0.7); border-color: var(--color-primary); }
-  50% { box-shadow: 0 0 0 10px rgba(43, 196, 219, 0); border-color: var(--color-primary); }
-  100% { box-shadow: 0 0 0 0 rgba(43, 196, 219, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); border-color: var(--color-primary); }
+  50% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); border-color: var(--color-primary); }
+  100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
 }
 
 .ticket-card.highlight-blink {

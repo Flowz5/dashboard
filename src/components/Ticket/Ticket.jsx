@@ -40,17 +40,17 @@ const Ticket = ({ ticket, onClick, userRole }) => {
       id={`ticket-${ticket.id}`}
     >
       <div className="ticket-header">
-        <div className="ticket-header-left" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <span className="ticket-date">{ticket.date}</span>
+        <div className="ticket-header-left">
           {ticket.priority && (
-            <span className={`ticket-priority priority-${ticket.priority.toLowerCase()}`} style={{ fontSize: '11px', fontWeight: '500', display: 'flex', alignItems: 'center' }}>
+            <span className={`ticket-priority-pill priority-${ticket.priority.toLowerCase()}`}>
               <span className={`priority-dot ${ticket.priority === 'Haute' ? 'high' : ticket.priority === 'Basse' ? 'low' : 'medium'}`}></span>
               {ticket.priority}
             </span>
           )}
+          <span className="ticket-date">{ticket.date}</span>
         </div>
         {ticket.dueDate && (
-          <span className="ticket-due-date" title="Date butoire" style={{ display: 'flex', alignItems: 'center' }}>
+          <span className={`ticket-due-date ${new Date(ticket.dueDate + 'T23:59:59') < new Date() ? 'overdue' : ''}`} title="Date butoire">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '4px'}}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
             {new Date(ticket.dueDate).toLocaleDateString('fr-FR')}
           </span>
@@ -60,7 +60,7 @@ const Ticket = ({ ticket, onClick, userRole }) => {
       <h4 className="ticket-title">{ticket.title}</h4>
       
       {ticket.description && (
-        <div className="ticket-description" data-color-mode={isDarkMode ? "dark" : "light"} style={{ background: 'transparent' }}>
+        <div className="ticket-description" data-color-mode={isDarkMode ? "dark" : "light"}>
           <MDEditor.Markdown rehypePlugins={[[rehypeSanitize]]} 
             source={ticket.description} 
             style={{ whiteSpace: 'pre-wrap', background: 'transparent', color: 'inherit', fontSize: '13px' }}
@@ -69,18 +69,10 @@ const Ticket = ({ ticket, onClick, userRole }) => {
       )}
 
       {ticket.tags && ticket.tags.length > 0 && (
-        <div className="ticket-tags" style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+        <div className="ticket-tags">
           {ticket.tags.map(tag => (
-            <span key={tag} className="ticket-tag" style={{
-              backgroundColor: 'var(--color-primary)',
-              color: 'white',
-              padding: '2px 8px',
-              borderRadius: '12px',
-              fontSize: '10px',
-              fontWeight: '600',
-              textTransform: 'uppercase'
-            }}>
-              {tag}
+            <span key={tag} className="ticket-tag">
+              #{tag}
             </span>
           ))}
         </div>

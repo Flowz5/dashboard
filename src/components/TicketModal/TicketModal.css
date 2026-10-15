@@ -4,28 +4,27 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* fond semi-transparent foncé mais doux */
-  background-color: rgba(15, 23, 42, 0.4); 
+  background-color: rgba(11, 17, 32, 0.65); 
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  /* effet blur derrière la modale pour un côté moderne */
-  backdrop-filter: blur(2px); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .modal-content {
   background-color: var(--color-card-bg);
-  border-radius: 12px; 
-  width: 550px;
+  border-radius: 16px; 
+  width: 560px;
   max-height: 90vh;
   max-width: 90vw;
   display: flex;
   flex-direction: column;
-  /* grosse ombre douce pour détacher l'élément central */
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  /* petite animation d'apparition douce */
-  animation: modalAppear 0.2s ease-out;
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-border-subtle);
+  border: 1px solid var(--color-border);
+  animation: modalAppear 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
 
 .modal-content form {
