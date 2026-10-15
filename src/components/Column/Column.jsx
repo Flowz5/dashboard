@@ -9,20 +9,6 @@ const Column = ({ title, children, headerColor, onAddClick, userRole }) => {
 
   const ticketCount = Children.count(children);
 
-  // Couleurs de puces de statut subtiles et harmonisées
-  const getStatusColor = (colTitle) => {
-    switch (colTitle) {
-      case 'To do': return '#38bdf8'; // Cyan
-      case 'Doing': return '#f59e0b'; // Ambre
-      case 'Done': return '#10b981'; // Émeraude
-      case 'Mis en Dev': return '#818cf8'; // Indigo
-      case 'A mettre en Prod': return '#c084fc'; // Violet
-      default: return headerColor || 'var(--color-primary)';
-    }
-  };
-
-  const statusColor = getStatusColor(title);
-
   // -- GESTION DU DRAG AND DROP (RÉCEPTION) --
   const handleDragOver = (e) => {
     if (userRole === 'viewer') return;
@@ -53,10 +39,8 @@ const Column = ({ title, children, headerColor, onAddClick, userRole }) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="column-top-accent" style={{ backgroundColor: statusColor, boxShadow: `0 0 10px ${statusColor}44` }}></div>
-      <div className="column-header">
+      <div className="column-header" style={{ backgroundColor: headerColor }}>
         <div className="column-header-left">
-          <span className="column-status-dot" style={{ backgroundColor: statusColor, boxShadow: `0 0 8px ${statusColor}55` }}></span>
           <h3>{title}</h3>
           <span className="column-count-badge">{ticketCount}</span>
         </div>
