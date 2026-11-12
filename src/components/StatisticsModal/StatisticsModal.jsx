@@ -1,4 +1,5 @@
 import './StatisticsModal.css';
+import { getBoardColumns, getColumnTitle } from '../../utils/columns';
 
 const StatisticsModal = ({ board, tickets, onClose }) => {
   // --- CALCUL DES STATISTIQUES ---
@@ -58,7 +59,8 @@ const StatisticsModal = ({ board, tickets, onClose }) => {
                     return (
                       <div key={status} className="progress-item">
                         <div className="progress-label">
-                          <span>{status}</span>
+                          {/* Le statut stocké est l'id de colonne : affichage de son titre lisible */}
+                          <span>{getColumnTitle(status, getBoardColumns(board))}</span>
                           <span>{count} ({percentage}%)</span>
                         </div>
                         <div className="progress-track">

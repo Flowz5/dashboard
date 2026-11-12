@@ -4,6 +4,7 @@ import { auth } from '../../firebase';
 import useBoardStore from '../../store/useBoardStore';
 import useUserStore from '../../store/useUserStore';
 import Button from '../../components/Button/Button';
+import { DEFAULT_COLUMNS } from '../../utils/columns';
 import './Home.css';
 
 const Home = () => {
@@ -62,6 +63,8 @@ const Home = () => {
       owner: user.email,
       members: [user.email],
       roles: {},
+      // Colonnes personnalisables initiales (To do est implicite et permanente)
+      columns: DEFAULT_COLUMNS,
       createdAt: new Date().toLocaleDateString('fr-FR')
     };
     

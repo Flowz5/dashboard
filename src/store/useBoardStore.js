@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { db } from '../firebase';
+import { getBoardColumns, createColumnId } from '../utils/columns';
 import { 
   collection, 
   doc, 
@@ -143,6 +144,43 @@ const useBoardStore = create((set, get) => ({
     } catch (error) {
       console.error("Erreur removeMember:", error);
     }
+  },
+
+  // ==========================================
+  // GESTION DES COLONNES (Écriture Firestore)
+  // ==========================================
+
+  // Réécrit le tableau complet des colonnes d'un board.
+  // La validation (titre vide, doublon, colonne non vide) est faite en amont par l'interface.
+  saveColumns: async (boardId, columns) => {
+    try {
+      await updateDoc(doc(db, 'boards', boardId), { columns });
+    } catch (error) {
+      console.error("Erreur saveColumns:", error);
+    }
+  },
+
+  // Ajoute une colonne en fin de liste.
+  addColumn: async (boardId, title) => {
+    const board = get().boards.find(b => b.id === boardId);
+    const columns = getBoardColumns(board);
+    await get().saveColumns(boardId, [...columns, { id: createColumnId(), title: title.trim() }]);
+  },
+
+  // Renomme une colonne ; son id (référencé par les tickets) reste inchangé.
+  renameColumn: async (boardId, columnId, title) => {
+    const board = get().boards.find(b => b.id === boardId);
+    const columns = getBoardColumns(board).map(col =>
+      col.id === columnId ? { ...col, title: title.trim() } : col
+    );
+    await get().saveColumns(boardId, columns);
+  },
+
+  // Retire une colonne du board.
+  deleteColumn: async (boardId, columnId) => {
+    const board = get().boards.find(b => b.id === boardId);
+    const columns = getBoardColumns(board).filter(col => col.id !== columnId);
+    await get().saveColumns(boardId, columns);
   },
 
   // ==========================================
