@@ -9,6 +9,7 @@ import Login from './pages/Login/Login';
 import Ticket from './components/Ticket/Ticket';
 import TicketModal from './components/TicketModal/TicketModal';
 import useBoardStore from './store/useBoardStore';
+import { TODO_COLUMN, getBoardColumns, getColumnColor, validateColumnTitle } from './utils/columns';
 import './App.css';
 
 import { useParams } from 'react-router-dom';
@@ -34,6 +35,8 @@ const BoardView = () => {
   const inviteMember = useBoardStore(state => state.inviteMemberToBoard);
   const listenToTickets = useBoardStore(state => state.listenToTickets);
   const removeMember = useBoardStore(state => state.removeMemberFromBoard);
+  const renameColumn = useBoardStore(state => state.renameColumn);
+  const deleteColumn = useBoardStore(state => state.deleteColumn);
   
   // On branche l'écouteur Firestore pour recevoir les tickets en temps réel dès qu'on arrive sur le board !
   useEffect(() => {
@@ -144,6 +147,35 @@ const BoardView = () => {
       ));
   };
 
+  // --- GESTION DES COLONNES ---
+  const boardColumns = getBoardColumns(currentBoard);
+  const canEditColumns = userRole !== 'viewer';
+
+  // Nombre total de tickets d'une colonne, indépendamment de la recherche en cours
+  const countTicketsInColumn = (columnId) =>
+    tickets.filter(ticket => ticket.boardId === id && ticket.status === columnId).length;
+
+  const handleRenameColumn = (column, title) => {
+    const error = validateColumnTitle(title, boardColumns, column.id);
+    if (error) {
+      alert(error);
+      return;
+    }
+    renameColumn(id, column.id, title);
+  };
+
+  // La suppression est bloquée tant que la colonne contient des tickets
+  const handleDeleteColumn = (column) => {
+    const count = countTicketsInColumn(column.id);
+    if (count > 0) {
+      alert(`Déplacez d'abord les ${count} ticket${count > 1 ? 's' : ''} de la colonne « ${column.title} ».`);
+      return;
+    }
+    if (window.confirm(`Supprimer la colonne « ${column.title} » ?`)) {
+      deleteColumn(id, column.id);
+    }
+  };
+
   // --- GESTION DES MEMBRES ---
   const handleRemoveMember = (email) => {
     // Seul le propriétaire (owner) a le droit de virer quelqu'un !
@@ -178,24 +210,30 @@ const BoardView = () => {
         }}
       />
 
-      {/* Le corps du Kanban, avec nos 5 colonnes */}
-      {/* Le corps du Kanban, avec nos 5 colonnes */}
+      {/* Le corps du Kanban : To do (permanente) puis les colonnes personnalisables du board */}
       <div className="board-container">
-        <Column title="To do" headerColor="var(--color-primary)" onAddClick={userRole !== 'viewer' ? handleOpenCreateModal : undefined} userRole={userRole}>
-          {getTicketsByStatus('To do')}
+        <Column
+          columnId={TODO_COLUMN.id}
+          title={TODO_COLUMN.title}
+          headerColor={getColumnColor(TODO_COLUMN.id)}
+          onAddClick={canEditColumns ? handleOpenCreateModal : undefined}
+          userRole={userRole}
+        >
+          {getTicketsByStatus(TODO_COLUMN.id)}
         </Column>
-        <Column title="Doing" headerColor="var(--color-secondary)" userRole={userRole}>
-          {getTicketsByStatus('Doing')}
-        </Column>
-        <Column title="Done" headerColor="var(--color-primary)" userRole={userRole}>
-          {getTicketsByStatus('Done')}
-        </Column>
-        <Column title="Mis en Dev" headerColor="var(--color-dark)" userRole={userRole}>
-          {getTicketsByStatus('Mis en Dev')}
-        </Column>
-        <Column title="A mettre en Prod" headerColor="var(--color-dark)" userRole={userRole}>
-          {getTicketsByStatus('A mettre en Prod')}
-        </Column>
+        {boardColumns.map(column => (
+          <Column
+            key={column.id}
+            columnId={column.id}
+            title={column.title}
+            headerColor={getColumnColor(column.id)}
+            onRename={canEditColumns ? (title) => handleRenameColumn(column, title) : undefined}
+            onDelete={canEditColumns ? () => handleDeleteColumn(column) : undefined}
+            userRole={userRole}
+          >
+            {getTicketsByStatus(column.id)}
+          </Column>
+        ))}
       </div>
 
       {/* Modale pour créer/éditer un ticket */}
