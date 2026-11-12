@@ -9,6 +9,7 @@ import Login from './pages/Login/Login';
 import Ticket from './components/Ticket/Ticket';
 import TicketModal from './components/TicketModal/TicketModal';
 import useBoardStore from './store/useBoardStore';
+import AddColumn from './components/AddColumn/AddColumn';
 import { TODO_COLUMN, getBoardColumns, getColumnColor, validateColumnTitle } from './utils/columns';
 import './App.css';
 
@@ -37,6 +38,7 @@ const BoardView = () => {
   const removeMember = useBoardStore(state => state.removeMemberFromBoard);
   const renameColumn = useBoardStore(state => state.renameColumn);
   const deleteColumn = useBoardStore(state => state.deleteColumn);
+  const addColumn = useBoardStore(state => state.addColumn);
   
   // On branche l'écouteur Firestore pour recevoir les tickets en temps réel dès qu'on arrive sur le board !
   useEffect(() => {
@@ -155,6 +157,17 @@ const BoardView = () => {
   const countTicketsInColumn = (columnId) =>
     tickets.filter(ticket => ticket.boardId === id && ticket.status === columnId).length;
 
+  // Retourne true si la colonne a été créée, afin que la carte d'ajout puisse se refermer
+  const handleAddColumn = (title) => {
+    const error = validateColumnTitle(title, boardColumns);
+    if (error) {
+      alert(error);
+      return false;
+    }
+    addColumn(id, title);
+    return true;
+  };
+
   const handleRenameColumn = (column, title) => {
     const error = validateColumnTitle(title, boardColumns, column.id);
     if (error) {
@@ -234,6 +247,7 @@ const BoardView = () => {
             {getTicketsByStatus(column.id)}
           </Column>
         ))}
+        {canEditColumns && <AddColumn onAdd={handleAddColumn} />}
       </div>
 
       {/* Modale pour créer/éditer un ticket */}
